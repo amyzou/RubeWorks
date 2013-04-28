@@ -1,10 +1,6 @@
 function init() {
-
-	container = document.createElement( 'div' );
-	document.body.appendChild( container );
-
-	camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 10000 );
-	camera.position.y = 800;
+	camera = new THREE.PerspectiveCamera( 45, window.innerWidth/window.innerHeight, 1, 10000 );
+	camera.position.y = 600;
 
 	scene = new THREE.Scene();
 
@@ -43,8 +39,10 @@ function init() {
 	scene.add( directionalLight );
 
 	renderer = new THREE.WebGLRenderer( { antialias: true, preserveDrawingBuffer: true } );
-	renderer.setSize( window.innerWidth, window.innerHeight );
+	
+	renderer.setSize( window.innerWidth, window.innerHeight);
 
+	container = document.getElementById( 'container' );
 	container.appendChild( renderer.domElement );
 
 	document.addEventListener( 'mousemove', onDocumentMouseMove, false );
@@ -59,12 +57,9 @@ function init() {
 }
 
 function onWindowResize() {
-
 	camera.aspect = window.innerWidth / window.innerHeight;
 	camera.updateProjectionMatrix();
-
 	renderer.setSize( window.innerWidth, window.innerHeight );
-
 }
 
 function getRealIntersector( intersects ) {
@@ -121,7 +116,7 @@ function onDocumentMouseDown( event ) {
 
 		// delete cube
 
-		if ( isCtrlDown ) {
+		if ( ctrlDown ) {
 
 			if ( intersector.object != plane ) {
 
@@ -151,8 +146,8 @@ function onDocumentKeyDown( event ) {
 
 	switch( event.keyCode ) {
 
-		case 16: isShiftDown = true; break;
-		case 17: isCtrlDown = true; break;
+		case 16: shiftDown = true; break;
+		case 17: ctrlDown = true; break;
 
 	}
 
@@ -162,24 +157,22 @@ function onDocumentKeyUp( event ) {
 
 	switch ( event.keyCode ) {
 
-		case 16: isShiftDown = false; break;
-		case 17: isCtrlDown = false; break;
+		case 16: shiftDown = false; break;
+		case 17: ctrlDown = false; break;
 
 	}
 
 }
 
-//
 
 function animate() {
 	requestAnimationFrame( animate );
 	render();
-
 }
 
 function render() {
 
-	if ( isShiftDown ) {
+	if ( shiftDown ) {
 
 		theta += mouse2D.x * 1.5;
 
