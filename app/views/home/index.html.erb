@@ -29,7 +29,7 @@ function init() {
 	// roll-over helpers
 
 	rollOverGeo = new THREE.CubeGeometry( 50, 50, 50 );
-	rollOverMaterial = new THREE.MeshBasicMaterial( { color: 0xff0000, opacity: 0.5, transparent: true } );
+	rollOverMaterial = new THREE.MeshBasicMaterial( { color: 0x009900, opacity: 0.5, transparent: true } );
 	rollOverMesh = new THREE.Mesh( rollOverGeo, rollOverMaterial );
 	scene.add( rollOverMesh );
 
@@ -92,9 +92,7 @@ function getRealIntersector( intersects ) {
 		intersector = intersects[ i ];
 
 		if ( intersector.object != rollOverMesh ) {
-
 			return intersector;
-
 		}
 
 	}
@@ -142,9 +140,7 @@ function onDocumentMouseDown( event ) {
 		if ( isCtrlDown ) {
 
 			if ( intersector.object != plane ) {
-
 				scene.remove( intersector.object );
-
 			}
 
 		// create cube
