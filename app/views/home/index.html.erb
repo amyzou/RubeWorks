@@ -183,8 +183,6 @@ function onDocumentKeyUp( event ) {
 
 }
 
-//
-
 function animate() {
 	requestAnimationFrame( animate );
 	render();
@@ -219,7 +217,73 @@ function render() {
 
 }
 </script>
+
+
 <div style="position: absolute; top: 10px; width: 100%; text-align: center;">
 	<h1>Rubeworks</h1>
 </div>
+
+
 <canvas width="842" height="200"></canvas>
+
+<body>
+
+</div>
+
+
+
+<!-- Starting toolbox html -->
+
+
+
+<head>
+	<meta charset="UTF-8">
+	
+	<title>Organic Tabs</title>
+
+	<script src="../../../assets/javascripts/organictabs.js"></script>
+
+
+    <script>
+        $(function() {            
+            $("#toolbox").organicTabs({
+            });
+    
+        });
+    </script>
+
+</head>
+
+<div id="toolbox">
+					
+	<ul class="nav">
+		<li class="nav-one"><a href="#cat1" class="current">Category 1</a></li>
+		<li class="nav-two"><a href="#cat2">Category 2</a></li>
+		<li class="nav-three"><a href="#cat3">Category 3</a></li>
+		<li class="nav-four"><a href="#cat4">Category 4</a></li>
+	</ul>
+    		
+    <div class="list-wrap">
+    	
+    	<ul id="cat1">
+    		Some text here.
+    	</ul>
+        		 
+       	<ul id="cat2" class="hide">
+       		More text
+		</ul>
+
+		<ul id="cat3" class="hide">
+			More text
+		</ul>
+
+		<ul id="cat4" class="hide">
+			More text
+		</ul>
+
+	</div> <!-- END List Wrap -->
+</div> <!-- END toolbox  -->	
+
+</body>
+
+</html>
