@@ -1,22 +1,29 @@
 <script>
-if ( ! Detector.webgl ) Detector.addGetWebGLMessage();
 
 var container;
 var camera, scene, renderer;
+var theta = 45 * 0.5;
+
 var projector, plane, cube;
-var mouse2D, mouse3D, raycaster,
-rollOveredFace, isShiftDown = false,
-theta = 45 * 0.5, isCtrlDown = false;
+var mouse2D, mouse3D, raycaster;
+var shiftDown = false, ctrlDown = false;
+var rollOveredFace;
 
 var rollOverMesh, rollOverMaterial;
-var voxelPosition = new THREE.Vector3(), tmpVec = new THREE.Vector3(), normalMatrix = new THREE.Matrix3();
+
+var currPos = new THREE.Vector3(), tmpVec = new THREE.Vector3(), normalMatrix = new THREE.Matrix3();
+
 var cubeGeo, cubeMaterial;
 var i, intersector;
 
-init();
-animate();
+var voxelPosition = new THREE.Vector3();
 
-function init() {
+$(function(){
+	if ( ! Detector.webgl ) 
+		Detector.addGetWebGLMessage();
+	init();
+	animate();
+});
 
 	container = document.createElement( 'div' );
 	document.body.appendChild( container );
