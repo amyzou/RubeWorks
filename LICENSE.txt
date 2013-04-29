@@ -1,6 +1,6 @@
 The MIT License (MIT)
 
-Copyright (c) 2013 Amy Zou, Austin Hulse, Emily Ye
+Copyright (c) 2013 Amy Zou, Austin Hulse, Emily Ye, Sonya Juang
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
