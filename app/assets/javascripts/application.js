@@ -15,3 +15,4 @@
 //= require Detector
 //= require three.min
 //= require rw
+//= require organictabs
