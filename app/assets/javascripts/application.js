@@ -16,5 +16,6 @@
 //= require three.min
 //= require rw
 //= require organictabs
-//= require object
+//= require rubeJectPropertiesTable
+//= require rubeJect
 //= require controller
