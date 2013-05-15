@@ -11,9 +11,9 @@
 // GO AFTER THE REQUIRES BELOW.
 //= require jquery
 //= require jquery_ujs
-//= require_tree .
-//= require Detector
 //= require three.min
+//= require OBJLoader
+//= require Detector
 //= require rw
 //= require organictabs
 //= require rubeJectPropertiesTable

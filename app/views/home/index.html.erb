@@ -1,7 +1,13 @@
 <script>
 
+//GLOBAL
+var GRID_SIZE = 30;
+var GRID_HEIGHT = 10;
+var VOXEL_SIZE = 40;
+//RENDERING 
 var container;
 var camera, scene, renderer;
+var canvas_width, canvas_height;
 var theta = 45 * 0.5;
 
 var projector, plane, cube;
@@ -18,6 +24,10 @@ var i, intersector;
 
 var voxelPosition = new THREE.Vector3();
 
+//DATA
+var grid;
+
+
 $(function(){
 	$("#toolbox").organicTabs({ });
 	if ( ! Detector.webgl ) 
@@ -28,8 +38,8 @@ $(function(){
 
 </script>
 
-<div id='container'>
-	<h1>Rubeworks</h1>
+<h1 style='text-align:center'>Rubeworks</h1>
+<div id='container' style='width:1024px; height:720px; margin:0 auto;'>
 </div>
 
 <div id="toolbox">
