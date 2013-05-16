@@ -9,9 +9,26 @@
   <%= csrf_meta_tags %>
 </head>
 <body>
-<div class='header'>CS 194 Project: Rubeworks</div>
+<div id='sidebar'>
+	<h2>CS 194 Project: Rubeworks</h2>
+	<p style='padding-top:10px'>
+		Amy Zou<br/>
+		Austin Hulse<br/>
+		Emily Ye<br/>
+		Sonya Juang<br/>
+	</p>
 
+	<div class="hidden" style='padding-top:40px'>
+		<h3>DEBUG PANEL</h3>
+		X:<input type="number" name="width" min="1" max="5" step="1" value="1">
+		Y:<input type="number" name="length" min="1" max="5" step="1" value="1">
+		Z:<input type="number" name="height" min="1" max="5" step="1" value="1">
+		<input type="submit" onclick="changeObjSize();">
+</form>
+	</div>
+</div>
+<div id='container'>
 <%= yield %>
-
+</div>
 </body>
 </html>

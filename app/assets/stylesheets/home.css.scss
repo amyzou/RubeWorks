@@ -5,7 +5,7 @@
 * { margin: 0; padding: 0; }
 a { text-decoration: none; }
 
-/* Generic Utility */
+/* TOOLBOX TABS */
 .hide { position: absolute; top: -9999px; left: -9999px; }
 
 #toolbox .list-wrap { width: 800px; background: #dedada; padding: 10px; margin: 0 0 15px 0; }
@@ -26,3 +26,9 @@ a { text-decoration: none; }
 #toolbox .nav li.nav-two a:hover, #toolbox .nav li .nav-two a:focus { background: #b93131;}
 #toolbox .nav li.nav-three a:hover, #toolbox .nav li .nav-three a:focus { background: #384463;}
 #toolbox .nav li.nav-four a:hover, #toolbox .nav li .nav-four a:focus { background: #202b46;}
+
+#grid_container {
+	width:	800px;
+	height:	600px;
+}
+

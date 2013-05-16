@@ -2,17 +2,15 @@ function init() {
 	scene = new THREE.Scene();
 	projector = new THREE.Projector();
 
-	canvas_width = $('#container').width();
-	canvas_height = $('#container').height();
+	canvas_width = $('#grid_container').width();
+	canvas_height = $('#grid_container').height();
 	
 	camera = new THREE.PerspectiveCamera( 45, canvas_width/canvas_height, 1, 10000 );
-	camera.position.y = 200;
+	camera.position.y = 500;
 
 	renderer = new THREE.WebGLRenderer( { antialias: true, preserveDrawingBuffer: true } );
 	renderer.setSize( canvas_width, canvas_height);
-
-	// grid
-	grid = [[GRID_SIZE],[GRID_SIZE],[GRID_HEIGHT]]; //[x][y][z]
+	
 	plane = new THREE.Mesh( 
 		new THREE.PlaneGeometry( VOXEL_SIZE * GRID_SIZE, VOXEL_SIZE * GRID_SIZE, GRID_SIZE, GRID_SIZE ), 
 		new THREE.MeshBasicMaterial( { color: 0x2c364f, wireframe: true } ) 
@@ -24,21 +22,28 @@ function init() {
 	initLighting();
 
 	//APPEND CANVAS
-	container = document.getElementById( 'container' );
+	container = document.getElementById( 'grid_container' );
 	container.appendChild( renderer.domElement );
 
 	// picking
 	mouse2D = new THREE.Vector3( 0, 10000, 0.5 );
-	document.addEventListener( 'mousemove', onDocumentMouseMove, false );
-	document.addEventListener( 'mousedown', onDocumentMouseDown, false );
-	document.addEventListener( 'keydown', onDocumentKeyDown, false );
-	document.addEventListener( 'keyup', onDocumentKeyUp, false );
+	container.addEventListener( 'mousemove', onDocumentMouseMove, false );
+	container.addEventListener( 'mousedown', onDocumentMouseDown, false );
+	document.addEventListener( 'keydown', onDocumentKeyDown, true );
+	document.addEventListener( 'keyup', onDocumentKeyUp, true );
+	//window.addEventListener ('resize', onWindowResize, false);
 }
+
+// function onWindowResize() {
+// 	canvas_width = window.innerWidth;
+// 	canvas_height = canvas_width * 0.75;
+// 	renderer.setSize( canvas_width, canvas_height );
+// }
 
 function initGeometry(){
 	// roll-over helpers
 	rollOverGeo = new THREE.CubeGeometry( VOXEL_SIZE, VOXEL_SIZE, VOXEL_SIZE );
-	rollOverMaterial = new THREE.MeshBasicMaterial( { color: 0xff0000, opacity: 0.5, transparent: true } );
+	rollOverMaterial = new THREE.MeshBasicMaterial( { color: 0xff0000, wireframe: true, opacity: 0.5, transparent: true } );
 	rollOverMesh = new THREE.Mesh( rollOverGeo, rollOverMaterial );
 	scene.add( rollOverMesh );
 	// cubes
@@ -84,9 +89,18 @@ function getRealIntersector( intersects ) {
 }
 
 //TODO: REMOVE
-function onObjectResize( x, y, z) {
+function changeObjSize() {
+	var x = $('input[name="width"]').val();
+	var y = $('input[name="length"]').val();
+	var z = $('input[name="height"]').val();
+	
+	if (isNaN(x)) x = 1;
+	if (isNaN(y)) y = 1;
+	if (isNaN(z)) z = 1;
+	console.log(x,y,z);
+
 	scene.remove( rollOverMesh );
-	rollOverGeo = new THREE.CubeGeometry( x * VOXEL_SIZE, y * VOXEL_SIZE,  z * VOXEL_SIZE, x,y,z);
+	rollOverGeo = new THREE.CubeGeometry( x * VOXEL_SIZE, z * VOXEL_SIZE,  y * VOXEL_SIZE, x,z,y);
 	rollOverMesh = new THREE.Mesh( rollOverGeo, rollOverMaterial );
 	scene.add( rollOverMesh );
 }
@@ -154,7 +168,6 @@ function onDocumentKeyDown( event ) {
 		case 16: shiftDown = true; break;
 		case 17: ctrlDown = true; break;
 	}
-
 }
 
 function onDocumentKeyUp( event ) {

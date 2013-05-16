@@ -1,9 +1,11 @@
 <script>
 
-//GLOBAL
-var GRID_SIZE = 30;
+//SHARED GLOBALS
+var grid;
+var GRID_SIZE = 20;
 var GRID_HEIGHT = 10;
-var VOXEL_SIZE = 40;
+var VOXEL_SIZE = 50;
+
 //RENDERING 
 var container;
 var camera, scene, renderer;
@@ -24,22 +26,27 @@ var i, intersector;
 
 var voxelPosition = new THREE.Vector3();
 
-//DATA
-var grid;
-
-
 $(function(){
 	$("#toolbox").organicTabs({ });
 	if ( ! Detector.webgl ) 
 		Detector.addGetWebGLMessage();
-	init();
+
+	// initialize grid with nulls
+	grid = new Array(GRID_SIZE);
+	for ( var x = 0; x < GRID_SIZE; x++ ) {
+		grid[x] = new Array(GRID_SIZE);
+		for ( var y = 0; y < GRID_SIZE; y++ ) {
+			grid[x][y] = new Array(GRID_HEIGHT);
+		}
+	}
+
+	//DISPLAY
+	initGraphics();
 	animate();
 });
 
 </script>
-
-<h1 style='text-align:center'>Rubeworks</h1>
-<div id='container' style='width:1024px; height:720px; margin:0 auto;'>
+<div id='grid_container'>
 </div>
 
 <div id="toolbox">
@@ -71,3 +78,4 @@ $(function(){
 
 	</div> <!-- END List Wrap -->
 </div> <!-- END toolbox  -->	
+

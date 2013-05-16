@@ -19,3 +19,4 @@
 //= require rubeJectPropertiesTable
 //= require rubeJect
 //= require controller
+//= require_tree .
