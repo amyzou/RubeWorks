@@ -20,3 +20,4 @@
 //= require rubeJect
 //= require controller
 //= require_tree .
+//= require hoverscroll

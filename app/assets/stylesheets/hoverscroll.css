@@ -1,0 +1,65 @@
+/**
+ * HoverScroll Style Sheet
+ *
+ * @author RasCarlito <carl.ogren@gmail.com>
+ * @version 0.2.4
+ * @revision 21
+ */
+
+/* Main container */
+div.hoverscroll {
+	position:relative;
+	border:none;
+}
+
+
+/* List container */
+div.hoverscroll div.listcontainer {
+	overflow:hidden;
+	float: left;
+}
+
+
+/* Actual list containing items */
+div.hoverscroll ul.list {
+	list-style:none;
+	margin:0;
+	padding:0;
+}
+
+/* Items contained in the list */
+div.hoverscroll ul.list li.item {
+	display:block;
+	padding:0;
+	width: 105px;
+	height: 105px;	
+}
+div.hoverscroll.horizontal ul.list li.item {
+	float:left;
+}
+
+/* Arrows */
+
+div.hoverscroll div.arrow {
+    display: block;
+    float: left;
+    width:60px;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+div.hoverscroll div.arrow.left,
+div.hoverscroll div.arrow.right {
+	top:0px;
+	height:100%;
+}
+
+div.hoverscroll div.arrow.left {
+	left:0px;
+	background-image:url('arrow-left.png');
+}
+
+div.hoverscroll div.arrow.right {
+	right:0px;
+	background-image:url('arrow-right.png');
+}
