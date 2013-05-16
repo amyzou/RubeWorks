@@ -15,7 +15,7 @@ function initGraphics() {
 		new THREE.PlaneGeometry( VOXEL_SIZE * GRID_SIZE, VOXEL_SIZE * GRID_SIZE, GRID_SIZE, GRID_SIZE ), 
 		new THREE.MeshBasicMaterial( { color: 0x2c364f, wireframe: true } ) 
 	);
-	plane.rotation.x = - Math.PI / 2;
+	plafne.rotation.x = - Math.PI / 2;
 	scene.add( plane );
 
 	initGeometry();
@@ -120,7 +120,7 @@ function setObjPosition( intersector ) {
 	tmpVec.copy( intersector.face.normal );
 	tmpVec.applyMatrix3( normalMatrix ).normalize();
 	voxelPosition.addVectors( intersector.point, tmpVec );
-	voxelPosition.x = Math.floor( voxelPosition.x / VO ) * 50 + 25;
+	voxelPosition.x = Math.floor( voxelPosition.x / 50 ) * 50 + 25;
 	voxelPosition.y = Math.floor( voxelPosition.y / 50 ) * 50 + 25;
 	voxelPosition.z = Math.floor( voxelPosition.z / 50 ) * 50 + 25;
 }
