@@ -55,9 +55,18 @@ $(function(){
 	animate();
 });
 
+
+console.log("Hello, world!");
+
 </script>
 <div id='grid_container'>
 </div>
+
+<%
+@displays.each do |display|
+  console.log(display.object_id)
+%>
+
 
 <div id="toolbox">
 					
@@ -130,9 +139,6 @@ $(function(){
 		</div>
 
 	</div> <!-- END List Wrap -->
-<<<<<<< HEAD
 </div> <!-- END toolbox  -->	
 
-=======
-</div> <!-- END toolbox  -->	
->>>>>>> 68315985c18f2a8c3d1b2de4d7f6e017fffb6f37
+

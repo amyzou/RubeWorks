@@ -4,6 +4,7 @@ class CreateDisplays < ActiveRecord::Migration
     	t.column :object_id,	:integer
     	t.column :obj_file,		:string
     	t.column :texture_file,	:string
+      t.column :image_file, :string
     	t.column :blocks,		:text
     end    
   end
