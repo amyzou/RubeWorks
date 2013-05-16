@@ -11,17 +11,14 @@ a { text-decoration: none; }
 #toolbox .list-wrap { width: 800px; background: #dedada; padding: 10px; margin: 0 0 15px 0; }
 #toolbox .list-wrap ul { height: 100px; overflow-y:hidden;}
 
-#toolbox ul { list-style: none; }
-#toolbox ul li a { display: block; border-bottom: 1px solid #666; padding: 4px; color: #161b27; }
-#toolbox ul li a:hover { background: #333; color: white; }
-#toolbox ul li:last-child a { border: none; }
+#toolbox ul.nav { list-style: none; }
 
 #toolbox .nav { overflow: hidden; }
 #toolbox .nav li { width: 97px; float: left; margin: 0 10px 0 0; }
 #toolbox .nav li.last { margin-right: 0; }
 #toolbox .nav li a { display: block; padding: 5px; background: #161b27; color: white; font-size: 10px; text-align: center; border: 0; }
 
-#toolbox li a.current,#toolbox li a.current:hover { background-color: #dedada !important; color: black; }
+#toolbox .nav li a.current,#toolbox .nav li a.current:hover { background-color: #dedada !important; color: black; }
 #toolbox .nav li.nav-one a:hover, #toolbox .nav li .nav-one a:focus { background: #d58383;}
 #toolbox .nav li.nav-two a:hover, #toolbox .nav li .nav-two a:focus { background: #b93131;}
 #toolbox .nav li.nav-three a:hover, #toolbox .nav li .nav-three a:focus { background: #384463;}

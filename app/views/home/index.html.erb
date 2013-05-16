@@ -1,3 +1,5 @@
+<%= stylesheet_link_tag "hoverscroll" %>
+
 <script>
 
 //GLOBAL
@@ -30,6 +32,14 @@ var grid;
 
 $(function(){
 	$("#toolbox").organicTabs({ });
+
+	$('.scroll-div').hoverscroll({fixedArrows: true, width: 800, height: 105});
+	// Starting the movement automatically at loading
+	// @param direction: right/bottom = 1, left/top = -1
+	// @param speed: Speed of the animation (scrollPosition += direction * speed)
+	var direction = 0, speed = 0;
+	$(".scroll-div")[0].startMoving(direction, speed);
+	
 	if ( ! Detector.webgl ) 
 		Detector.addGetWebGLMessage();
 	init();
@@ -52,22 +62,65 @@ $(function(){
 	</ul>
     		
     <div class="list-wrap">
-    	
-    	<ul id="cat1">
-    		Some text here.
-    	</ul>
+    	<div id="cat1">
+    		<ul class="scroll-div">
+	    		<li>test1</li>
+				<li>test2</li>
+				<li>test3</li>
+				<li>test4</li>
+				<li>test5</li>
+				<li>test6</li>
+				<li>test7</li>
+				<li>test8</li>
+				<li>test9</li>
+				<li>test10</li>
+			</ul>
+    	</div>
         		 
-       	<ul id="cat2" class="hide">
-       		More text
-		</ul>
+       	<div id="cat2" class="hide">
+       		<ul class="scroll-div">
+	    		<li>test1</li>
+				<li>test2</li>
+				<li>test3</li>
+				<li>test4</li>
+				<li>test5</li>
+				<li>test6</li>
+				<li>test7</li>
+				<li>test8</li>
+				<li>test9</li>
+				<li>test10</li>
+			</ul>
+    	</div>
 
-		<ul id="cat3" class="hide">
-			More text
-		</ul>
+		<div id="cat3" class="hide">
+			<ul class="scroll-div">
+	    		<li>test1</li>
+				<li>test2</li>
+				<li>test3</li>
+				<li>test4</li>
+				<li>test5</li>
+				<li>test6</li>
+				<li>test7</li>
+				<li>test8</li>
+				<li>test9</li>
+				<li>test10</li>
+			</ul>
+		</div>
 
-		<ul id="cat4" class="hide">
-			More text
-		</ul>
+		<div id="cat4" class="hide">
+			<ul class="scroll-div">
+	    		<li>test1</li>
+				<li>test2</li>
+				<li>test3</li>
+				<li>test4</li>
+				<li>test5</li>
+				<li>test6</li>
+				<li>test7</li>
+				<li>test8</li>
+				<li>test9</li>
+				<li>test10</li>
+			</ul>
+		</div>
 
 	</div> <!-- END List Wrap -->
 </div> <!-- END toolbox  -->	
