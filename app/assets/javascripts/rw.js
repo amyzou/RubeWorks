@@ -1,4 +1,4 @@
-function init() {
+function initGraphics() {
 	scene = new THREE.Scene();
 	projector = new THREE.Projector();
 
@@ -120,7 +120,7 @@ function setObjPosition( intersector ) {
 	tmpVec.copy( intersector.face.normal );
 	tmpVec.applyMatrix3( normalMatrix ).normalize();
 	voxelPosition.addVectors( intersector.point, tmpVec );
-	voxelPosition.x = Math.floor( voxelPosition.x / 50 ) * 50 + 25;
+	voxelPosition.x = Math.floor( voxelPosition.x / VO ) * 50 + 25;
 	voxelPosition.y = Math.floor( voxelPosition.y / 50 ) * 50 + 25;
 	voxelPosition.z = Math.floor( voxelPosition.z / 50 ) * 50 + 25;
 }
