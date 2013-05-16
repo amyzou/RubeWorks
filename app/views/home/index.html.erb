@@ -55,17 +55,11 @@ $(function(){
 	animate();
 });
 
-
-console.log("Hello, world!");
-
 </script>
 <div id='grid_container'>
 </div>
 
-<%
-@displays.each do |display|
-  console.log(display.object_id)
-%>
+
 
 
 <div id="toolbox">
@@ -80,16 +74,20 @@ console.log("Hello, world!");
     <div class="list-wrap">
     	<div id="cat1">
     		<ul class="scroll-div">
-	    		<li>test1</li>
-				<li>test2</li>
-				<li>test3</li>
-				<li>test4</li>
-				<li>test5</li>
-				<li>test6</li>
-				<li>test7</li>
-				<li>test8</li>
-				<li>test9</li>
-				<li>test10</li>
+    			<%
+					@displays.each do |display|
+						@image = display.image_file
+				%>
+    			<li><%= image_tag(@image,:height => '100') %></li>
+    			<% end %>
+
+
+    			<%
+					@displays.each do |display|
+						@image = display.image_file
+				%>
+    			<li><%= image_tag(@image,:height => '100') %></li>
+    			<% end %>
 			</ul>
     	</div>
         		 

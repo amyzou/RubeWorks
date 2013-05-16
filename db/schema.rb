@@ -17,6 +17,7 @@ ActiveRecord::Schema.define(:version => 20130514230137) do
     t.integer "object_id"
     t.string  "obj_file"
     t.string  "texture_file"
+    t.string  "image_file"
     t.text    "blocks"
   end
 
