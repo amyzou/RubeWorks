@@ -3,7 +3,7 @@
 <script>
 
 //SHARED GLOBALS
-var grid;
+var mainGrid;
 var GRID_SIZE = 20;
 var GRID_HEIGHT = 10;
 var VOXEL_SIZE = 50;
@@ -42,11 +42,11 @@ $(function(){
 		Detector.addGetWebGLMessage();
 
 	// initialize grid with nulls
-	grid = new Array(GRID_SIZE);
+	mainGrid = new Array(GRID_SIZE);
 	for ( var x = 0; x < GRID_SIZE; x++ ) {
-		grid[x] = new Array(GRID_SIZE);
+		mainGrid[x] = new Array(GRID_SIZE);
 		for ( var y = 0; y < GRID_SIZE; y++ ) {
-			grid[x][y] = new Array(GRID_HEIGHT);
+			mainGrid[x][y] = new Array(GRID_HEIGHT);
 		}
 	}
 

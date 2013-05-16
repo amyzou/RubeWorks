@@ -7,7 +7,7 @@
   * when animating, keeps running object state
   */
 
-  /*----------Main RubJect Controller Class-----------------*/
+  /*-----------------Main RubJect Controller Class-----------------*/
   /*
 	Workflow:
 	1. Add starting objects with the method; this puts the starting objects on a list
@@ -37,6 +37,7 @@ function RubeJectController(){
 		{
 			startingObjectList[startingObjectCounter] = new Array();
 			startingObjectList[startingObjectCounter][0] = objectCounter;
+			startingObjectCounter ++;
 		}
 		objectCounter ++;
 	};
@@ -51,20 +52,39 @@ function RubeJectController(){
 
 	//method to create chains in run mode
 	this.CreateChains = function(){
-		for (var i = 0; i <= startingObjectCounter; i++)
+		for (var i = 0; i < startingObjectCounter; i++)
 		{
 			CreateChainLink(startingObjectList[i], 0);
 		}
 	};
 
-  /*----------For testing purposes-----------------*/
+  /*-----------------For testing purposes-----------------*/
   	this.PrintAllObjects = function(){
-
+  		for (var i = 0; i <objectCounter; i++)
+  		{
+  			console.log("Object " + i + " is a(n) " + objectList[i].name );
+  		} 
   	};
 
   	this.PrintAllStartingObjects = function(){
-
+  		for (var i = 0; i <startingObjectCounter; i++)
+  		{
+  			console.log("Starting Object " + i + " is a(n) " + startingObjectList[i][0].name );
+  		} 
   	};
+
+  	this.PrintAllChains = function(){
+  		for (var i = 0; i <startingObjectCounter; i++)
+  		{
+  			console.log("Chain " + i);
+  			console.log("Starting Object " + i + " is a(n) " + startingObjectList[i][0].name );
+  			for (var k = 1, len = startingObjectList[i].len; k < len; k++ )
+  			{
+  				console.log("The " + k + "th object is a(n) " + startingObjectList[i][k].name );
+  			}
+  		} 
+  	};
+
 
 }
 
