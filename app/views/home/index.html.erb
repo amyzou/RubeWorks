@@ -83,7 +83,7 @@ $(function(){
 						@id = display.object_id
 						@image = display.image_file
 				%>
-    			<li><div class="object" id="<%= @id %>"><%= image_tag(@image,:height => '100') %></div></li>
+    			<li><div class="object" id="<%= @id %>"><%= image_tag('test/' + @image,:height => '100') %></div></li>
     			<% end %>
 
     			<!-- Loop through again so there are enough objects to scroll through. Note that these
@@ -92,7 +92,7 @@ $(function(){
 					@displays.each do |display|
 						@image = display.image_file
 				%>
-    			<li><%= image_tag(@image,:height => '100') %></li>
+    			<li><%= image_tag('test/' + @image,:height => '100') %></li>
     			<% end %>
     			
 			</ul>
