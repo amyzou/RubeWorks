@@ -204,3 +204,8 @@ function render() {
 	camera.lookAt( scene.position );
 	renderer.render( scene, camera );
 }
+
+// Dummy function to get object ID
+function loadObject( objectID ) {
+	alert("ObjectID: " + objectID);
+}

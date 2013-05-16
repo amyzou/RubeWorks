@@ -50,6 +50,13 @@ $(function(){
 		}
 	}
 
+	// Dummy function to get object id.
+	$(".object").click(
+		function(){
+			loadObject(this.id);
+		}
+	)
+
 	//DISPLAY
 	initGraphics();
 	animate();
@@ -73,18 +80,21 @@ $(function(){
     		<ul class="scroll-div">
     			<%
 					@displays.each do |display|
+						@id = display.object_id
 						@image = display.image_file
 				%>
-    			<li><%= image_tag(@image,:height => '100') %></li>
+    			<li><div class="object" id="<%= @id %>"><%= image_tag(@image,:height => '100') %></div></li>
     			<% end %>
 
-
+    			<!-- Loop through again so there are enough objects to scroll through. Note that these
+    				 will not alert since theydo not have a unique object id. -->
     			<%
 					@displays.each do |display|
 						@image = display.image_file
 				%>
     			<li><%= image_tag(@image,:height => '100') %></li>
     			<% end %>
+    			
 			</ul>
     	</div>
         		 
