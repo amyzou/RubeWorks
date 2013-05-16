@@ -15,7 +15,7 @@ function initGraphics() {
 		new THREE.PlaneGeometry( VOXEL_SIZE * GRID_SIZE, VOXEL_SIZE * GRID_SIZE, GRID_SIZE, GRID_SIZE ), 
 		new THREE.MeshBasicMaterial( { color: 0x2c364f, wireframe: true } ) 
 	);
-	plafne.rotation.x = - Math.PI / 2;
+	plane.rotation.x = - Math.PI / 2;
 	scene.add( plane );
 
 	initGeometry();
