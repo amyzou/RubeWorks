@@ -69,35 +69,27 @@ $(function(){
 <div id="toolbox">
 					
 	<ul class="nav">
-		<li class="nav-one"><a href="#cat1" class="current">Category 1</a></li>
-		<li class="nav-two"><a href="#cat2">Category 2</a></li>
-		<li class="nav-three"><a href="#cat3">Category 3</a></li>
-		<li class="nav-four"><a href="#cat4">Category 4</a></li>
+		<li class="nav-one"><a href="#cat1" class="current">Inerts</a></li>
+		<li class="nav-two"><a href="#cat2">Roamers</a></li>
+		<li class="nav-three"><a href="#cat3">Carriers</a></li>
+		<li class="nav-four"><a href="#cat4">Gadgets</a></li>
 	</ul>
     		
     <div class="list-wrap">
-    	<div id="cat1">
-    		<ul class="scroll-div">
-    			<%= render :partial => "tabs", :locals => {:tabset => @inerts}  %>
-			</ul>
+    	<div id="cat1">    		
+    		<%= render :partial => "tabs", :locals => {:tabset => @inerts}  %>
     	</div>
         		 
        	<div id="cat2" class="hide">
-       		<ul class="scroll-div">
-	    		<%= render :partial => "tabs", :locals => {:tabset => @roamers}  %>
-			</ul>
+    		<%= render :partial => "tabs", :locals => {:tabset => @roamers}  %>
     	</div>
 
 		<div id="cat3" class="hide">
-			<ul class="scroll-div">
-	    		<%= render :partial => "tabs", :locals => {:tabset => @carriers}  %>
-			</ul>
+	    	<%= render :partial => "tabs", :locals => {:tabset => @carriers}  %>
 		</div>
 
 		<div id="cat4" class="hide">
-			<ul class="scroll-div">
-	    		<%= render :partial => "tabs", :locals => {:tabset => @gadgets}  %>
-			</ul>
+	   		<%= render :partial => "tabs", :locals => {:tabset => @gadgets}  %>
 		</div>
 
 	</div> <!-- END List Wrap -->
