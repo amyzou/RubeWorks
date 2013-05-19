@@ -78,59 +78,25 @@ $(function(){
     <div class="list-wrap">
     	<div id="cat1">
     		<ul class="scroll-div">
-    			<%
-					@displays.each do |display|
-						if display.category == 'inert'
-							@id = display.object_id
-							@image = display.image_file
-				%>
-				<script>console.log("this here: " + <%= @id %>); </script>
-    			<li><div class="object" id="<%= @id %>"><%= image_tag('test/' + @image,:height => '100') %></div></li>
-    			<% end end %>
-
-    			
+    			<%= render :partial => "tabs", :locals => {:tabset => @inerts}  %>
 			</ul>
     	</div>
         		 
        	<div id="cat2" class="hide">
        		<ul class="scroll-div">
-	    		<%
-					@displays.each do |display|
-						if display.category == 'roamer'
-							@id = display.object_id
-							@image = display.image_file
-				%>
-				<script>console.log("this here: " + <%= @id %>); </script>
-    			<li><div class="object" id="<%= @id %>"><%= image_tag('test/' + @image,:height => '100') %></div></li>
-    			<% end end %>
+	    		<%= render :partial => "tabs", :locals => {:tabset => @roamers}  %>
 			</ul>
     	</div>
 
 		<div id="cat3" class="hide">
 			<ul class="scroll-div">
-	    		<%
-					@displays.each do |display|
-						if display.category == 'carrier'
-							@id = display.object_id
-							@image = display.image_file
-				%>
-				<script>console.log("this here: " + <%= @id %>); </script>
-    			<li><div class="object" id="<%= @id %>"><%= image_tag('test/' + @image,:height => '100') %></div></li>
-    			<% end end %>
+	    		<%= render :partial => "tabs", :locals => {:tabset => @carriers}  %>
 			</ul>
 		</div>
 
 		<div id="cat4" class="hide">
 			<ul class="scroll-div">
-	    		<%
-					@displays.each do |display|
-						if display.category == 'gadget'
-							@id = display.object_id
-							@image = display.image_file
-				%>
-				<script>console.log("this here: " + <%= @id %>); </script>
-    			<li><div class="object" id="<%= @id %>"><%= image_tag('test/' + @image,:height => '100') %></div></li>
-    			<% end end %>
+	    		<%= render :partial => "tabs", :locals => {:tabset => @gadgets}  %>
 			</ul>
 		</div>
 

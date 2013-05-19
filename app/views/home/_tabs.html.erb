@@ -1,0 +1,6 @@
+<% tabset.each do |display|
+	@id = display.object_id
+	@image = display.image_file
+%>
+<li><div class="object" id="<%= @id %>"><%= image_tag('test/' + @image,:height => '100') %></div></li>
+<% end %>
