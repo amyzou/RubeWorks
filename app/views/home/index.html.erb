@@ -80,66 +80,57 @@ $(function(){
     		<ul class="scroll-div">
     			<%
 					@displays.each do |display|
-						@id = display.object_id
-						@image = display.image_file
+						if display.category == 'inert'
+							@id = display.object_id
+							@image = display.image_file
 				%>
+				<script>console.log("this here: " + <%= @id %>); </script>
     			<li><div class="object" id="<%= @id %>"><%= image_tag('test/' + @image,:height => '100') %></div></li>
-    			<% end %>
+    			<% end end %>
 
-    			<!-- Loop through again so there are enough objects to scroll through. Note that these
-    				 will not alert since theydo not have a unique object id. -->
-    			<%
-					@displays.each do |display|
-						@image = display.image_file
-				%>
-    			<li><%= image_tag('test/' + @image,:height => '100') %></li>
-    			<% end %>
     			
 			</ul>
     	</div>
         		 
        	<div id="cat2" class="hide">
        		<ul class="scroll-div">
-	    		<li>test1</li>
-				<li>test2</li>
-				<li>test3</li>
-				<li>test4</li>
-				<li>test5</li>
-				<li>test6</li>
-				<li>test7</li>
-				<li>test8</li>
-				<li>test9</li>
-				<li>test10</li>
+	    		<%
+					@displays.each do |display|
+						if display.category == 'roamer'
+							@id = display.object_id
+							@image = display.image_file
+				%>
+				<script>console.log("this here: " + <%= @id %>); </script>
+    			<li><div class="object" id="<%= @id %>"><%= image_tag('test/' + @image,:height => '100') %></div></li>
+    			<% end end %>
 			</ul>
     	</div>
 
 		<div id="cat3" class="hide">
 			<ul class="scroll-div">
-	    		<li>test1</li>
-				<li>test2</li>
-				<li>test3</li>
-				<li>test4</li>
-				<li>test5</li>
-				<li>test6</li>
-				<li>test7</li>
-				<li>test8</li>
-				<li>test9</li>
-				<li>test10</li>
+	    		<%
+					@displays.each do |display|
+						if display.category == 'carrier'
+							@id = display.object_id
+							@image = display.image_file
+				%>
+				<script>console.log("this here: " + <%= @id %>); </script>
+    			<li><div class="object" id="<%= @id %>"><%= image_tag('test/' + @image,:height => '100') %></div></li>
+    			<% end end %>
 			</ul>
 		</div>
 
 		<div id="cat4" class="hide">
 			<ul class="scroll-div">
-	    		<li>test1</li>
-				<li>test2</li>
-				<li>test3</li>
-				<li>test4</li>
-				<li>test5</li>
-				<li>test6</li>
-				<li>test7</li>
-				<li>test8</li>
-				<li>test9</li>
-				<li>test10</li>
+	    		<%
+					@displays.each do |display|
+						if display.category == 'gadget'
+							@id = display.object_id
+							@image = display.image_file
+				%>
+				<script>console.log("this here: " + <%= @id %>); </script>
+    			<li><div class="object" id="<%= @id %>"><%= image_tag('test/' + @image,:height => '100') %></div></li>
+    			<% end end %>
 			</ul>
 		</div>
 
