@@ -4,13 +4,13 @@ function initGraphics() {
 
 	canvas_width = $('#grid_container').width();
 	canvas_height = $('#grid_container').height();
-	
+
 	camera = new THREE.PerspectiveCamera( 45, canvas_width/canvas_height, 1, 10000 );
 	camera.position.y = 500;
 
 	renderer = new THREE.WebGLRenderer( { antialias: true, preserveDrawingBuffer: true } );
 	renderer.setSize( canvas_width, canvas_height);
-	
+
 	plane = new THREE.Mesh( 
 		new THREE.PlaneGeometry( VOXEL_SIZE * GRID_SIZE, VOXEL_SIZE * GRID_SIZE, GRID_SIZE, GRID_SIZE ), 
 		new THREE.MeshBasicMaterial( { color: 0x2c364f, wireframe: true } ) 
@@ -93,7 +93,7 @@ function changeObjSize() {
 	var x = $('input[name="width"]').val();
 	var y = $('input[name="length"]').val();
 	var z = $('input[name="height"]').val();
-	
+
 	if (isNaN(x)) x = 1;
 	if (isNaN(y)) y = 1;
 	if (isNaN(z)) z = 1;
