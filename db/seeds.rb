@@ -8,62 +8,122 @@
 
 # Categories are: inert/gadget/roamer/carrier
 
-Display.create(
-	object_id: 1, 
-	category:'inert', 
-	image_file: 'block.png', 
-	obj_file: 'null', 
-	texture_file: 'null', 
-	block_num: 1, 
-	blocks: '1'
+# Block
+block = ObjectProperty.create(
+	name: 					'block',
+    category: 				'inert', 
+    block_num: 				1, 
+	blocks: 				'[[0,0,0]]',
+    mass:					1.0,
+    elasticity:				1.0,
+    change_in_height:		0,
+    io_map:					'map',
+    compatible_roamers:		'array',
+    roamer_position_nodes:	'array'
 )
+block.display = Display.create(
+	image_file: 			'block.png', 
+	obj_file: 				'null', 
+	texture_file: 			'null', 
+)
+block.updateDisplay
 
-Display.create(
-	object_id: 2, 
-	category:'roamer',
-	image_file: 'dominoes.png', 
-	obj_file: 'null', 
-	texture_file: 'null', 
-	block_num: 1, 
-	blocks: '1'
+# Domino
+domino = ObjectProperty.create(
+	name: 					'domino',
+    category: 				'roamer', 
+    block_num: 				1, 
+	blocks: 				'[[0,0,0]]',
+    mass:					1.0,
+    elasticity:				1.0,
+    change_in_height:		0,
+    io_map:					'map',
+    compatible_roamers:		'array',
+    roamer_position_nodes:	'array'
 )
+domino.display = Display.create(
+	image_file: 			'dominoes.png', 
+	obj_file: 				'null', 
+	texture_file: 			'null', 
+)
+domino.updateDisplay
 
-Display.create(
-	object_id: 3, 
-	category:'gadget', 
-	image_file: 'fan.png', 
-	obj_file: 'null', 
-	texture_file: 'null', 
-	block_num: 1, 
-	blocks: '1'
+# Fan
+fan = ObjectProperty.create(
+	name: 					'fan',
+    category: 				'gadget', 
+    block_num: 				1, 
+	blocks: 				'[[0,0,0]]',
+    mass:					1.0,
+    elasticity:				1.0,
+    change_in_height:		0,
+    io_map:					'map',
+    compatible_roamers:		'array',
+    roamer_position_nodes:	'array'
 )
+fan.display = Display.create(
+	image_file: 			'fan.png', 
+	obj_file: 				'null', 
+	texture_file: 			'null', 
+)
+fan.updateDisplay
 
-Display.create(
-	object_id: 4, 
-	category:'carrier', 
-	image_file: 'ramp.png', 
-	obj_file: 'null', 
-	texture_file: 'null', 
-	block_num:1, 
-	blocks:'1'
+# Ramp
+ramp = ObjectProperty.create(
+	name: 					'ramp',
+    category: 				'carrier', 
+    block_num: 				3, 
+	blocks: 				'[[0,0,0], [0,1,0], [0,1,1]]',
+    mass:					1.0,
+    elasticity:				1.0,
+    change_in_height:		0,
+    io_map:					'map',
+    compatible_roamers:		'array',
+    roamer_position_nodes:	'array'
 )
+ramp.display = Display.create(
+	image_file: 			'ramp.png', 
+	obj_file: 				'null', 
+	texture_file: 			'null', 
+)
+ramp.updateDisplay
 
-Display.create(
-	object_id: 5, 
-	category:'roamer', 
-	image_file: 'sphere.png', 
-	obj_file: 'sphere.obj', 
-	texture_file: 'sphere', 
-	block_num: 1, 
-	blocks:'[[0,0,0]]'
+# Sphere
+sphere = ObjectProperty.create(
+	name: 					'sphere',
+    category: 				'roamer', 
+    block_num: 				1, 
+	blocks: 				'[[0,0,0]]',
+    mass:					1.0,
+    elasticity:				1.0,
+    change_in_height:		0,
+    io_map:					'map',
+    compatible_roamers:		'array',
+    roamer_position_nodes:	'array'
 )
+sphere.display = Display.create(
+	image_file: 			'sphere.png', 
+	obj_file: 				'sphere.obj', 
+	texture_file: 			'null', 
+)
+sphere.updateDisplay
 
-Display.create(
-	object_id: 6, 
-	image_file: 'tramp.png', 
-	category:'carrier', 
-	obj_file: 'null', 
-	texture_file: 'null', 
-	block_num: 1, 
-	blocks:'1'
+# Trampoline
+trampoline = ObjectProperty.create(
+	name: 					'trampoline',
+    category: 				'carrier', 
+    block_num: 				1, 
+	blocks: 				'[[0,0,0]]',
+    mass:					1.0,
+    elasticity:				1.0,
+    change_in_height:		0,
+    io_map:					'map',
+    compatible_roamers:		'array',
+    roamer_position_nodes:	'array'
 )
+trampoline.display = Display.create(
+	image_file: 			'tramp.png', 
+	obj_file: 				'trampoline.obj', 
+	texture_file: 			'null', 
+)
+trampoline.updateDisplay

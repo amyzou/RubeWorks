@@ -1,0 +1,25 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  name: MyString
+  object_id: 1
+  category: MyString
+  blocks: MyText
+  mass: 1.5
+  elasticity: 1.5
+  change_in_height: 
+  io_map: MyText
+  compatible_roamers: MyText
+  roamer_position_nodes: MyText
+
+two:
+  name: MyString
+  object_id: 1
+  category: MyString
+  blocks: MyText
+  mass: 1.5
+  elasticity: 1.5
+  change_in_height: 
+  io_map: MyText
+  compatible_roamers: MyText
+  roamer_position_nodes: MyText

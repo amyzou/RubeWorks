@@ -1,10 +1,9 @@
 class Display < ActiveRecord::Base
 	# attr_accessible :title, :body
-	attr_accessible :object_id, :obj_file, :texture_file, :image_file, :blocks, :category, :block_num
-	serialize :blocks 
+	belongs_to :object_property
+	attr_accessible :obj_file, :texture_file, :image_file, :blocks, :category, :block_num
 
 	# Needs validation:
-		# Object ID: 	Needs to be unique, and refer to an ID within object table (doesn't exist yet)
 		# Obj File:		Exists in the correct folder (doesn't exist yet)
 		# Texture File:	Exists in the correct folder (doesn't exist yet)
 		# Image File:	Exists in the correct folder (assets/images? perhaps)

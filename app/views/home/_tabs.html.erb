@@ -1,11 +1,7 @@
 <ul class="scroll-div">
 	<% tabset.each do |display|
-		@id = 			display.object_id
+		@id = 			display.object_property_id
 		@image = 		display.image_file
-		@obj = 			display.obj_file
-		@texture = 		display.texture_file
-		@block_num = 	display.block_num
-		@blocks = 		display.blocks
 	%>
 
 	<li><div class="object" id="<%= @id %>"><%= image_tag('test/' + @image,:height => '100') %></div></li>

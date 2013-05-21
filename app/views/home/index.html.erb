@@ -55,7 +55,7 @@ $(function(){
 		}
 	}
 
-	// Dummy function to get object id.
+	// Currently prints to console, but could potentially be used to load object on click. 
 	$(".object").click(
 		function(){
 			$.ajax({
@@ -63,14 +63,13 @@ $(function(){
 				dataType: 'json',
 				data: { objID : this.id },
 				success: function( obj ){
-					loadObject(obj.objID, obj.obj_file, obj.tex_file, obj.block_num, obj.blocks);
+					console.log(obj.objID+","+obj.obj_file+","+obj.tex_file+","+obj.block_num+","+obj.blocks);
+					//loadObject(obj.objID, obj.obj_file, obj.tex_file, obj.block_num, obj.blocks);
 				}
 			});
 			getObjectID(this.id);
 		}
 	);
-
-	
 
 	//DISPLAY
 	initGraphics();
