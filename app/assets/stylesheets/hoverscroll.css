@@ -56,10 +56,10 @@ div.hoverscroll div.arrow.right {
 
 div.hoverscroll div.arrow.left {
 	left:0px;
-	background-image:url('arrow-left.png');
+	background-image:url('buttons/arrow-left.png');
 }
 
 div.hoverscroll div.arrow.right {
 	right:0px;
-	background-image:url('arrow-right.png');
+	background-image:url('buttons/arrow-right.png');
 }
