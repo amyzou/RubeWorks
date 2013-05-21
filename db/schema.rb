@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130519003833) do
+ActiveRecord::Schema.define(:version => 20130521033015) do
 
   create_table "displays", :force => true do |t|
     t.integer "object_id"
@@ -20,6 +20,7 @@ ActiveRecord::Schema.define(:version => 20130519003833) do
     t.string  "image_file"
     t.text    "blocks"
     t.string  "category"
+    t.integer "block_num"
   end
 
 end

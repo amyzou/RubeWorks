@@ -1,10 +1,10 @@
 <ul class="scroll-div">
 	<% tabset.each do |display|
-		@id = display.object_id
-		@image = display.image_file
-		@obj = display.obj_file
-		@texture = display.texture_file
-		@blocks = display.blocks
+		@id = 		display.object_id
+		@image = 	display.image_file
+		@obj = 		display.obj_file
+		@texture = 	display.texture_file
+		@blocks = 	display.blocks
 	%>
 	<script>
 		loadObject(<%=@id%>, "<%=@obj%>", "<%=@texture%>", <%=@blocks%>);
