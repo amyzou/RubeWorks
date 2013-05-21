@@ -208,8 +208,6 @@ function render() {
 // Dummy function to send object display info
 function loadObject( objectID, objFile, textureFile, block_num, blocks ) {
 	console.log("ObjectID, objFile, textureFile, blocks: " + objectID + ", " + objFile + ", " + textureFile + ", " + block_num + ", " + blocks.toString());
-	if (objectID == 5)
-		console.log(blocks[0]);
 }
 
 // Dummy function to get object ID
