@@ -20,3 +20,5 @@
 .DS_Store
 .idea
 .project
+
+/db/schema.rb
