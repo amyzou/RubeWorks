@@ -205,7 +205,12 @@ function render() {
 	renderer.render( scene, camera );
 }
 
+// Dummy function to send object display info
+function loadObject( objectID, objFile, textureFile, blocks ) {
+	console.log("ObjectID, objFile, textureFile, blocks: " + objectID + ", " + objFile + ", " + textureFile + ", " + blocks);
+}
+
 // Dummy function to get object ID
-function loadObject( objectID ) {
+function getObjectID( objectID ) {
 	alert("ObjectID: " + objectID);
 }
