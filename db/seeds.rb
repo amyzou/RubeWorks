@@ -7,6 +7,7 @@
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
 # Categories are: inert/gadget/roamer/carrier
+
 Display.create(
 	object_id: 1, 
 	category:'inert', 
