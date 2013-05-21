@@ -3,10 +3,12 @@
 <script>
 
 //SHARED GLOBALS
-var mainGrid;
+var mainGrid = [];
 var GRID_SIZE = 20;
 var GRID_HEIGHT = 10;
 var VOXEL_SIZE = 50;
+
+var objectMeshes = [];
 
 //RENDERING 
 var container;
@@ -29,7 +31,7 @@ var i, intersector;
 var voxelPosition = new THREE.Vector3();
 
 var objLoader;
-var jsonLoader = new THREE.JSONLoader();
+// var jsonLoader = new THREE.JSONLoader();
 
 $(function(){
 	$("#toolbox").organicTabs({ });
@@ -71,6 +73,16 @@ $(function(){
 
 	//DISPLAY
 	initGraphics();
+	
+	$.ajax({
+		url: '/home/get_all_objects',
+		dataType: 'json',
+		data: { },
+		success: function( obj ){
+			loadObjects(obj);
+		}
+	});
+
 	animate();
 });
 

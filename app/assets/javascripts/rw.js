@@ -49,7 +49,7 @@ function initGeometry(){
 	// cubes
 
 	cubeGeo = new THREE.CubeGeometry( VOXEL_SIZE, VOXEL_SIZE, VOXEL_SIZE );
-	cubeMaterial = new THREE.MeshLambertMaterial( { color: 0xfeb74c, ambient: 0x00ff80, shading: THREE.FlatShading } );
+	cubeMaterial = new THREE.MeshLambertMaterial( { color: 0xfeb74c, ambient: 0xfeb74c, shading: THREE.FlatShading } );
 	cubeMaterial.ambient = cubeMaterial.color;
 
 		//texture 
@@ -62,12 +62,8 @@ function initGeometry(){
 
 	});
 
-	var loader = new THREE.OBJLoader();
-	loader.addEventListener( 'load', 
-		function ( event ) {
-			var obj = event.content; 
-			//TODO: save obj as item
-	});	
+	objLoader = new THREE.OBJLoader();
+
 }
 
 function initLighting(){
@@ -152,11 +148,20 @@ function onDocumentMouseDown( event ) {
 			intersector = getRealIntersector( intersects );
 			setVoxelPosition( intersector );
 
+			var newMesh = rollOverMesh.clone();
+			newMesh.traverse( function ( child ) {
+				if ( child instanceof THREE.Mesh ) {
+					child.material  = new THREE.MeshBasicMaterial( { color: 0xfeb74c } );
+				}
+			} );
+			newMesh.position.copy(voxelPosition);
+			newMesh.matrixAutoUpdate = false;
+			newMesh.updateMatrix();
 			var voxel = new THREE.Mesh( cubeGeo, cubeMaterial );
 			voxel.position.copy( voxelPosition );
 			voxel.matrixAutoUpdate = false;
 			voxel.updateMatrix();
-			scene.add( voxel );
+			scene.add( newMesh );
 
 		}
 
@@ -166,7 +171,7 @@ function onDocumentMouseDown( event ) {
 function onDocumentKeyDown( event ) {
 	switch( event.keyCode ) {
 		case 16: shiftDown = true; break;
-		case 17: ctrlDown = true; break;
+		case 68: ctrlDown = true; break;
 	}
 }
 
@@ -205,14 +210,33 @@ function render() {
 	renderer.render( scene, camera );
 }
 
+function loadObjects ( objects ) {
+	for (var i in objects) {
+		var obj = objects[i];
+		loadObject(obj.object_id, obj.obj_file, obj.texture_file, obj.block_num, obj.blocks);
+	}
+}
+
 // Dummy function to send object display info
-function loadObject( objectID, objFile, textureFile, block_num, blocks ) {
-	console.log("ObjectID, objFile, textureFile, blocks: " + objectID + ", " + objFile + ", " + textureFile + ", " + block_num + ", " + blocks.toString());
-	if (objectID == 5)
-		console.log(blocks[0]);
+function loadObject( id, objFile, textureFile, nBlocks, blocks ) {
+	objLoader.load( "obj/" + "sphere.obj" , function (object) {
+		object.scale = new THREE.Vector3 (20, 20, 20 );
+		object.position.copy( plane.position );
+		object.traverse( function ( child ) {
+			if ( child instanceof THREE.Mesh ) {
+				child.material  = new THREE.MeshBasicMaterial( { color: 0xff0000, wireframe: true } );
+			}
+		} );
+		objectMeshes[id] = object;
+	});
 }
 
 // Dummy function to get object ID
 function getObjectID( objectID ) {
 	alert("ObjectID: " + objectID);
+	scene.remove (rollOverMesh);
+	rollOverMesh = objectMeshes[objectID];
+
+
+	scene.add(rollOverMesh)
 }

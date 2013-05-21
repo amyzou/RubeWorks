@@ -7,6 +7,12 @@ class HomeController < ApplicationController
   	@carriers = Display.where(:category => 'carrier')
   end
 
+  def get_all_objects
+    @displays = Display.all
+    render :text => @displays.to_json
+  end
+
+
   def display
     @display = Display.find(params[:object_id])
   end
