@@ -28,6 +28,9 @@ var i, intersector;
 
 var voxelPosition = new THREE.Vector3();
 
+var objLoader;
+var jsonLoader = new THREE.JSONLoader();
+
 $(function(){
 	$("#toolbox").organicTabs({ });
 
@@ -55,7 +58,16 @@ $(function(){
 		function(){
 			getObjectID(this.id);
 		}
-	)
+	);
+
+	$.ajax({
+		url: '/home/get_object',
+		dataType: 'json',
+		data: { objID : 1 },
+		success: function( obj ){
+			console.log("ajax obj id = " + obj.objID);
+		}
+	});
 
 	//DISPLAY
 	initGraphics();

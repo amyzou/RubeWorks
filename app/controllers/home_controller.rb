@@ -10,4 +10,9 @@ class HomeController < ApplicationController
   def display
     @display = Display.find(params[:object_id])
   end
+
+  def get_object
+    @object = { "objID" => params['objID'] }
+    render :text => @object.to_json
+  end
 end
