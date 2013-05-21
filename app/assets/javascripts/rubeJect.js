@@ -23,19 +23,24 @@ category:'inert',
 	block_num: 1, 
 	blocks: '1'
 	*/
+
+	//stuff that needs to be looked up
 		this.categoryType;
 		this.rotation;
 		this.blockList = new Array();
-		this.mass = 0;
-		
-		//inFace correlates to outFace.
+		this.mass;
+		this.changeInHeight;
+		//inFace correlating to outFace.
 		var IOMap = {};
+
+		//stuff that is just cached and not in table
+		this.velocityToFrameRateRatio;
+
 	//populate map like dis:
 /*
 	a["key1"] = "value1";
 	a["key2"] = "value2";
 */
-
 		this.DoesInFaceExist = function(inFace){
 			if ("inFace" in IOMap) return true;
 			else return false;
@@ -47,8 +52,8 @@ category:'inert',
 			return IOMap["inFace"];
 		};
 
-		this.velocityToFrameRateRatio = 1.0;
-		this.changeInHeight = 0;
+		
+		
 		this.Rotate = function(){
 			this.rotation = (this.rotation + 1) % 4;
 			//To do, modify block list?
@@ -60,46 +65,40 @@ category:'inert',
 }
 
 /*----------Inert Object Class-----------------*/
-function InertRubeJect(objectID, name, type){
+function InertRubeJect(objectPropertyID){
+	RubeJect.apply(this, arguments);
 	this.elasticity = 1.0;
 }
 
 //InertRubeJect can make function calls to any RubeJect functions
-
-/* NOTE: Currently using standard inheritance atm, but we may want
- * to consider parasitic inheritance.  Seen here: 
- * http://www.crockford.com/javascript/inheritance.html.
- *
- */
-InertRubeJect.inherits(RubeJect);
-
+//http://stackoverflow.com/questions/2107556/how-to-inherit-from-a-class-in-javascript
+//dat be what we used
 /*---------------------------------------------*/
 
 /*----------Gadget Object Class----------------*/
-function GadgetRubeJect(objectID, name, type){
+function GadgetRubeJect(objectPropertyID){
+	RubeJect.apply(this, arguments);
 	/* Key Frames for gadget */
 	this.keyFrames = new Array();
 }
 
-GadgetRubeJect.inherits(RubeJect);
-
 /*---------------------------------------------*/
 
 /*------------Roamer Object Class--------------*/
-function RoamerRubeJect(objectID, name, type){
+function RoamerRubeJect(objectPropertyID){
+	RubeJect.apply(this, arguments);
 	//For now, empty, since Roamer has no unique
 	//properties...
 }
 
-RoamerRubeJect.inherits(RubeJect);
-
 /*---------------------------------------------*/
 
 /*-------------Carrier Object Class------------*/
-function CarrierRubeJect(ID, name, type){
+function CarrierRubeJect(objectPropertyID){
 	/* Should each instance get its own array?
 	 * Maybe we can have a singleton access to the array?
 	 */
+	RubeJect.apply(this, arguments);
 	this.compatibleRoamers = new Array();
 	this.roamerPositionNodes = new Array();
 
@@ -112,10 +111,9 @@ function CarrierRubeJect(ID, name, type){
 	}
 }
 
-CarrierRubeJect.inherits(RubeJect);
 /*---------------------------------------------*/
 
-var pyramid = new InertRubeJect(0, "Pyramid", "Inert");
+var pyramid = new InertRubeJect(0);
 pyramid.blockList.push([0, 0, 0]);
  pyramid.blockList.push([1, 0, 0]);
  pyramid.blockList.push([2, 0, 0]);
