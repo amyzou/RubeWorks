@@ -6,11 +6,7 @@ class HomeController < ApplicationController
     @gadgets    = Display.where(:category => 'gadget')
     @carriers   = Display.where(:category => 'carrier')
   end
-
-  def display
-    @display    = Display.find(params[:object_id])
-  end
-
+  
   def get_object
     @display    = Display.find(params['objID'])
     @obj_file   = @display.obj_file
