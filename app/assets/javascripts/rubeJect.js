@@ -97,3 +97,194 @@ function CarrierRubeJect(ID, name, type){
 
 CarrierRubeJect.inherits(RubeJect);
 /*---------------------------------------------*/
+
+var InertRubeJect pyramid = new InertRubeJect(0, "Pyramid", "Inert");
+pyramid.blockList[] = [0, 0, 0];
+ pyramid.blockList[] = [1, 0, 0];
+ pyramid.blockList[] = [2, 0, 0];
+ pyramid.blockList[] = [3, 0, 0];
+ pyramid.blockList[] = [4, 0, 0];
+ pyramid.blockList[] = [5, 0, 0];
+ pyramid.blockList[] = [6, 0, 0];
+ pyramid.blockList[] = [7, 0, 0];
+ pyramid.blockList[] = [8, 0, 0];
+ 
+pyramid.blockList[] = [0, 1, 0];
+ pyramid.blockList[] = [1, 1, 0];
+ pyramid.blockList[] = [2, 1, 0];
+ pyramid.blockList[] = [3, 1, 0];
+ pyramid.blockList[] = [4, 1, 0];
+ pyramid.blockList[] = [5, 1, 0];
+ pyramid.blockList[] = [6, 1, 0];
+ pyramid.blockList[] = [7, 1, 0];
+ pyramid.blockList[] = [8, 1, 0];
+
+pyramid.blockList[] = [0, 2, 0];
+ pyramid.blockList[] = [1, 2, 0];
+ pyramid.blockList[] = [2, 2, 0];
+ pyramid.blockList[] = [3, 2, 0];
+ pyramid.blockList[] = [4, 2, 0];
+ pyramid.blockList[] = [5, 2, 0];
+ pyramid.blockList[] = [6, 2, 0];
+ pyramid.blockList[] = [7, 2, 0];
+ pyramid.blockList[] = [8, 2, 0];
+ 
+pyramid.blockList[] = [0, 3, 0];
+ pyramid.blockList[] = [1, 3, 0];
+ pyramid.blockList[] = [2, 3, 0];
+ pyramid.blockList[] = [3, 3, 0];
+ pyramid.blockList[] = [4, 3, 0];
+ pyramid.blockList[] = [5, 3, 0];
+ pyramid.blockList[] = [6, 3, 0];
+ pyramid.blockList[] = [7, 3, 0];
+ pyramid.blockList[] = [8, 3, 0];
+
+pyramid.blockList[] = [0, 4, 0];
+ pyramid.blockList[] = [1, 4, 0];
+ pyramid.blockList[] = [2, 4, 0];
+ pyramid.blockList[] = [3, 4, 0];
+ pyramid.blockList[] = [4, 4, 0];
+ pyramid.blockList[] = [5, 4, 0];
+ pyramid.blockList[] = [6, 4, 0];
+ pyramid.blockList[] = [7, 4, 0];
+ pyramid.blockList[] = [8, 4, 0];
+ 
+pyramid.blockList[] = [0, 5, 0];
+ pyramid.blockList[] = [1, 5, 0];
+ pyramid.blockList[] = [2, 5, 0];
+ pyramid.blockList[] = [3, 5, 0];
+ pyramid.blockList[] = [4, 5, 0];
+ pyramid.blockList[] = [5, 5, 0];
+ pyramid.blockList[] = [6, 5, 0];
+ pyramid.blockList[] = [7, 5, 0];
+ pyramid.blockList[] = [8, 5, 0];
+ 
+pyramid.blockList[] = [0, 6, 0];
+ pyramid.blockList[] = [1, 6, 0];
+ pyramid.blockList[] = [2, 6, 0];
+ pyramid.blockList[] = [3, 6, 0];
+ pyramid.blockList[] = [4, 6, 0];
+ pyramid.blockList[] = [5, 6, 0];
+ pyramid.blockList[] = [6, 6, 0];
+ pyramid.blockList[] = [7, 6, 0];
+ pyramid.blockList[] = [8, 6, 0];
+ 
+pyramid.blockList[] = [0, 7, 0];
+ pyramid.blockList[] = [1, 7, 0];
+ pyramid.blockList[] = [2, 7, 0];
+ pyramid.blockList[] = [3, 7, 0];
+ pyramid.blockList[] = [4, 7, 0];
+ pyramid.blockList[] = [5, 7, 0];
+ pyramid.blockList[] = [6, 7, 0];
+ pyramid.blockList[] = [7, 7, 0];
+ pyramid.blockList[] = [8, 7, 0];
+ 
+pyramid.blockList[] = [0, 8, 0];
+ pyramid.blockList[] = [1, 8, 0];
+ pyramid.blockList[] = [2, 8, 0];
+ pyramid.blockList[] = [3, 8, 0];
+ pyramid.blockList[] = [4, 8, 0];
+ pyramid.blockList[] = [5, 8, 0];
+ pyramid.blockList[] = [6, 8, 0];
+ pyramid.blockList[] = [7, 8, 0];
+ pyramid.blockList[] = [8, 8, 0];
+ 
+pyramid.blockList[] = [1, 1, 1];
+ pyramid.blockList[] = [2, 1, 1];
+ pyramid.blockList[] = [3, 1, 1];
+ pyramid.blockList[] = [4, 1, 1];
+ pyramid.blockList[] = [5, 1, 1];
+ pyramid.blockList[] = [6, 1, 1];
+ pyramid.blockList[] = [7, 1, 1];
+ 
+pyramid.blockList[] = [1, 2, 1];
+ pyramid.blockList[] = [2, 2, 1];
+ pyramid.blockList[] = [3, 2, 1];
+ pyramid.blockList[] = [4, 2, 1];
+ pyramid.blockList[] = [5, 2, 1];
+ pyramid.blockList[] = [6, 2, 1];
+ pyramid.blockList[] = [7, 2, 1];
+
+pyramid.blockList[] = [1, 3, 1];
+ pyramid.blockList[] = [2, 3, 1];
+ pyramid.blockList[] = [3, 3, 1];
+ pyramid.blockList[] = [4, 3, 1];
+ pyramid.blockList[] = [5, 3, 1];
+ pyramid.blockList[] = [6, 3, 1];
+ pyramid.blockList[] = [7, 3, 1];
+
+pyramid.blockList[] = [1, 4, 1];
+ pyramid.blockList[] = [2, 4, 1];
+ pyramid.blockList[] = [3, 4, 1];
+ pyramid.blockList[] = [4, 4, 1];
+ pyramid.blockList[] = [5, 4, 1];
+ pyramid.blockList[] = [6, 4, 1];
+ pyramid.blockList[] = [7, 4, 1];
+ 
+pyramid.blockList[] = [1, 5, 1];
+ pyramid.blockList[] = [2, 5, 1];
+ pyramid.blockList[] = [3, 5, 1];
+ pyramid.blockList[] = [4, 5, 1];
+ pyramid.blockList[] = [5, 5, 1];
+ pyramid.blockList[] = [6, 5, 1];
+ pyramid.blockList[] = [7, 5, 1];
+ 
+pyramid.blockList[] = [1, 6, 1];
+ pyramid.blockList[] = [2, 6, 1];
+ pyramid.blockList[] = [3, 6, 1];
+ pyramid.blockList[] = [4, 6, 1];
+ pyramid.blockList[] = [5, 6, 1];
+ pyramid.blockList[] = [6, 6, 1];
+ pyramid.blockList[] = [7, 6, 1];
+
+pyramid.blockList[] = [1, 7, 1];
+ pyramid.blockList[] = [2, 7, 1];
+ pyramid.blockList[] = [3, 7, 1];
+ pyramid.blockList[] = [4, 7, 1];
+ pyramid.blockList[] = [5, 7, 1];
+ pyramid.blockList[] = [6, 7, 1];
+ pyramid.blockList[] = [7, 7, 1];
+
+pyramid.blockList[] = [2, 2, 2];
+ pyramid.blockList[] = [3, 2, 2];
+ pyramid.blockList[] = [4, 2, 2];
+ pyramid.blockList[] = [5, 2, 2];
+ pyramid.blockList[] = [6, 2, 2];
+
+pyramid.blockList[] = [2, 3, 2];
+ pyramid.blockList[] = [3, 3, 2];
+ pyramid.blockList[] = [4, 3, 2];
+ pyramid.blockList[] = [5, 3, 2];
+ pyramid.blockList[] = [6, 3, 2];
+
+pyramid.blockList[] = [2, 4, 2];
+ pyramid.blockList[] = [3, 4, 2];
+ pyramid.blockList[] = [4, 4, 2];
+ pyramid.blockList[] = [5, 4, 2];
+ pyramid.blockList[] = [6, 4, 2];
+ 
+pyramid.blockList[] = [2, 5, 2];
+ pyramid.blockList[] = [3, 5, 2];
+ pyramid.blockList[] = [4, 5, 2];
+ pyramid.blockList[] = [5, 5, 2];
+ pyramid.blockList[] = [6, 5, 2];
+ 
+pyramid.blockList[] = [2, 6, 2];
+ pyramid.blockList[] = [3, 6, 2];
+ pyramid.blockList[] = [4, 6, 2];
+ pyramid.blockList[] = [5, 6, 2];
+ pyramid.blockList[] = [6, 6, 2];
+
+pyramid.blockList[] = [3, 3, 3];
+ pyramid.blockList[] = [4, 3, 3];
+ pyramid.blockList[] = [5, 3, 3];
+
+pyramid.blockList[] = [3, 4, 3];
+ pyramid.blockList[] = [4, 4, 3];
+ pyramid.blockList[] = [5, 4, 3];
+
+pyramid.blockList[] = [3, 5, 3];
+ pyramid.blockList[] = [4, 5, 3];
+ pyramid.blockList[] = [5, 5, 3];
+ 
+pyramid.blockList[] = [4, 4, 4];

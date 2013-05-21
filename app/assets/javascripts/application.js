@@ -13,6 +13,7 @@
 //= require jquery_ujs
 //= require three.min
 //= require OBJLoader
+//= require rubeJect
 //= require Detector
 //= require rw
 //= require organictabs
