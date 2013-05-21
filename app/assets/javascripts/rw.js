@@ -33,6 +33,19 @@ function init() {
 	document.addEventListener( 'mousedown', onDocumentMouseDown, false );
 	document.addEventListener( 'keydown', onDocumentKeyDown, false );
 	document.addEventListener( 'keyup', onDocumentKeyUp, false );
+
+	/*Ignore this for now.  This is just hardcoded exmaples of object prototypes for experimentation...*/
+	//Inert type = 1 ?... Enumerate?
+	InertRubeJect woodBlock(0, "WoodBlock", 1);
+
+	woodBlock.position = (1,0,0);
+	woodBlock.Rotate();
+	woodBlock.elasticity = 0.3;
+	for (var i = 0; i<4 i++){
+		woodBlock.inFace[i] = i;
+		woodBlock.outFace[i] = i;
+	}
+
 }
 
 function initGeometry(){
