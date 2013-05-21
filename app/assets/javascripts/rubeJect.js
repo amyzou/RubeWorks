@@ -15,32 +15,25 @@ var OBJECT_FRAME_RATE = 48;
 function RubeJect(objectPropertyID){
 	//populate the object variables with stuff from database
 	//objects are stored with object property ID
-/*
-category:'inert', 
-	image_file: 'block.png', 
-	obj_file: 'null', 
-	texture_file: 'null', 
-	block_num: 1, 
-	blocks: '1'
-	*/
 
-	//stuff that needs to be looked up
-		this.categoryType;
-		this.rotation;
-		this.blockList = new Array();
-		this.mass;
-		this.changeInHeight;
-		//inFace correlating to outFace.
-		var IOMap = {};
+	//------stuff that needs to be looked up------
+	this.categoryType;
+	this.blockList = new Array(); //todo: make sure that blocklist is a list of blocklists
+	this.mass;
+	this.elasticity;
+	this.changeInHeight;
+	var IOMap = {}; //outFaces correlating to inFace.
 
-		//stuff that is just cached and not in table
-		this.velocityToFrameRateRatio;
+	//------stuff that is just cached and not in table------
+	this.velocityToFrameRateRatio;
+	this.position;
+	this.rotation;
 
 	//populate map like dis:
-/*
+	/*
 	a["key1"] = "value1";
 	a["key2"] = "value2";
-*/
+	*/
 		this.DoesInFaceExist = function(inFace){
 			if ("inFace" in IOMap) return true;
 			else return false;
@@ -51,13 +44,12 @@ category:'inert',
 			//TODO: transform inface to inface ID
 			return IOMap["inFace"];
 		};
-
-		
 		
 		this.Rotate = function(){
 			this.rotation = (this.rotation + 1) % 4;
 			//To do, modify block list?
 		};
+
 		this.GetBlockList = function(){
 			//To do: maybe just modify block list here?
 			return this.blockList;
@@ -67,7 +59,6 @@ category:'inert',
 /*----------Inert Object Class-----------------*/
 function InertRubeJect(objectPropertyID){
 	RubeJect.apply(this, arguments);
-	this.elasticity = 1.0;
 }
 
 //InertRubeJect can make function calls to any RubeJect functions
@@ -87,8 +78,7 @@ function GadgetRubeJect(objectPropertyID){
 /*------------Roamer Object Class--------------*/
 function RoamerRubeJect(objectPropertyID){
 	RubeJect.apply(this, arguments);
-	//For now, empty, since Roamer has no unique
-	//properties...
+	//For now, empty, since Roamer has no unique properties...
 }
 
 /*---------------------------------------------*/
