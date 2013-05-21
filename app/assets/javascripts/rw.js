@@ -171,7 +171,7 @@ function onDocumentMouseDown( event ) {
 function onDocumentKeyDown( event ) {
 	switch( event.keyCode ) {
 		case 16: shiftDown = true; break;
-		case 68: ctrlDown = true; break;
+		case 17: ctrlDown = true; break;
 	}
 }
 

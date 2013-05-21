@@ -58,18 +58,19 @@ $(function(){
 	// Dummy function to get object id.
 	$(".object").click(
 		function(){
+			$.ajax({
+				url: '/home/get_object',
+				dataType: 'json',
+				data: { objID : this.id },
+				success: function( obj ){
+					loadObject(obj.objID, obj.obj_file, obj.tex_file, obj.block_num, obj.blocks);
+				}
+			});
 			getObjectID(this.id);
 		}
 	);
 
-	$.ajax({
-		url: '/home/get_object',
-		dataType: 'json',
-		data: { objID : 1 },
-		success: function( obj ){
-			console.log("ajax obj id = " + obj.objID);
-		}
-	});
+	
 
 	//DISPLAY
 	initGraphics();
