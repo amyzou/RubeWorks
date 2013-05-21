@@ -18,46 +18,46 @@
   */
 function RubeJectController(){
 
-	var objectList = new Array();
-	var objectCounter = 0;
+	var objectSceneIDList = new Array();
+	var objectSceneIDCounter = 0;
 	var startingObjectList = new Array();
 	var startingObjectCounter = 0;
 	
-	var PlaceObjectIntoSpace = function(objectID){
+	var PlaceObjectIntoSpace = function(sceneID){
 		//retrieve blocklist for object and then add it
 	}
 
-	var RemoveObjectFromSpace = function(objectID){
+	var RemoveObjectFromSpace = function(sceneID){
 		//delete object from space grid
 	}
 
 	//method to add object
 	this.AddObject = function(RubeJect, IsStartingObject){
-		this.objectList[objectCounter] = RubeJect;
+		this.objectSceneIDList[objectSceneIDCounter] = RubeJect;
 		//occupy space on mainGrid
 
 		if (IsStartingObject) 
 		{
 			startingObjectList[startingObjectCounter] = new Array();
-			startingObjectList[startingObjectCounter][0] = objectCounter;
+			startingObjectList[startingObjectCounter][0] = objectSceneIDCounter;
 			startingObjectCounter ++;
 		}
-		objectCounter ++;
+		objectSceneIDCounter ++;
 	};
 
-	this.ModifyObject_Delete = function(objectID){
+	this.ModifyObject_Delete = function(sceneID){
 		//todo: add null checks everywhere for if an object is deleted
-		RemoveObjectFromSpace(objectID);
+		RemoveObjectFromSpace(sceneID);
 	}
 
-	this.ModifyObject_Move = function(objectID, newLocation){
+	this.ModifyObject_Move = function(sceneID, newLocation){
 		//todo
-		RemoveObjectFromSpace(objectID);
+		RemoveObjectFromSpace(sceneID);
 	}
 
-	this.ModifyObject_Rotate = function(objectID, newRotation){
+	this.ModifyObject_Rotate = function(sceneID, newRotation){
 		//todo
-		RemoveObjectFromSpace(objectID);
+		RemoveObjectFromSpace(sceneID);
 		//ask to rotate
 		
 	}
@@ -80,9 +80,9 @@ function RubeJectController(){
 
   /*-----------------For testing purposes-----------------*/
   	this.PrintAllObjects = function(){
-  		for (var i = 0; i <objectCounter; i++)
+  		for (var i = 0; i <objectSceneIDCounter; i++)
   		{
-  			console.log("Object " + i + " is a(n) " + objectList[i].name );
+  			console.log("Object " + i + " is a(n) " + objectSceneIDList[i].name );
   		} 
   	};
 
