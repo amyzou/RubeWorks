@@ -1,5 +1,4 @@
- /* contoller creates linked list by:
-  * objectID
+ /* mainGrid
   * 
   * while making list, needs to check for :
   * object type
@@ -24,14 +23,18 @@ function RubeJectController(){
 	var startingObjectList = new Array();
 	var startingObjectCounter = 0;
 	
-	//todo: finish 3d gridspace tracking
-	var objectGrid = new Array();
-	objectGrid[0] = new Array();
+	var PlaceObjectIntoSpace = function(objectID){
+		//retrieve blocklist for object and then add it
+	}
+
+	var RemoveObjectFromSpace = function(objectID){
+		//delete object from space grid
+	}
 
 	//method to add object
 	this.AddObject = function(RubeJect, IsStartingObject){
 		this.objectList[objectCounter] = RubeJect;
-		//occupy space here
+		//occupy space on mainGrid
 
 		if (IsStartingObject) 
 		{
@@ -41,6 +44,23 @@ function RubeJectController(){
 		}
 		objectCounter ++;
 	};
+
+	this.ModifyObject_Delete = function(objectID){
+		//todo: add null checks everywhere for if an object is deleted
+		RemoveObjectFromSpace(objectID);
+	}
+
+	this.ModifyObject_Move = function(objectID, newLocation){
+		//todo
+		RemoveObjectFromSpace(objectID);
+	}
+
+	this.ModifyObject_Rotate = function(objectID, newRotation){
+		//todo
+		RemoveObjectFromSpace(objectID);
+		//ask to rotate
+		
+	}
 
 	//method for chaining - used recursively
 	var CreateChainLink = function(list, currPosInList){
