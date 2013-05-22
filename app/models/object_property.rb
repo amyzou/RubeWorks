@@ -5,11 +5,7 @@ class ObjectProperty < ActiveRecord::Base
 
   	def updateDisplay
 		display.update_attributes(:category => category, :block_num => block_num, :blocks => blocks)
+		display.setRotations
 		save!
 	end
-
-	# Changes property into array of block lists. 
-	def getRotations
-	end
 end
-
