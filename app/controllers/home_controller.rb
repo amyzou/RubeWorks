@@ -9,16 +9,13 @@ class HomeController < ApplicationController
   
   def get_object
     @display    = Display.find(params['objID'])
-    @obj_file   = @display.obj_file
-    @tex_file   = @display.texture_file
-    @block_num  = @display.block_num
-    @blocks     = @display.blocks
+    @test       = '{"key1":"value1","key2":"value2"}'
 
     @object = { :objID        => params['objID'], 
-                :obj_file     => @obj_file,  
-                :texture_file => @tex_file,
-                :block_num    => @block_num,
-                :blocks       => @blocks
+                :obj_file     => @display.obj_file,  
+                :texture_file => @display.texture_file,
+                :block_num    => @display.block_num,
+                :blocks       => @display.blocks,
               }
     render :text => @object.to_json
   end
