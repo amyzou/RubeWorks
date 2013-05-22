@@ -58,16 +58,17 @@ $(function(){
 	// Currently prints to console, but could potentially be used to load object on click. 
 	$(".object").click(
 		function(){
-			$.ajax({
-				url: '/home/get_object',
-				dataType: 'json',
-				data: { objID : this.id },
-				success: function( obj ){
-					console.log(obj.objID+","+obj.obj_file+","+obj.tex_file+","+obj.block_num+","+obj.blocks);
-					//loadObject(obj.objID, obj.obj_file, obj.tex_file, obj.block_num, obj.blocks);
-				}
-			});
-			getObjectID(this.id);
+			setCurrentObject( $(this).attr('id') );
+			// $.ajax({
+			// 	url: '/home/get_object',
+			// 	dataType: 'json',
+			// 	data: { objID : this.id },
+			// 	success: function( obj ){
+			// 		console.log(obj.objID+","+obj.obj_file+","+obj.tex_file+","+obj.block_num+","+obj.blocks);
+
+			// 		//loadObject(obj.objID, obj.obj_file, obj.tex_file, obj.block_num, obj.blocks);
+			// 	}
+			// });
 		}
 	);
 

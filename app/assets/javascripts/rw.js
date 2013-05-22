@@ -213,14 +213,16 @@ function render() {
 function loadObjects ( objects ) {
 	for (var i in objects) {
 		var obj = objects[i];
-		loadObject(obj.object_id, obj.obj_file, obj.texture_file, obj.block_num, obj.blocks);
+		loadObject(obj.id, obj.obj_file, obj.texture_file, obj.block_num, obj.blocks);
 	}
 }
 
-// Dummy function to send object display info
 function loadObject( id, objFile, textureFile, nBlocks, blocks ) {
-	objLoader.load( "obj/" + "sphere.obj" , function (object) {
-		object.scale = new THREE.Vector3 (20, 20, 20 );
+	console.log("id, objFile" + id + "," + objFile);
+	if ( id != 5 )
+		objFile = "male.obj"
+	objLoader.load( "obj/" + objFile , function (object) {
+		if (id == 5) object.scale = new THREE.Vector3 (20, 20, 20 );
 		object.position.copy( plane.position );
 		object.traverse( function ( child ) {
 			if ( child instanceof THREE.Mesh ) {
@@ -231,12 +233,12 @@ function loadObject( id, objFile, textureFile, nBlocks, blocks ) {
 	});
 }
 
-// Dummy function to get object ID
-function getObjectID( objectID ) {
-	alert("ObjectID: " + objectID);
+// on select object in toolbox
+function setCurrentObject ( objectID ) {
+	alert(objectID);
+	var position = rollOverMesh.position.clone();
 	scene.remove (rollOverMesh);
 	rollOverMesh = objectMeshes[objectID];
-
-
+	rollOverMesh.position = position;
 	scene.add(rollOverMesh)
 }
