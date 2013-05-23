@@ -145,27 +145,28 @@ function onDocumentMouseDown( event ) {
 			}
 		// create cube
 		} else {
-			intersector = getRealIntersector( intersects );
-			setVoxelPosition( intersector );
-
-			var newMesh = rollOverMesh.clone();
-			newMesh.traverse( function ( child ) {
-				if ( child instanceof THREE.Mesh ) {
-					child.material  = new THREE.MeshBasicMaterial( { color: 0xfeb74c } );
-				}
-			} );
-			newMesh.position.copy(voxelPosition);
-			newMesh.matrixAutoUpdate = false;
-			newMesh.updateMatrix();
-			var voxel = new THREE.Mesh( cubeGeo, cubeMaterial );
-			voxel.position.copy( voxelPosition );
-			voxel.matrixAutoUpdate = false;
-			voxel.updateMatrix();
-			scene.add( newMesh );
-
+			addObjectToScene ( intersector, intersects );
 		}
 
 	}
+}
+
+function addObjectToScene( intersector, intersects ){
+	setVoxelPosition( intersector );
+
+	var newMesh = rollOverMesh.clone();
+	newMesh.traverse( function ( child ) {
+		if ( child instanceof THREE.Mesh ) {
+			child.material  = new THREE.MeshBasicMaterial( { color: 0xfeb74c } );
+		}
+	} );
+	newMesh.position.copy(voxelPosition);
+	newMesh.matrixAutoUpdate = false;
+	newMesh.updateMatrix();
+	scene.add( newMesh );
+	sceneObjects[currSceneID] = newMesh;
+	console.log("added new mesh id = " + currSceneID);
+	currSceneID++;
 }
 
 function onDocumentKeyDown( event ) {
