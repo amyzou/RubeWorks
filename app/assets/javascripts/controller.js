@@ -26,18 +26,18 @@ function RubeJectController(){
 	var PlaceObjectIntoSpace = function(sceneID){
 		//retrieve blocklist for object and then add it
 		for (var i = 1, len = objectSceneIDList.len; i < len; i++ ){
-			mainGrid[objectSceneIDList[i][0]] 
-					[objectSceneIDList[i][1]] 
-					[objectSceneIDList[i][2]] = sceneID;
+			mainGrid[objectSceneIDList[sceneID].blockList[i][0]] 
+					[objectSceneIDList[sceneID].blockList[i][1]] 
+					[objectSceneIDList[sceneID].blockList[i][2]] = sceneID;
 		}
 	}
 
 	var RemoveObjectFromSpace = function(sceneID){
 		//delete object from space grid
 		for (var i = 1, len = objectSceneIDList.len; i < len; i++ ){
-			mainGrid[objectSceneIDList[i][0]] 
-					[objectSceneIDList[i][1]] 
-					[objectSceneIDList[i][2]] = null;
+			mainGrid[objectSceneIDList[sceneID].blockList[i][0]] 
+					[objectSceneIDList[sceneID].blockList[i][1]] 
+					[objectSceneIDList[sceneID].blockList[i][2]] = null;
 		}
 	}
 
@@ -56,13 +56,13 @@ function RubeJectController(){
 	};
 
 	this.ModifyObject_Delete = function(sceneID){
-		//todo: add null checks everywhere for if an object is deleted
 		RemoveObjectFromSpace(sceneID);
 	}
 
 	this.ModifyObject_Move = function(sceneID, newLocation){
-		//todo
 		RemoveObjectFromSpace(sceneID);
+		objectSceneIDList[sceneID].position = newLocation;
+		PlaceObjectIntoSpace(objectSceneIDCounter);
 	}
 
 	this.ModifyObject_Rotate = function(sceneID, newRotation){
