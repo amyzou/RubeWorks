@@ -75,8 +75,7 @@ ramp = ObjectProperty.create(
     name:                   'LowWoodRamp',
     category:               'carrier', 
     block_num:              1, 
-    #blocks:                [[0,0,0], [1,0,0], [2,0,0], [0,0,1], [1,0,1], [0,0,2]],
-    blocks:                 [0,0,0], 
+    blocks:                [[0,0,0], [1,0,0], [2,0,0], [0,0,1], [1,0,1], [0,0,2]], 
     mass:                   4.3,
     elasticity:             0.5,
     change_in_height:       3,
@@ -88,8 +87,7 @@ ramp = ObjectProperty.create(
     # deflect "out" the same way it came in. 
     #io_map:                    Hash[[5,3]=>[2,1], [0,3]=>[0,3], [3,3]=>[3,3]] 
     io_map:                 'map',
-    #compatible_roamers:        [5],
-    compatible_roamers:     'array',
+    compatible_roamers:        [5],
     roamer_position_nodes:  'array'
     #The idea behind this would be
     # roamer_position_nodes: Hash[[5,3]=>[[0,0,2],[0.25,0,1.833],[0.5,0,1.666],[0.75,0,1.5]......]
@@ -98,8 +96,7 @@ ramp = ObjectProperty.create(
 )
 ramp.display = Display.create(
     image_file:             'ramp.png', 
-    #obj_file:              'WoodRamp30.obj', 
-    obj_file:               'null',
+    obj_file:              'WoodRamp30.obj', 
     texture_file:           'null', 
 )
 ramp.updateDisplay
