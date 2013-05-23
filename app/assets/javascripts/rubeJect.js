@@ -12,48 +12,56 @@
 //2x the minimum frame rate before lag?
 var OBJECT_FRAME_RATE = 48;
 
-function RubeJect(objectPropertyID){
+function RubeJect(objectPropertyID, position, rotation){
 	//populate the object variables with stuff from database
 	//objects are stored with object property ID
 
-	//------stuff that needs to be looked up------
-	this.categoryType;
-	this.blockList = new Array(); //todo: make sure that blocklist is a list of blocklists
-	this.mass;
-	this.elasticity;
-	this.changeInHeight;
-	var IOMap = {}; //outFaces correlating to inFace.
+	var self = this;
+	$.ajax({
+		url: '/home/get_object_property',
+		dataType: 'json',
+		data: { objID : objectPropertyID },
+		async: false,
+		success: function( obj ){
+			self.name 					= obj.name;
+			self.category 				= obj.category;
+			self.blockNum				= obj.block_num;
+			self.blocks 				= obj.blocks;
+			self.mass					= obj.mass;
+			self.elasticity 			= obj.elasticity;
+			self.changeInHeight			= obj.change_in_height;
+			self.ioMap 					= obj.io_map;
+			self.compatibleRoamers 		= obj.compatible_roamers;
+			self.roamerPositionNodes 	= obj.roamer_position_nodes;
+		}
+	});
 
 	//------stuff that is just cached and not in table------
 	this.velocityToFrameRateRatio;
-	this.position;
-	this.rotation;
+	
+	this.position = position;
+	this.rotation = rotation;
 
 	//populate map like dis:
 	/*
 	a["key1"] = "value1";
 	a["key2"] = "value2";
 	*/
-		this.DoesInFaceExist = function(inFace){
-			if ("inFace" in IOMap) return true;
-			else return false;
-		};
+	this.doesInFaceExist = function(inFace){
+		if ("inFace" in IOMap) return true;
+		else return false;
+	};
 
-		this.GetOutFace = function(inFace){
-			// To do: Check for out of array index.
-			//TODO: transform inface to inface ID
-			return IOMap["inFace"];
-		};
-		
-		this.Rotate = function(){
-			this.rotation = (this.rotation + 1) % 4;
-			//To do, modify block list?
-		};
-
-		this.GetBlockList = function(){
-			//To do: maybe just modify block list here?
-			return this.blockList;
-		};
+	this.getOutFace = function(inFace){
+		// To do: Check for out of array index.
+		//TODO: transform inface to inface ID
+		return IOMap["inFace"];
+	};
+	
+	this.rotate = function(){
+		this.rotation = (this.rotation + 1) % 4;
+		//To do, modify block list?
+	};	
 }
 
 /*----------Inert Object Class-----------------*/
@@ -103,6 +111,7 @@ function CarrierRubeJect(objectPropertyID){
 
 /*---------------------------------------------*/
 
+/*
 var pyramid = new InertRubeJect(0);
 pyramid.blockList.push([0, 0, 0]);
  pyramid.blockList.push([1, 0, 0]);
@@ -293,3 +302,4 @@ pyramid.blockList.push([3, 5, 3]);
  pyramid.blockList.push([5, 5, 3]);
  
 pyramid.blockList.push([4, 4, 4]);
+*/

@@ -59,16 +59,6 @@ $(function(){
 	$(".object").click(
 		function(){
 			setCurrentObject( $(this).attr('id') );
-			// $.ajax({
-			// 	url: '/home/get_object',
-			// 	dataType: 'json',
-			// 	data: { objID : this.id },
-			// 	success: function( obj ){
-			// 		console.log(obj.objID+","+obj.obj_file+","+obj.tex_file+","+obj.block_num+","+obj.blocks);
-
-			// 		//loadObject(obj.objID, obj.obj_file, obj.tex_file, obj.block_num, obj.blocks);
-			// 	}
-			// });
 		}
 	);
 
@@ -84,6 +74,12 @@ $(function(){
 		}
 	});
 
+	/* Testing constructor: 
+	objectPropertyID = 1;
+	console.log("Sending a property ID of " + objectPropertyID);
+	var block = new RubeJect(objectPropertyID);
+	console.log(block.name + " has " + block.blocks);
+	*/
 	animate();
 });
 

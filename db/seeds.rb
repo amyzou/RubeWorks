@@ -20,6 +20,7 @@ block = ObjectProperty.create(
     io_map:					'map',
     compatible_roamers:		'array',
     roamer_position_nodes:	'array'
+    # animation_map: ;
 )
 block.display = Display.create(
 	image_file: 			'block.png', 
