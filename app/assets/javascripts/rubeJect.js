@@ -28,6 +28,7 @@ function RubeJect(objectPropertyID){
 	this.velocityToFrameRateRatio;
 	this.position;
 	this.rotation;
+	this.sceneObjectHandler;
 
 	//populate map like dis:
 	/*

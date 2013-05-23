@@ -25,16 +25,26 @@ function RubeJectController(){
 	
 	var PlaceObjectIntoSpace = function(sceneID){
 		//retrieve blocklist for object and then add it
+		for (var i = 1, len = objectSceneIDList.len; i < len; i++ ){
+			mainGrid[objectSceneIDList[i][0]] 
+					[objectSceneIDList[i][1]] 
+					[objectSceneIDList[i][2]] = sceneID;
+		}
 	}
 
 	var RemoveObjectFromSpace = function(sceneID){
 		//delete object from space grid
+		for (var i = 1, len = objectSceneIDList.len; i < len; i++ ){
+			mainGrid[objectSceneIDList[i][0]] 
+					[objectSceneIDList[i][1]] 
+					[objectSceneIDList[i][2]] = null;
+		}
 	}
 
 	//method to add object
 	this.AddObject = function(RubeJect, IsStartingObject){
 		this.objectSceneIDList[objectSceneIDCounter] = RubeJect;
-		//occupy space on mainGrid
+		PlaceObjectIntoSpace(objectSceneIDCounter);
 
 		if (IsStartingObject) 
 		{
