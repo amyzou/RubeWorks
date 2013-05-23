@@ -18,7 +18,7 @@ function RubeJect(objectPropertyID, position, rotation){
 
 	var self = this;
 	$.ajax({
-		url: '/home/get_object_property',
+		url: '/home/get_object',
 		dataType: 'json',
 		data: { objID : objectPropertyID },
 		async: false,
@@ -39,7 +39,6 @@ function RubeJect(objectPropertyID, position, rotation){
 	//------stuff that is just cached and not in table------
 	this.velocityToFrameRateRatio;
 	this.sceneObjectHandler;
-
 	this.position = position;
 	this.rotation = rotation;
 
