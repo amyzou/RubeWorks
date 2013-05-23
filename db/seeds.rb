@@ -69,21 +69,33 @@ fan.display = Display.create(
 fan.updateDisplay
 
 # Ramp
+#Can we rename 'ramp' to 'low wood ramp'?
 ramp = ObjectProperty.create(
-	name: 					'ramp',
+	name: 					'Low Wood Ramp',
     category: 				'carrier', 
-    block_num: 				3, 
-	blocks: 				[[0,0,0], [0,1,0], [0,1,1]],
-    mass:					1.0,
-    elasticity:				1.0,
-    change_in_height:		0,
-    io_map:					'map',
-    compatible_roamers:		'array',
-    roamer_position_nodes:	'array'
+    block_num: 				6, 
+	blocks: 				[[0,0,0], [1,0,0], [2,0,0], [0,0,1], [1,0,1], [0,0,2]],
+    mass:					4.3,
+    elasticity:				0.5,
+    change_in_height:		3,
+    #IO_Map: [Block position (offset by controller in canvas), in face]=> [Block position, out face]
+    #In this example, block 5 (at (0,0,2)) received the ball at face 3.  It will return to the controller
+    # the index in the block list "2", which correlates to block (2,0,0), and the face. 
+    #This key, value represents rolling down the ramp.
+    # In the second case, we are telling the controller that if the ball hits against the back of the ramp, it will
+    # deflect "out" the same way it came in. 
+    #io_map:					Hash[[5,3]=>[2,1], [0,3]=>[0,3], [3,3]=>[3,3]] 
+    io_map:                 'map',
+    compatible_roamers:		[5],
+    roamer_position_nodes:	'map'
+    #The idea behind this would be
+    # roamer_position_nodes: Hash[[5,3]=>[[0,0,2],[0.25,0,1.833],[0.5,0,1.666],[0.75,0,1.5]......]
+    # in this way, we would have an input consisting of inface and inblock, and then translate that into the array of 
+    # animation for the controller. 
 )
 ramp.display = Display.create(
 	image_file: 			'ramp.png', 
-	obj_file: 				'null', 
+	obj_file: 				'WoodRamp30.obj', 
 	texture_file: 			'null', 
 )
 ramp.updateDisplay
