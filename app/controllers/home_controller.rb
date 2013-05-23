@@ -7,21 +7,18 @@ class HomeController < ApplicationController
     @carriers   = Display.where(:category => 'carrier')
   end
   
-  def get_object
-    @display    = Display.find(params['objID'])
-    @test       = '{"key1":"value1","key2":"value2"}'
-
-    @object = { :objID        => params['objID'], 
-                :obj_file     => @display.obj_file,  
-                :texture_file => @display.texture_file,
-                :block_num    => @display.block_num,
-                :blocks       => @display.blocks,
-              }
-    render :text => @object.to_json
-  end
-
   def get_all_objects
     @displays = Display.all
     render :text => @displays.to_json
+  end
+
+  def get_object
+    @object = ObjectProperty.find(params['objID'])
+    render :text => @object.to_json
+  end
+
+  def get_display
+    @display    = Display.find(params['objID'])
+    render :text => @object.to_json
   end
 end
