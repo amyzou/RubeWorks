@@ -24,4 +24,9 @@ class HomeController < ApplicationController
     @displays = Display.all
     render :text => @displays.to_json
   end
+
+  def get_object_property
+    @object = ObjectProperty.find(params['objID'])
+    render :text => @object.to_json
+  end
 end

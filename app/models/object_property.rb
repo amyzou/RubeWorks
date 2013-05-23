@@ -1,6 +1,6 @@
 class ObjectProperty < ActiveRecord::Base
 	has_one :display
-
+	serialize :blocks, :roamer_position_nodes, :compatible_roamers
   	attr_accessible :name, :category, :block_num, :blocks, :mass, :elasticity, :change_in_height, :io_map, :compatible_roamers, :roamer_position_nodes
 
   	def updateDisplay
