@@ -72,10 +72,11 @@ fan.updateDisplay
 # Ramp
 #Can we rename 'ramp' to 'low wood ramp'?
 ramp = ObjectProperty.create(
-	name: 					'Low Wood Ramp',
+	name: 					'LowWoodRamp',
     category: 				'carrier', 
-    block_num: 				6, 
-	blocks: 				[[0,0,0], [1,0,0], [2,0,0], [0,0,1], [1,0,1], [0,0,2]],
+    block_num: 				1, 
+	#blocks: 				[[0,0,0], [1,0,0], [2,0,0], [0,0,1], [1,0,1], [0,0,2]],
+    blocks:                 [0,0,0], 
     mass:					4.3,
     elasticity:				0.5,
     change_in_height:		3,
@@ -87,8 +88,9 @@ ramp = ObjectProperty.create(
     # deflect "out" the same way it came in. 
     #io_map:					Hash[[5,3]=>[2,1], [0,3]=>[0,3], [3,3]=>[3,3]] 
     io_map:                 'map',
-    compatible_roamers:		[5],
-    roamer_position_nodes:	'map'
+    #compatible_roamers:		[5],
+    compatible_roamers:     'array',
+    roamer_position_nodes:	'array'
     #The idea behind this would be
     # roamer_position_nodes: Hash[[5,3]=>[[0,0,2],[0.25,0,1.833],[0.5,0,1.666],[0.75,0,1.5]......]
     # in this way, we would have an input consisting of inface and inblock, and then translate that into the array of 
