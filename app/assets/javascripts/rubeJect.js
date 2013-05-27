@@ -16,6 +16,8 @@ function RubeJect(objectPropertyID, position, rotation){
 	//populate the object variables with stuff from database
 	//objects are stored with object property ID
 
+	this.position = position;
+	this.rotation = rotation;
 	var self = this;
 	$.ajax({
 		url: '/home/get_object',
@@ -26,12 +28,19 @@ function RubeJect(objectPropertyID, position, rotation){
 			self.name 					= obj.name;
 			self.category 				= obj.category;
 			self.blockNum				= obj.block_num;
-			self.blocks 				= obj.blocks;
 			self.mass					= obj.mass;
 			self.elasticity 			= obj.elasticity;
 			self.changeInHeight			= obj.change_in_height;
-			self.ioMap 					= obj.io_map;
 			self.compatibleRoamers 		= obj.compatible_roamers;
+			
+			// Retrieve the right rotation.			
+			if (obj.blocks.length != 1) {
+				self.blocks 			= obj.blocks[rotation];
+			} else {
+				self.blocks 			= obj.blocks;
+			}
+			// These need to be included in rotation, once fully fleshed out in seeds.
+			self.ioMap 					= obj.io_map;
 			self.roamerPositionNodes 	= obj.roamer_position_nodes;
 		}
 	});
@@ -39,8 +48,7 @@ function RubeJect(objectPropertyID, position, rotation){
 	//------stuff that is just cached and not in table------
 	this.velocityToFrameRateRatio;
 	this.sceneObjectHandler;
-	this.position = position;
-	this.rotation = rotation;
+	
 
 	//populate map like dis:
 	/*
