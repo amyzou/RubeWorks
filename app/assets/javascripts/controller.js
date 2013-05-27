@@ -40,19 +40,19 @@ function RubeJectController(){
 	
 	var PlaceObjectIntoSpace = function(sceneID){
 		//retrieve blocklist for object and then add it
-		for (var i = 1, len = objectSceneIDList.len; i < len; i++ ){
-			mainGrid[objectSceneIDList[sceneID].blockList[i][0]] 
-					[objectSceneIDList[sceneID].blockList[i][1]] 
-					[objectSceneIDList[sceneID].blockList[i][2]] = sceneID;
+		for (var i = 1, len = blockList.len; i < len; i++ ){
+			mainGrid[objectSceneIDList[sceneID].blockList[i][0] + objectSceneIDList[sceneID].position[0]] 
+					[objectSceneIDList[sceneID].blockList[i][1] + objectSceneIDList[sceneID].position[1]] 
+					[objectSceneIDList[sceneID].blockList[i][2] + objectSceneIDList[sceneID].position[2]] = sceneID;
 		}
 	}
 
 	var RemoveObjectFromSpace = function(sceneID){
 		//delete object from space grid
-		for (var i = 1, len = objectSceneIDList.len; i < len; i++ ){
-			mainGrid[objectSceneIDList[sceneID].blockList[i][0]] 
-					[objectSceneIDList[sceneID].blockList[i][1]] 
-					[objectSceneIDList[sceneID].blockList[i][2]] = null;
+		for (var i = 1, len = blockList.len; i < len; i++ ){
+			mainGrid[objectSceneIDList[sceneID].blockList[i][0] + objectSceneIDList[sceneID].position[0]] 
+					[objectSceneIDList[sceneID].blockList[i][1] + objectSceneIDList[sceneID].position[1]] 
+					[objectSceneIDList[sceneID].blockList[i][2] + objectSceneIDList[sceneID].position[2]] = null;
 		}
 	}
 
