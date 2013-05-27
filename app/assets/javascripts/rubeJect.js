@@ -35,9 +35,9 @@ function RubeJect(objectPropertyID, position, rotation){
 			
 			// Retrieve the right rotation.			
 			if (obj.blocks.length != 1) {
-				self.blocks 			= obj.blocks[rotation];
+				self.blockList 			= obj.blocks[rotation];
 			} else {
-				self.blocks 			= obj.blocks;
+				self.blockList 			= obj.blocks;
 			}
 			// These need to be included in rotation, once fully fleshed out in seeds.
 			self.ioMap 					= obj.io_map;
