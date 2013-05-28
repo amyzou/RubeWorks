@@ -5,6 +5,7 @@ class HomeController < ApplicationController
     @roamers    = Display.where(:category => 'roamer')
     @gadgets    = Display.where(:category => 'gadget')
     @carriers   = Display.where(:category => 'carrier')
+    @starters   = Display.where(:category => 'starter')
   end
   
   def get_all_objects

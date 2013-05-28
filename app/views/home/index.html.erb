@@ -77,18 +77,16 @@ $(function(){
 	});
 
 	// Testing constructor: 
-	objectPropertyID = 4;
+	/*objectPropertyID = 4;
 	objectPosition = [0,0,0];
 	for (var i = 0; i < 4; i ++) {
 		console.log("Sending a property ID of " + objectPropertyID);
-		var block = new RubeJect(objectPropertyID, objectPosition, i);
-		
+		var block = new RubeJect(objectPropertyID, objectPosition, i);		
 		console.log(block.name + "; " + block.blockList[0]);
 		console.log(block.name + "; " + block.blockList[1]);
 		console.log(block.name + "; " + block.blockList[2]);
 		console.log(block.name + "; " + block.blockList[3]);
-		
-	}
+	}*/
 	animate();
 });
 
@@ -103,6 +101,7 @@ $(function(){
 		<li class="nav-two"><a href="#cat2">Roamers</a></li>
 		<li class="nav-three"><a href="#cat3">Carriers</a></li>
 		<li class="nav-four"><a href="#cat4">Gadgets</a></li>
+		<li class="nav-five"><a href="#cat5">Initial Forces</a></li>
 	</ul>
     		
     <div class="list-wrap">
@@ -120,6 +119,10 @@ $(function(){
 
 		<div id="cat4" class="hide">
 	   		<%= render :partial => "tabs", :locals => {:tabset => @gadgets}  %>
+		</div>
+
+		<div id="cat5" class="hide">
+	   		<%= render :partial => "tabs", :locals => {:tabset => @starters}  %>
 		</div>
 
 	</div> <!-- END List Wrap -->

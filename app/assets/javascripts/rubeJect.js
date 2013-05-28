@@ -69,6 +69,8 @@ function RubeJect(objectPropertyID, position, rotation){
 	this.rotate = function(){
 		this.rotation = (this.rotation + 1) % 4;
 		//To do, modify block list?
+		//I think that emily will be handling this? Instead of having a rotate function, we should
+		//have a setRotation which changes the stored rotation and set of blocks.
 	};	
 }
 
