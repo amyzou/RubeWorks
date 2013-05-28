@@ -141,3 +141,22 @@ trampoline.display = Display.create(
 )
 trampoline.updateDisplay
 
+#Starter Object
+starter = ObjectProperty.create(
+    name:                   'starterBlock',
+    category:               'starter',
+    block_num:              1,
+    blocks:                 [[0,0,0]],
+    mass:                   1.0,
+    elasticity:             1.0, 
+    change_in_height:       0,
+    io_map:                 'map',
+    compatible_roamers:     'array',
+    roamer_position_nodes:  'array'
+)
+starter.display = Display.create(
+    image_file:             'arrow-png.png',
+    obj_file:               'StarterArrow.obj',
+    texture_file:           'null',
+)
+starter.updateDisplay
