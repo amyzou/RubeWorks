@@ -19,7 +19,6 @@ block = ObjectProperty.create(
     change_in_height:       0,
     io_map:                 'map',
     compatible_roamers:     'array',
-    roamer_position_nodes:  'array'
     # animation_map: ;
 )
 block.display = Display.create(
@@ -40,7 +39,6 @@ domino = ObjectProperty.create(
     change_in_height:       0,
     io_map:                 'map',
     compatible_roamers:     'array',
-    roamer_position_nodes:  'array'
 )
 domino.display = Display.create(
     image_file:             'dominoes.png', 
@@ -60,7 +58,6 @@ fan = ObjectProperty.create(
     change_in_height:       0,
     io_map:                 'map',
     compatible_roamers:     'array',
-    roamer_position_nodes:  'array'
 )
 fan.display = Display.create(
     image_file:             'fan.png', 
@@ -86,7 +83,6 @@ ramp = ObjectProperty.create(
     io_map:                 [["0,0,2,3","2,0,0,1","linear",[0,0,2],[3,0,0]],
                              ["2,0,0,1","0,0,2,3","linear",[3,0,0],[0,0,2]]],
     compatible_roamers:     [5],
-    roamer_position_nodes:  'array'
     #The idea behind this would be
     # roamer_position_nodes: Hash[[5,3]=>[[0,0,2],[0.25,0,1.833],[0.5,0,1.666],[0.75,0,1.5]......]
     # in this way, we would have an input consisting of inface and inblock, and then translate that into the array of 
@@ -110,7 +106,6 @@ sphere = ObjectProperty.create(
     change_in_height:       0,
     io_map:                 'map',
     compatible_roamers:     'array',
-    roamer_position_nodes:  'array'
 )
 sphere.display = Display.create(
     image_file:             'sphere.png', 
@@ -130,7 +125,6 @@ trampoline = ObjectProperty.create(
     change_in_height:       0,
     io_map:                 'map',
     compatible_roamers:     'array',
-    roamer_position_nodes:  'array'
 )
 trampoline.display = Display.create(
     image_file:             'tramp.png', 
@@ -150,7 +144,6 @@ arrow = ObjectProperty.create(
     change_in_height:       0,
     io_map:                 [["0,0,0,3","0,0,0,1","linear",[0,0,0],[1,0,0]]],
     compatible_roamers:     'array',
-    roamer_position_nodes:  'array'
 )
 arrow.display = Display.create(
     image_file:             'arrow-png.png',
