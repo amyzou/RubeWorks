@@ -41,7 +41,6 @@ function RubeJect(objectPropertyID, position, rotation){
 			}
 			// These need to be included in rotation, once fully fleshed out in seeds.
 			self.ioMap 					= obj.io_map;
-			self.roamerPositionNodes 	= obj.roamer_position_nodes;
 		}
 	});
 
