@@ -74,7 +74,7 @@ fan.updateDisplay
 ramp = ObjectProperty.create(
     name:                   'LowWoodRamp',
     category:               'carrier', 
-    block_num:              1, 
+    block_num:              6, 
     blocks:                 [[0,0,0], [1,0,0], [2,0,0], [0,0,1], [1,0,1], [0,0,2]], 
     mass:                   4.3,
     elasticity:             0.5,
@@ -83,10 +83,8 @@ ramp = ObjectProperty.create(
     #In this example, block 5 (at (0,0,2)) received the ball at face 3.  It will return to the controller
     # the index in the block list "2", which correlates to block (2,0,0), and the face. 
     #This key, value represents rolling down the ramp.
-    # In the second case, we are telling the controller that if the ball hits against the back of the ramp, it will
-    # deflect "out" the same way it came in. 
-    #io_map:                    Hash[[5,3]=>[2,1], [0,3]=>[0,3], [3,3]=>[3,3]] 
-    io_map:                 'map',
+    io_map:                 [["0,0,2,3","2,0,0,1","linear",[0,0,2],[3,0,0]],
+                             ["2,0,0,1","0,0,2,3","linear",[3,0,0],[0,0,2]]],
     compatible_roamers:     [5],
     roamer_position_nodes:  'array'
     #The idea behind this would be
