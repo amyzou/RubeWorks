@@ -148,7 +148,7 @@ starter = ObjectProperty.create(
     mass:                   1.0,
     elasticity:             1.0, 
     change_in_height:       0,
-    io_map:                 'map',
+    io_map:                 [["0,0,0,3","0,0,0,1","linear",[0,0,0],[1,0,0]]],
     compatible_roamers:     'array',
     roamer_position_nodes:  'array'
 )
