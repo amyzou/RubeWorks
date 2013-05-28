@@ -4,6 +4,6 @@
 		@image = 		display.image_file
 	%>
 
-	<li><div class="object" id="<%= @id %>"><%= image_tag('test/' + @image,:height => '100') %></div></li>
+	<li><div class="object" id="<%= @id %>"><%= image_tag('display/' + @image,:size => '100x100') %></div></li>
 	<% end %>
 </ul>

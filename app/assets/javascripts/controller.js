@@ -31,6 +31,11 @@
 		//Todo: a function that adds freefall onto things if applicable
   //todo: make lazy updates: only update runlist when there are changes between now and then
   */
+
+
+var controller = new RubeJectController();
+// Add arrow, ball, blocks, ramp, freefall
+
 function RubeJectController(){
 
 	var objectSceneIDList = new Array();
@@ -175,7 +180,5 @@ function RubeJectController(){
   			}
   		} 
   	};
-
-
 }
 
