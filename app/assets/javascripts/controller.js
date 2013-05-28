@@ -149,6 +149,13 @@ function RubeJectController(){
 	}
 
 	//method for chaining - used recursively
+	/* object in chain list:
+	 * carrierID
+	 * roamerID
+	 * inface
+	 * outface
+	 */
+
 	var CreateChainLink = function(list, currPosInList){
 		//obtain outface
 		//obtain infaces of objects next to outface
@@ -167,38 +174,38 @@ function RubeJectController(){
 	/*-----------------Animation code-----------------*/
 
 	//updating objects in scene required : ID, absoluteposition
-/*
-	var stateList = new ;
 
-	//initiate states for all starting points
-	for (var i = 0; i < startingObjectCounter; i++)
-		{
-			stateList[i] = new Object();
-			startingObjectList[i]
+	var stateList = new Array();
+
+	//initiate states for all starting points; first create chains though.
+	this.InitiateAnimation = function(){
+		for (var i = 0; i < startingObjectCounter; i++){
+				stateList[i] = new Object();
+				stateList[i].currentCarrier = startingObjectList[i][0]; //objectID
+				stateList[i].currentRoamer;
+				stateList[i].path;//this is an array
+				stateList[i].currPosition = 0; //this is which position it is using right now
 		}
+	};
 
-states:
-1) current carrier
-2) current roamer
-3) calculated path for this carrier
-4) current position for roamer
+	this.CalculatePath = function(objectID, inface){
+		//calculate path: interpolate and store results in a list
+		//return array of positions
+	};
 
-list currentStates (length = startlist.len) => for each startlist, have a current state
-
-update state
-	for each state:
-		if   last position in path, 
-			if mv != 0
-move to the next object, 
-calculate path for new object, 
-change current carrier to new object
-else delete state from state list or something
-		else  move current position to the next position in path
-
-calculate path: interpolate and store results in a list
-return array of positions
+	/*
+	this.UpdateAnimation = function(){
+		update state
+			for each state:
+				if   last position in path, 
+					if mv != 0
+		move to the next object, 
+		calculate path for new object, 
+		change current carrier to new object
+		else delete state from state list or something
+				else  move current position to the next position in path
+	};
 */
-
 
   	/*-----------------For testing purposes-----------------*/
   	this.PrintAllObjects = function(){
