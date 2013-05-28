@@ -3,9 +3,9 @@
   * x, y, z, facenum
   * facenums (
   * looking down from z:
-  * y |  +-2-+
+  * y |  +-0-+
   *   | 3|   |1
-  *   |  +-0-+
+  *   |  +-2-+
   * --+-------------
   *   |  x
   *
@@ -38,6 +38,8 @@ var controller = new RubeJectController();
 
 function RubeJectController(){
 
+	/*-----------------Basic functionality-----------------*/
+
 	var objectSceneIDList = new Array();
 	var objectSceneIDCounter = 0;
 	var startingObjectList = new Array();
@@ -46,18 +48,24 @@ function RubeJectController(){
 	var PlaceObjectIntoSpace = function(sceneID){
 		//retrieve blocklist for object and then add it
 		for (var i = 1, len = blockList.len; i < len; i++ ){
-			mainGrid[objectSceneIDList[sceneID].blockList[i][0] + objectSceneIDList[sceneID].position[0]] 
-					[objectSceneIDList[sceneID].blockList[i][1] + objectSceneIDList[sceneID].position[1]] 
-					[objectSceneIDList[sceneID].blockList[i][2] + objectSceneIDList[sceneID].position[2]] = sceneID;
+			mainGrid[objectSceneIDList[sceneID].blockList[i][0] 
+						+ objectSceneIDList[sceneID].position[0]] 
+					[objectSceneIDList[sceneID].blockList[i][1] 
+						+ objectSceneIDList[sceneID].position[1]] 
+					[objectSceneIDList[sceneID].blockList[i][2] 
+						+ objectSceneIDList[sceneID].position[2]] = sceneID;
 		}
 	}
 
 	var RemoveObjectFromSpace = function(sceneID){
 		//delete object from space grid
 		for (var i = 1, len = blockList.len; i < len; i++ ){
-			mainGrid[objectSceneIDList[sceneID].blockList[i][0] + objectSceneIDList[sceneID].position[0]] 
-					[objectSceneIDList[sceneID].blockList[i][1] + objectSceneIDList[sceneID].position[1]] 
-					[objectSceneIDList[sceneID].blockList[i][2] + objectSceneIDList[sceneID].position[2]] = null;
+			mainGrid[objectSceneIDList[sceneID].blockList[i][0] 
+						+ objectSceneIDList[sceneID].position[0]] 
+					[objectSceneIDList[sceneID].blockList[i][1] 
+						+ objectSceneIDList[sceneID].position[1]] 
+					[objectSceneIDList[sceneID].blockList[i][2] 
+						+ objectSceneIDList[sceneID].position[2]] = null;
 		}
 	}
 
@@ -96,6 +104,8 @@ function RubeJectController(){
 		return face.split(",");
 	}
 
+	/*-----------------Chaining related code-----------------*/
+
 	//quick method to see if the faces are the same
 	var IfSameFace = function(faceA, faceB){
 		faceAarray = ParseFaceFromString(faceA);
@@ -105,7 +115,7 @@ function RubeJectController(){
 			case 0:
 			  if (faceAarray[0] == faceBarray[0] 
 			  	& faceAarray[2] == faceBarray[2]
-			  	& faceAarray[1] == faceBarray[1] + 1
+			  	& faceAarray[1] + 1 == faceBarray[1]
 			  	& faceAarray[3] == 2) return true;
 			  	else return false;
 			case 1:
@@ -117,7 +127,7 @@ function RubeJectController(){
 			case 2:
 			  if (faceAarray[0] == faceBarray[0] 
 			  	& faceAarray[2] == faceBarray[2]
-			  	& faceAarray[1] + 1 == faceBarray[1]
+			  	& faceAarray[1] == faceBarray[1] + 1
 			  	& faceAarray[3] == 0) return true;
 			  	else return false;
 			case 3:
@@ -146,7 +156,7 @@ function RubeJectController(){
 		//if none, free fall to last place
 	};
 
-	//method to create chains in run mode
+	//method to create chains for run mode
 	this.CreateChains = function(){
 		for (var i = 0; i < startingObjectCounter; i++)
 		{
@@ -154,7 +164,43 @@ function RubeJectController(){
 		}
 	};
 
-  /*-----------------For testing purposes-----------------*/
+	/*-----------------Animation code-----------------*/
+
+	//updating objects in scene required : ID, absoluteposition
+/*
+	var stateList = new ;
+
+	//initiate states for all starting points
+	for (var i = 0; i < startingObjectCounter; i++)
+		{
+			stateList[i] = new Object();
+			startingObjectList[i]
+		}
+
+states:
+1) current carrier
+2) current roamer
+3) calculated path for this carrier
+4) current position for roamer
+
+list currentStates (length = startlist.len) => for each startlist, have a current state
+
+update state
+	for each state:
+		if   last position in path, 
+			if mv != 0
+move to the next object, 
+calculate path for new object, 
+change current carrier to new object
+else delete state from state list or something
+		else  move current position to the next position in path
+
+calculate path: interpolate and store results in a list
+return array of positions
+*/
+
+
+  	/*-----------------For testing purposes-----------------*/
   	this.PrintAllObjects = function(){
   		for (var i = 0; i <objectSceneIDCounter; i++)
   		{
