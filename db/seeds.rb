@@ -17,7 +17,7 @@ block = ObjectProperty.create(
     mass:                   1.0,
     elasticity:             1.0,
     change_in_height:       0,
-    io_map:                 'map',
+    io_map:                 [],
     compatible_roamers:     'array',
     # animation_map: ;
 )
@@ -37,7 +37,7 @@ domino = ObjectProperty.create(
     mass:                   1.0,
     elasticity:             1.0,
     change_in_height:       0,
-    io_map:                 'map',
+    io_map:                 [],
     compatible_roamers:     'array',
 )
 domino.display = Display.create(
@@ -56,7 +56,7 @@ fan = ObjectProperty.create(
     mass:                   1.0,
     elasticity:             1.0,
     change_in_height:       0,
-    io_map:                 'map',
+    io_map:                 [],
     compatible_roamers:     'array',
 )
 fan.display = Display.create(
@@ -90,7 +90,7 @@ ramp = ObjectProperty.create(
 )
 ramp.display = Display.create(
     image_file:             'ramp.png', 
-    obj_file:              'WoodRamp30.obj', 
+    obj_file:               'WoodRamp30.obj', 
     texture_file:           'null', 
 )
 ramp.updateDisplay
@@ -104,7 +104,7 @@ sphere = ObjectProperty.create(
     mass:                   1.0,
     elasticity:             1.0,
     change_in_height:       0,
-    io_map:                 'map',
+    io_map:                 [],
     compatible_roamers:     'array',
 )
 sphere.display = Display.create(
@@ -123,7 +123,7 @@ trampoline = ObjectProperty.create(
     mass:                   1.0,
     elasticity:             1.0,
     change_in_height:       0,
-    io_map:                 'map',
+    io_map:                 [],
     compatible_roamers:     'array',
 )
 trampoline.display = Display.create(
@@ -142,7 +142,7 @@ arrow = ObjectProperty.create(
     mass:                   1.0,
     elasticity:             1.0, 
     change_in_height:       0,
-    io_map:                 [["0,0,0,3","0,0,0,1","linear",[0,0,0],[1,0,0]]],
+    io_map:                 [["0,0,0,3","0,0,0,1"]],
     compatible_roamers:     'array',
 )
 arrow.display = Display.create(
