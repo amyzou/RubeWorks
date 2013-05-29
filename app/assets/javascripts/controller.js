@@ -47,14 +47,14 @@ blocks.push(new RubeJect(1,[1,0,0],0)); blocks.push(new RubeJect(1,[1,0,1],0));
 blocks.push(new RubeJect(1,[2,0,0],0)); blocks.push(new RubeJect(1,[2,0,1],0)); 
 blocks.push(new RubeJect(1,[3,0,0],0)); blocks.push(new RubeJect(1,[4,0,0],0));
 var arrow = new RubeJect(7,[0,0,2],0);
-var sphere = new RubeJect(5,[1,0,3],0);
+var sphere = new RubeJect(5,[1,0,2],0);
 var ramp = new RubeJect(4,[3,0,1],0);
 
 // Add all objects to controller.
 for (var i = 0; i < blocks.length; i++) {controller.AddObject(blocks[i], false);}
 controller.AddObject(arrow,true); controller.AddObject(sphere,false); controller.AddObject(ramp,false);
 //controller.PrintAllObjects();
-controller.PrintAllStartingObjects();
+//controller.PrintAllStartingObjects();
 //controller.PrintGrid();
 
 // Test chaining
@@ -87,7 +87,6 @@ function RubeJectController(){
 
 			// Initiate arrays if not initiated. 
 			InitiateArrays(x,y);
-			console.log("Added: " + x + y + z);
 			// Set sceneID in grid.
 			mainGrid[x][y][z] = sceneID;
 		}
@@ -248,7 +247,6 @@ function RubeJectController(){
 	 * carrierID (-1 for floor/falls with linear paths)
 	 * roamerID (or gadgetID. dominoes "travel" along a path the way a roamer does)
 	 * outface (inface should be equal to previous element's outface)
-
 	 * Use array to hold: [carrierID, roamerID, outface]
 	 */
 
@@ -257,16 +255,10 @@ function RubeJectController(){
 		// obtain outface
 		//console.log("chain entry: " + chainEntry);
 		var outface = chainEntry[2];
-		var face = outface[3];
-		// obtain position from outface
-		var position = GetPositionFromOutface(outface);
-		//console.log("outface position: " + position);
-		var next = GetNextBlock(outface,position);
-		//console.log("next position: " + position);
-		//obtain infaces of objects next to outface
-		//if (grid[next[0]][next[1]][next[2]])
-		//match up, put down link, and call create chain on the next object
-		//if none, free fall to last place
+		
+		// TODO: Get next outface.
+		
+		// TODO: Add new outface + objects relevant to chain.
 	};
 
 	//method to create chains for run mode
