@@ -36,11 +36,12 @@ function RubeJect(objectPropertyID, position, rotation){
 			// Retrieve the right rotation.			
 			if (obj.blocks.length != 1) {
 				self.blockList 			= obj.blocks[rotation];
+				self.ioMap 				= obj.io_map[rotation];
 			} else {
 				self.blockList 			= obj.blocks;
+				self.ioMap 				= obj.io_map;
 			}
 			// These need to be included in rotation, once fully fleshed out in seeds.
-			self.ioMap 					= obj.io_map;
 		}
 	});
 
@@ -49,20 +50,21 @@ function RubeJect(objectPropertyID, position, rotation){
 	this.sceneObjectHandler;
 	
 
-	//populate map like dis:
-	/*
-	a["key1"] = "value1";
-	a["key2"] = "value2";
-	*/
-	this.doesInFaceExist = function(inFace){
-		if ("inFace" in IOMap) return true;
-		else return false;
+	// Search for face in format "x,y,z,face"
+	this.hasInFace = function(inFace){
+		for (var i = 0; i < this.ioMap.length; i++) {
+			if (this.ioMap[i][0] === inFace) return true;
+		}
+		return false;
 	};
 
+	// Returns outface with corresponding inface. 
+	// Returns empty string otherwise. 
 	this.getOutFace = function(inFace){
-		// To do: Check for out of array index.
-		//TODO: transform inface to inface ID
-		return IOMap["inFace"];
+		for (var i = 0; i < this.ioMap.length; i++) {
+			if (this.ioMap[i][0] === inFace) return this.ioMap[i][1];
+		}
+		return "";
 	};
 	
 	this.rotate = function(){
