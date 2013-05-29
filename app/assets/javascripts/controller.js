@@ -52,9 +52,7 @@ var ramp = new RubeJect(4,[3,0,1],0);
 
 // Add all objects to controller.
 for (var i = 0; i < blocks.length; i++) {controller.AddObject(blocks[i], false);}
-controller.AddObject(arrow,true);
-controller.AddObject(sphere,false);
-controller.AddObject(ramp,false);
+controller.AddObject(arrow,true); controller.AddObject(sphere,false); controller.AddObject(ramp,false);
 //controller.PrintAllObjects();
 //controller.PrintAllStartingObjects();
 //controller.PrintGrid();
@@ -124,12 +122,16 @@ function RubeJectController(){
 		RemoveObjectFromSpace(sceneID);
 	}
 
+	// Not necessarily needed. Emily would call delete if they select an object to move, and 
+	// then she could just add it to the new location.
 	this.ModifyObject_Move = function(sceneID, newLocation){
 		RemoveObjectFromSpace(sceneID);
 		objectSceneIDList[sceneID].position = newLocation;
 		PlaceObjectIntoSpace(objectSceneIDCounter);
 	}
 
+	// I don't think this should be the controller's job, since controller is only accessed 
+	// when placing objects, and rotations happen before that.
 	this.ModifyObject_Rotate = function(sceneID, newRotation){
 		//todo
 		RemoveObjectFromSpace(sceneID);
@@ -137,50 +139,60 @@ function RubeJectController(){
 	}
 
 	var ParseFaceFromString = function(face){
-		return face.split(",");
+		face = face.split(",");
+		for(var i = face.length; i--;) 
+			face[i] = face[i]|0;
+		return face;
 	}
 
-	/*-----------------Chaining related code-----------------*/
-
 	//quick method to see if the faces are the same
-	var IfSameFace = function(faceA, faceB){
-		faceAarray = ParseFaceFromString(faceA);
-		faceBarray = ParseFaceFromString(faceB);
-		if (faceAarray[2] != faceBarray[2]) return false;
-		switch(faceAarray[3]){
+	this.isSameFace = function(faceA, faceB){
+		faceA = ParseFaceFromString(faceA);
+		faceB = ParseFaceFromString(faceB);
+		switch(faceA[3]){
 			case 0:
-			  if (faceAarray[0] == faceBarray[0] 
-			  	& faceAarray[2] == faceBarray[2]
-			  	& faceAarray[1] + 1 == faceBarray[1]
-			  	& faceAarray[3] == 2) return true;
+				if (faceA[0] == faceB[0] 
+			  		&& faceA[2] == faceB[2]
+			  		&& (faceA[1] + 1 == faceB[1])
+			  		&& faceB[3] == 2) return true;
 			  	else return false;
+			    break;
 			case 1:
-			  if (faceAarray[1] == faceBarray[1] 
-			  	& faceAarray[2] == faceBarray[2]
-			  	& faceAarray[0] + 1 == faceBarray[0]
-			  	& faceAarray[3] == 3) return true;
-			  	else return false;
+				if (faceA[1] == faceB[1] 
+					&& faceA[2] == faceB[2] 
+					&& (faceA[0] + 1 == faceB[0]) 
+					&& faceB[3] == 3) return true;
+				else return false;
+			    break;
 			case 2:
-			  if (faceAarray[0] == faceBarray[0] 
-			  	& faceAarray[2] == faceBarray[2]
-			  	& faceAarray[1] == faceBarray[1] + 1
-			  	& faceAarray[3] == 0) return true;
+			  	if (faceA[0] == faceB[0] 
+			  		&& faceA[2] == faceB[2]
+			  		&& (faceA[1] == faceB[1] + 1)
+			  		&& faceB[3] == 0) return true;
 			  	else return false;
+			    break;
 			case 3:
-			  if (faceAarray[1] == faceBarray[1] 
-			  	& faceAarray[2] == faceBarray[2]
-			  	& faceAarray[0] == faceBarray[0] + 1
-			  	& faceAarray[3] == 1) return true;
+			  	if (faceA[1] == faceB[1] 
+				  	&& faceA[2] == faceB[2]
+			  		&& (faceA[0] == faceB[0] + 1)
+			  		&& faceB[3] == 1) return true;
+			  	else return false;
+			    break;
 			case 4:
-			  if (faceAarray[0] == faceBarray[0] 
-			  	& faceAarray[1] == faceBarray[1]
-			  	& faceAarray[2] == faceBarray[2] + 1
-			  	& faceAarray[3] == 5) return true;
-			default:
-			  if (faceAarray[0] == faceBarray[0] 
-			  	& faceAarray[1] == faceBarray[1]
-			  	& faceAarray[2] + 1 == faceBarray[2] 
-			  	& faceAarray[3] == 4) return true;
+			  	if (faceA[0] == faceB[0] 
+			  		&& faceA[1] == faceB[1]
+			  		&& faceA[2] == faceB[2] + 1
+			  		&& faceB[3] == 5) return true;
+			  	else return false;
+			    break;
+			case 5:
+			  	if (faceA[0] == faceB[0] 
+			  		&& faceA[1] == faceB[1]
+			  		&& faceA[2] + 1 == faceB[2]
+			  		&& faceB[3] == 4) return true;
+			  	else return false;
+			    break;
+			default: return false;
 		}
 	}
 
