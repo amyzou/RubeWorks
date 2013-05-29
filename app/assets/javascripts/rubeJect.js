@@ -13,11 +13,15 @@
 var OBJECT_FRAME_RATE = 48;
 
 function RubeJect(objectPropertyID, position, rotation){
-	//populate the object variables with stuff from database
+	
 	//objects are stored with object property ID
 
 	this.position = position;
 	this.rotation = rotation;
+	
+	var allBlockLists, allIOMaps;
+
+	//populate the object variables with stuff from database
 	var self = this;
 	$.ajax({
 		url: '/home/get_object',
@@ -38,6 +42,9 @@ function RubeJect(objectPropertyID, position, rotation){
 			if (obj.blocks.length != 1) 
 				self.blockList 			= obj.blocks[rotation];
 			else self.blockList 		= obj.blocks;
+
+			allBlockLists 				= obj.blocks;
+			allIOMaps	 				= obj.io_map;
 		}
 	});
 
@@ -69,11 +76,12 @@ function RubeJect(objectPropertyID, position, rotation){
 		return "";
 	}
 	
+	// Rotates RubeJect
 	this.rotate = function(){
 		this.rotation = (this.rotation + 1) % 4;
-		//To do, modify block list?
-		//I think that emily will be handling this? Instead of having a rotate function, we should
-		//have a setRotation which changes the stored rotation and set of blocks.
+		if (allBlockLists.length > 1)
+			this.blockList = allBlockLists[this.rotation];
+		this.ioMap = allIOMaps[this.rotation];
 	};	
 }
 
