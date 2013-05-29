@@ -79,8 +79,8 @@ ramp = ObjectProperty.create(
     #In this example, block 5 (at (0,0,2)) received the ball at face 3.  It will return to the controller
     # the index in the block list "2", which correlates to block (2,0,0), and the face. 
     #This key, value represents rolling down the ramp.
-    io_map:                 [["0,0,2,3","2,0,0,1","linear",[0,0,2],[3,0,0]],
-                             ["2,0,0,1","0,0,2,3","linear",[3,0,0],[0,0,2]]],
+    io_map:                 [[[0,0,2,3],[2,0,0,1],"linear",[0,0,2],[3,0,0]],
+                             [[2,0,0,1],[0,0,2,3],"linear",[3,0,0],[0,0,2]]],
     compatible_roamers:     [5],
     #The idea behind this would be
     # roamer_position_nodes: Hash[[5,3]=>[[0,0,2],[0.25,0,1.833],[0.5,0,1.666],[0.75,0,1.5]......]
@@ -141,7 +141,7 @@ arrow = ObjectProperty.create(
     mass:                   1.0,
     elasticity:             1.0, 
     change_in_height:       0,
-    io_map:                 [["0,0,0,3","0,0,0,1"]],
+    io_map:                 [[[0,0,0,3],[0,0,0,1]]],
     compatible_roamers:     'array',
 )
 arrow.display = Display.create(

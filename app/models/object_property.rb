@@ -46,8 +46,8 @@ class ObjectProperty < ActiveRecord::Base
 				io_map_array = Array.new
 				rotations[i-1].each do |iomap|
 					new_io_map = iomap.clone
-					new_io_map[0] = rotateFace(iomap[0])
-					new_io_map[1] = rotateFace(iomap[1])
+					new_io_map[0] = rotatePoint(iomap[0])
+					new_io_map[1] = rotatePoint(iomap[1])
 					if new_io_map.size > 2
 						new_io_map[3] = rotatePoint(iomap[3])
 						new_io_map[4] = rotatePoint(iomap[4])
