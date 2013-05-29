@@ -32,23 +32,18 @@ function RubeJect(objectPropertyID, position, rotation){
 			self.elasticity 			= obj.elasticity;
 			self.changeInHeight			= obj.change_in_height;
 			self.compatibleRoamers 		= obj.compatible_roamers;
-			
+			self.ioMap 					= obj.io_map[rotation];
+
 			// Retrieve the right rotation.			
-			if (obj.blocks.length != 1) {
+			if (obj.blocks.length != 1) 
 				self.blockList 			= obj.blocks[rotation];
-				self.ioMap 				= obj.io_map[rotation];
-			} else {
-				self.blockList 			= obj.blocks;
-				self.ioMap 				= obj.io_map;
-			}
-			// These need to be included in rotation, once fully fleshed out in seeds.
+			else self.blockList 		= obj.blocks;
 		}
 	});
 
 	//------stuff that is just cached and not in table------
 	this.velocityToFrameRateRatio;
 	this.sceneObjectHandler;
-	
 
 	// Search for face in format "x,y,z,face"
 	this.hasInFace = function(inFace){
@@ -66,6 +61,13 @@ function RubeJect(objectPropertyID, position, rotation){
 		}
 		return "";
 	};
+
+	// Returns outface by index of ioMap.
+	this.getOutFaceByIndex = function(index) {
+		if (index < this.ioMap.length)
+			return this.ioMap[index][1];
+		return "";
+	}
 	
 	this.rotate = function(){
 		this.rotation = (this.rotation + 1) % 4;

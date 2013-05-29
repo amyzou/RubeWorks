@@ -32,9 +32,32 @@
   //todo: make lazy updates: only update runlist when there are changes between now and then
   */
 
-
+// Testing: create the below thing and get chaining working.
+/*  z 
+	|=> O  _ 
+	|  |_||_| ramp
+	|  |_||_||_||_|
+	|--|--|--|--|--|- x
+*/
 var controller = new RubeJectController();
-// Add arrow, ball, blocks, ramp, freefall
+
+// Instantiate objects needed.
+var blocks = new Array();
+blocks.push(new RubeJect(1,[1,0,0],0)); blocks.push(new RubeJect(1,[1,0,1],0)); 
+blocks.push(new RubeJect(1,[2,0,0],0)); blocks.push(new RubeJect(1,[2,0,1],0)); 
+blocks.push(new RubeJect(1,[3,0,0],0)); blocks.push(new RubeJect(1,[4,0,0],0));
+var arrow = new RubeJect(7,[0,0,2],0);
+var sphere = new RubeJect(5,[1,0,3],0);
+var ramp = new RubeJect(4,[3,0,1],0);
+
+// Add all objects to controller.
+for (var i = 0; i < blocks.length; i++) {controller.AddObject(blocks[i], false);}
+controller.AddObject(arrow,true);
+controller.AddObject(sphere,false);
+controller.AddObject(ramp,false);
+//controller.PrintAllObjects();
+//controller.PrintAllStartingObjects();
+//controller.PrintGrid();
 
 function RubeJectController(){
 
@@ -44,40 +67,54 @@ function RubeJectController(){
 	var objectSceneIDCounter = 0;
 	var startingObjectList = new Array();
 	var startingObjectCounter = 0;
+	var mainGrid = new Array();
 	
 	var PlaceObjectIntoSpace = function(sceneID){
-		//retrieve blocklist for object and then add it
-		for (var i = 1, len = blockList.len; i < len; i++ ){
-			mainGrid[objectSceneIDList[sceneID].blockList[i][0] 
-						+ objectSceneIDList[sceneID].position[0]] 
-					[objectSceneIDList[sceneID].blockList[i][1] 
-						+ objectSceneIDList[sceneID].position[1]] 
-					[objectSceneIDList[sceneID].blockList[i][2] 
-						+ objectSceneIDList[sceneID].position[2]] = sceneID;
+		var blockList = objectSceneIDList[sceneID].blockList;
+		var position  = objectSceneIDList[sceneID].position;
+		// Iterate through blockList to add all blocks
+		for (var i = 0; i < blockList.length; i++ ){
+			// Absolute positions of blocks
+			var x = blockList[i][0] + position[0],
+			    y = blockList[i][1] + position[1],
+			    z = blockList[i][2] + position[2];
+
+			// Initiate arrays if not initiated. 
+			if (typeof mainGrid[x] === "undefined") mainGrid[x] = new Array();
+			if (typeof mainGrid[x][y] === "undefined") mainGrid[x][y] = new Array();
+
+			// Set sceneID in grid.
+			mainGrid[x][y][z] = sceneID;
 		}
 	}
 
 	var RemoveObjectFromSpace = function(sceneID){
 		//delete object from space grid
-		for (var i = 1, len = blockList.len; i < len; i++ ){
-			mainGrid[objectSceneIDList[sceneID].blockList[i][0] 
-						+ objectSceneIDList[sceneID].position[0]] 
-					[objectSceneIDList[sceneID].blockList[i][1] 
-						+ objectSceneIDList[sceneID].position[1]] 
-					[objectSceneIDList[sceneID].blockList[i][2] 
-						+ objectSceneIDList[sceneID].position[2]] = null;
+		var blockList = objectSceneIDList[sceneID].blockList;
+		var position  = objectSceneIDList[sceneID].position;
+		for (var i = 0; i < blockList.length; i++ ){
+			mainGrid[blockList[i][0] + position[0]] 
+					[blockList[i][1] + position[1]] 
+					[blockList[i][2] + position[2]] = null;
 		}
 	}
 
-	//method to add object
-	this.AddObject = function(RubeJect, IsStartingObject){
-		this.objectSceneIDList[objectSceneIDCounter] = RubeJect;
-		PlaceObjectIntoSpace(objectSceneIDCounter);
+	var createChainEntry = function(carrierID, roamerID, outface) {
+		var chainEntry = new Array();
+		chainEntry[0]  = carrierID;
+		chainEntry[1]  = roamerID;
+		chainEntry[2]  = outface;
+		return chainEntry;
+	}
 
-		if (IsStartingObject) 
-		{
-			startingObjectList[startingObjectCounter] = new Array();
-			startingObjectList[startingObjectCounter][0] = objectSceneIDCounter;
+	//method to add object
+	this.AddObject = function(rubeJect, isStartingObject){
+		//console.log("Adding: " + rubeJect.position + ";" + objectSceneIDCounter);
+		objectSceneIDList[objectSceneIDCounter] = rubeJect;
+		PlaceObjectIntoSpace(objectSceneIDCounter);
+		if (isStartingObject) {
+			var outface = rubeJect.getOutFaceByIndex(0);
+			startingObjectList[startingObjectCounter] = createChainEntry(-1, objectSceneIDCounter, outface);
 			startingObjectCounter ++;
 		}
 		objectSceneIDCounter ++;
@@ -97,7 +134,6 @@ function RubeJectController(){
 		//todo
 		RemoveObjectFromSpace(sceneID);
 		//ask to rotate
-		
 	}
 
 	var ParseFaceFromString = function(face){
@@ -150,10 +186,11 @@ function RubeJectController(){
 
 	//method for chaining - used recursively
 	/* object in chain list:
-	 * carrierID
-	 * roamerID
-	 * inface
-	 * outface
+	 * carrierID (-1 for floor/falls with linear paths)
+	 * roamerID (or gadgetID. dominoes "travel" along a path the way a roamer does)
+	 * outface (inface should be equal to previous element's outface)
+
+	 * Use array to hold: [carrierID, roamerID, outface]
 	 */
 
 	var CreateChainLink = function(list, currPosInList){
@@ -213,14 +250,26 @@ function RubeJectController(){
   		{
   			console.log("Object " + i + " is a(n) " + objectSceneIDList[i].name );
   		} 
+  		console.log("Total of " + objectSceneIDCounter + " objects.");
   	};
 
   	this.PrintAllStartingObjects = function(){
   		for (var i = 0; i <startingObjectCounter; i++)
   		{
-  			console.log("Starting Object " + i + " is a(n) " + startingObjectList[i][0].name );
+  			console.log("Starting Object " + i + " is a(n) " + objectSceneIDList[startingObjectList[i][1]].name);
   		} 
   	};
+
+  	this.PrintGrid = function() {
+  		for (var x = 0; x < mainGrid.length; x++) {
+  			for (var y = 0; y < mainGrid[x].length; y++) {
+  				for (var z = 0; z < mainGrid[x][y].length; z++) {
+  					if (mainGrid[x][y][z] != null)
+  						console.log("Found object at " + x + "," + y + "," + z + ", is a " + objectSceneIDList[mainGrid[x][y][z]].name);
+  				}
+  			}
+  		}
+  	}
 
   	this.PrintAllChains = function(){
   		for (var i = 0; i <startingObjectCounter; i++)

@@ -19,7 +19,6 @@ block = ObjectProperty.create(
     change_in_height:       0,
     io_map:                 [],
     compatible_roamers:     'array',
-    # animation_map: ;
 )
 block.display = Display.create(
     image_file:             'block.png', 

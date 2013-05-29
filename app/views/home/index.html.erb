@@ -77,15 +77,11 @@ $(function(){
 	});
 
 	// Testing constructor: 
-	objectPropertyID = 4;
+	objectPropertyID = 7;
 	objectPosition = [0,0,0];
-	for (var i = 0; i < 4; i ++) {
-		console.log("Sending a property ID of " + objectPropertyID);
+	for (var i = 0; i < 4; i ++) {;
 		var block = new RubeJect(objectPropertyID, objectPosition, i);		
-		console.log(block.name + "; " + block.blockList[0]);
-		console.log(block.name + "; " + block.blockList[1]);
-		console.log(block.name + "; " + block.blockList[2]);
-		console.log(block.name + "; " + block.blockList[3]);
+		//console.log("has outface: " + block.getOutFaceByIndex(0) + " with rotation " + block.rotation);
 	}
 
 	animate();
