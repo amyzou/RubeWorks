@@ -487,11 +487,11 @@ function RubeJectController(){
 		for (var i = 0; i < startingObjectCounter; i ++ ){
 			if (stateList[i] == null) numChainsRunning -- ;
 			else if (stateList[i].stepsLeft > 1 ){
-				// updating objects in scene requires : ID, absoluteposition
+				// updating objects in scene requires : ID, delta
 
-				// TODO : update object position with emily
-				//object: stateList[i].currentRoamer
-				//position: 
+				/*+++++ EMILY PSEUDO-FUNCTION ALERT. BEEP BEEP BEEP +++++*/
+				//UpdateObjectInScene(stateList[i].currentRoamer, 
+				//	stateList[i].xInc, stateList[i].yInc, stateList[i].zInc);
 
 				stateList[i].stepsLeft -- ;
 
@@ -507,6 +507,9 @@ function RubeJectController(){
 												[stateList[i].currChainPosition][2] );
 				
 				// TODO : update object position to fromblock
+				/*+++++ EMILY PSEUDO-FUNCTION ALERT. BEEP BEEP BEEP +++++*/
+				//UpdateObjectInScene(stateList[i].currentRoamer, 
+				//	fromBlock[0], fromBlock[1], fromBlock[2]);
 				
 				var toBlock = InblockForOutface( startingObjectList[i]
 												[stateList[i].currChainPosition + 1][2] );
@@ -526,7 +529,7 @@ function RubeJectController(){
 
 				stateList[i].xInc = inc * xDiff / absDiff;
 				stateList[i].yInc = inc * yDiff / absDiff;
-				stateList[i].yInc = inc * zDiff / absDiff;			
+				stateList[i].zInc = inc * zDiff / absDiff;			
 				
 				stateList[i].stepsLeft = absDiff / inc;
 
