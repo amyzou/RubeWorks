@@ -334,6 +334,8 @@ function RubeJectController(){
 
 	/*-----------------Animation code-----------------*/
 
+	var currentHardcodedNumberForRendering = 60;
+
 	//updating objects in scene required : ID, absoluteposition
 
 	var stateList = new Array();
@@ -342,7 +344,7 @@ function RubeJectController(){
 	// return array of positions
 	// [0] : new momentum
 	// start: midpoint of in face
-	// endface: midpoint of out face
+	// endface: the one midpoint of out face
 	this.CalculatePath = function(objectID, prevOutface, inMomentum){
 
 	};
@@ -365,34 +367,55 @@ function RubeJectController(){
 									12 );//this is an array
 				stateList[i].currPathPosition = 1; //this is which position in the path list it is using right now
 				stateList[i].currChainPosition = 0;
-				stateList[i].momentumAfterCurrAnimation = 0;
 		}
 	};
-	
+
+	// returns true while still animating
+	// when done, return false
 	this.UpdateAnimation = function(){
+		//to check if all chains are done
+		var numChainsRunning = startingObjectCounter;
+
 		/*
 		update state loop:
 			for each state:
 				if   last position in path, 
 					if mv != 0
-		move to the next object, 
-		calculate path for new object, 
-		change current carrier to new object
-		else delete state from state list or something
-				else  move current position to the next position in path
+						move to the next object, 
+						calculate path for new object, 
+						change current carrier to new object
+						else delete state from state list or something
+		else  move current position to the next position in path
 					*/
 
 		for (var i = 0; i < startingObjectCounter; i++){
-				stateList[i].currentCarrier = startingObjectList[i][
-												stateList[i].currChainPosition + 1][0]; //objectID
-				stateList[i].currentRoamer = startingObjectList[i][1][1];
-				stateList[i].path = CalculatePath(startingObjectList[i][1][0], startingObjectList[i][0][2], 
-									//objectSceneIDList[startingObjectList[i][0][0]].momentum
-									//for now, have a random val
-									12 );//this is an array
-				stateList[i].currPosition = 1; //this is which position in the path list it is using right now
-				stateList[i].momentumAfterCurrAnimation = 0;
+			if (stateList[i] == null) numChainsRunning --;
+			else if (stateList[i].currPosition < stateList[i].path.len){
+				//update object position with emily
+				//object: stateList[i].currentRoamer
+				//position: 
+
+				stateList[i].currPosition ++;
+
+			} else if (startingObjectList[i][stateList[i].currChainPosition + 1]
+																		!= null) {
+				stateList[i].currentCarrier = startingObjectList[i]
+												[stateList[i].currChainPosition + 1][0]; //objectID
+				stateList[i].currentRoamer = startingObjectList[i]
+												[stateList[i].currChainPosition + 1][1];
+				stateList[i].path = CalculatePath(startingObjectList[i]
+												[stateList[i].currChainPosition + 1][0], 
+												startingObjectList[i]
+												[stateList[i].currChainPosition][2],//prev. outface = new inface 
+												stateList[i].path[0] );
+				stateList[i].currPosition = 1; 
+				//this is which position in the path list it is using right now
+				//path[0] is prev. outcoming momentum
+			} else stateList[i] = null;
 		}
+
+		if (numChainsRunning != 0) return true;
+		else return false;
 	};
 
 
