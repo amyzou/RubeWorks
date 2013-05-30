@@ -29,7 +29,6 @@
 	2. When the person switches to run mode, iterate through all starting objects,
 		create chain for all, append freefalls when needed in this stage
 		//Todo: a function that adds freefall onto things if applicable
-  //todo: make lazy updates: only update runlist when there are changes between now and then
   */
 
 // Testing: create the below thing and get chaining working.
@@ -127,8 +126,10 @@ function RubeJectController(){
 		PlaceObjectIntoSpace(objectSceneIDCounter);
 		if (isStartingObject) {
 			startingObjectList[startingObjectCounter] = new Array();
-			var outface = GetAbsoluteFace(rubeJect.getOutFaceByIndex(0), rubeJect.position);
-			startingObjectList[startingObjectCounter][0] = createChainEntry(-1, objectSceneIDCounter, outface);
+			var outface = 
+				GetAbsoluteFace(rubeJect.getOutFaceByIndex(0), rubeJect.position);
+			startingObjectList[startingObjectCounter][0] = 
+				createChainEntry(-1, objectSceneIDCounter, outface);
 			startingObjectCounter ++;
 		}
 		objectSceneIDCounter ++;
@@ -145,13 +146,13 @@ function RubeJectController(){
 		PlaceObjectIntoSpace(objectSceneIDCounter);
 	}
 
-	// I don't think this should be the controller's job, since controller is only accessed 
-	// when placing objects, and rotations happen before that.
+	/* legacy/extension?
 	this.ModifyObject_Rotate = function(sceneID, newRotation){
 		//todo
 		RemoveObjectFromSpace(sceneID);
 		//ask to rotate
 	}
+	*/
 
 	//quick method to see if the faces are the same
 	var IsSameFace = function(faceA, faceB){
@@ -221,7 +222,8 @@ function RubeJectController(){
 	}
 
 	var GetObjectFromGrid = function(pos) {
-		if (mainGrid[pos[0]][pos[1]][pos[2]] == null || isUndefined(mainGrid[pos[0]][pos[1]][pos[2]])) 
+		if (mainGrid[pos[0]][pos[1]][pos[2]] == null 
+			|| isUndefined(mainGrid[pos[0]][pos[1]][pos[2]])) 
 			return null;
 		else return mainGrid[pos[0]][pos[1]][pos[2]];
 	}
@@ -294,7 +296,8 @@ function RubeJectController(){
 			if (nextObj.category === "roamer") {
 				// If roamer, outface is as far as it can go on ground (up to GRID_WIDTH)
 				if (OnGroundOrInert(nextPos)) {
-					while (OnGroundOrInert(nextPos) && isWithinLimits(nextPos,direction)) {
+					while (OnGroundOrInert(nextPos) 
+								&& isWithinLimits(nextPos,direction)) {
 						position = nextPos;
 						nextPos = GetNextBlock(position,direction);
 					}
@@ -324,7 +327,8 @@ function RubeJectController(){
 					// If outface matches an inface.
 					if (nextObj.hasInFace(GetRelativeFace(inface,nextObj.position))) {
 						console.log("Found object contains correct inface.");
-						var outface = GetAbsoluteFace(nextObj.getOutFace(inface),nextObj.position);
+						var outface = GetAbsoluteFace(nextObj.getOutFace(inface),
+										nextObj.position);
 						return createChainEntry(belowNextID,roamerID,outface);
 					} else return null;
 						
@@ -342,7 +346,8 @@ function RubeJectController(){
 		// TODO: Recurse after GetNextEntry is completed.
 		console.log("ADDED ENTRY: " + startingObjectList[listNum][index+1]);
 		if (nextEntry != null) 
-			GetNextChainLink(listNum,startingObjectList[listNum].length-1,startingObjectList[listNum][index+1][1]);
+			GetNextChainLink(listNum,startingObjectList[listNum].length-1,
+				startingObjectList[listNum][index+1][1]);
 	};
 
 	// Position after starter must contain a roamer or gadget.
@@ -405,25 +410,29 @@ function RubeJectController(){
 				stateList[i] = new Object();
 				// Chain entry: [carrier, roamer, outface]
 				// startingObjectList entry = array of chain entries
-				// To get the sceneID in the chain entry, you need startingObjectList[i][0][0] (carrier)
+				// To get the sceneID in the chain entry, 
+				// you need startingObjectList[i][0][0] (carrier)
 				// or startingObjectList[i][0][1] (roamer)
-				// startingObjectList[i][0] refers to a chain entry, which is [carrierID,roamerID,face]
-				// IDs used are scene IDs. To get the objectID, use objectSceneIDList[carrierID].
-				stateList[i].currentCarrier = startingObjectList[i][1][0]; //objectID
+				// startingObjectList[i][0] refers to a chain entry, 
+				// which is [carrierID,roamerID,face]
+				// IDs used are scene IDs. To get the objectID, 
+				// use objectSceneIDList[carrierID].
+				stateList[i].currentCarrier = startingObjectList[i][1][0]; 
 				stateList[i].currentRoamer = startingObjectList[i][1][1];
 
 				//objectSceneIDList[startingObjectList[i][0][0]].momentum
 				//for now, have a random val
 				stateList[i].momentum = 12;
 				
-				//in momentum = mv = mass * v; thus v = momentum/mass
-				//d = new.outface's block - prev.outface's block 
-				//increment = d/total time
+				// in momentum = mv = mass * v; thus v = momentum/mass
+				// d = new.outface's block - prev.outface's block 
+				// increment = d/total time
 				// v * tt = inc * refreshes made
-				//assume refreshes mad/tt = framerate = currentHardcodedNumberForRendering = v/inc
-				//we can get get inc = v/currentHardcodedNumberForRendering 
+				// assume refreshes mad/tt = framerate 
+				//				= currentHardcodedNumberForRendering = v/inc
+				// we can get get inc = v/currentHardcodedNumberForRendering 
 				//		= (momentum/mass)/currentHardcodedNumberForRendering
-				//numIncs = d/inc 
+				// numIncs = d/inc 
 
 				//translate prev outface to in face, and retrieve block
 				var fromBlock = InblockForOutface( startingObjectList[i][0][2] );
@@ -438,7 +447,8 @@ function RubeJectController(){
 				//xyz should be calculated seperately but fffffff I'll do it later 
 
 				var inc = absDiff * currentHardcodedNumberForRendering 
-										* objectSceneIDList[ stateList[i].currentRoamer ].mass / 
+										* objectSceneIDList
+											[ stateList[i].currentRoamer ].mass / 
 											stateList[i].momentum;
 
 				stateList[i].xInc = inc * xDiff / absDiff;
@@ -470,15 +480,17 @@ function RubeJectController(){
 																		!= null) {
 
 				stateList[i].currentCarrier = startingObjectList[i]
-												[stateList[i].currChainPosition + 1][0]; //objectID
+												[stateList[i].currChainPosition + 1][0]; 
 				stateList[i].currentRoamer = startingObjectList[i]
 												[stateList[i].currChainPosition + 1][1];
 				
-				var fromBlock = InblockForOutface( startingObjectList[i][stateList[i].currChainPosition][2] );
+				var fromBlock = InblockForOutface( startingObjectList[i]
+												[stateList[i].currChainPosition][2] );
 				
 				// TODO : update object position to fromblock
 				
-				var toBlock = InblockForOutface( startingObjectList[i][stateList[i].currChainPosition + 1][2] );
+				var toBlock = InblockForOutface( startingObjectList[i]
+												[stateList[i].currChainPosition + 1][2] );
 
 				//calculate distance between in face and next outface's in block
 				var xDiff = toBlock[0] - fromBlock[0];
@@ -488,8 +500,9 @@ function RubeJectController(){
 
 				//xyz should be calculated seperately but fffffff I'll do it later 
 
-				var inc = absDiff * currentHardcodedNumberForRendering 
-										* objectSceneIDList[ stateList[i].currentRoamer ].mass / 
+				var inc = absDiff 
+							* currentHardcodedNumberForRendering 
+								* objectSceneIDList[ stateList[i].currentRoamer ].mass / 
 											stateList[i].momentum;
 
 				stateList[i].xInc = inc * xDiff / absDiff;
@@ -519,7 +532,8 @@ function RubeJectController(){
   		for (var i = 0; i <startingObjectCounter; i++)
   		{
   			var sceneObject = objectSceneIDList[startingObjectList[i][0][1]];
-  			console.log("Starting Object " + i + " is a(n) " + sceneObject.name + "; position: " + sceneObject.position);
+  			console.log("Starting Object " + i + " is a(n) " + sceneObject.name 
+  							+ "; position: " + sceneObject.position);
   		} 
   	};
 
@@ -528,7 +542,8 @@ function RubeJectController(){
   			for (var y = 0; y < mainGrid[x].length; y++) {
   				for (var z = 0; z < mainGrid[x][y].length; z++) {
   					if (mainGrid[x][y][z] != null)
-  						console.log("Found object at " + x + "," + y + "," + z + ", is a " + objectSceneIDList[mainGrid[x][y][z]].name);
+  						console.log("Found object at " + x + "," + y + "," + z 
+  							+ ", is a " + objectSceneIDList[mainGrid[x][y][z]].name);
   				}
   			}
   		}
@@ -538,10 +553,12 @@ function RubeJectController(){
   		for (var i = 0; i <startingObjectCounter; i++)
   		{
   			console.log("Chain " + i);
-  			console.log("Starting Object " + i + " is a(n) " + startingObjectList[i][0].name );
+  			console.log("Starting Object " + i + " is a(n) " 
+  							+ startingObjectList[i][0].name );
   			for (var k = 1, len = startingObjectList[i].len; k < len; k++ )
   			{
-  				console.log("The " + k + "th object is a(n) " + startingObjectList[i][k].name );
+  				console.log("The " + k + "th object is a(n) " 
+  								+ startingObjectList[i][k].name );
   			}
   		} 
   	};
