@@ -109,7 +109,7 @@ function addObjectToScene( intersector, intersects ){
 		var blocks = objectMeshes[currMeshID].blocks;
 		console.log(objectMeshes[currMeshID]);
 		for (var n = 0; n < objectMeshes[currMeshID].block_num; n++ ){
-			if (!checkGridPosition(gridPosition, blocks[i] )) {
+			if (!checkGridPosition(gridPosition, blocks[n] )) {
 				console.log("NICE TRY MUTHERFUCKA");
 				return false;
 			}
