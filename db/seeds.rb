@@ -79,8 +79,16 @@ ramp = ObjectProperty.create(
     #In this example, block 5 (at (0,0,2)) received the ball at face 3.  It will return to the controller
     # the index in the block list "2", which correlates to block (2,0,0), and the face. 
     #This key, value represents rolling down the ramp.
-    io_map:                 [[[0,0,2,3],[2,0,0,1],"linear",[0,0,2],[3,0,0]],
-                             [[2,0,0,1],[0,0,2,3],"linear",[3,0,0],[0,0,2]]],
+    io_map:                 [
+                             [[0,0,2,3],[2,0,0,1],"linear",[0,0,2],[3,0,0]],
+                             [[2,0,0,1],[0,0,2,3],"linear",[3,0,0],[0,0,2]],
+                             [[0,0,2,5],[2,0,0,1],"linear",[0,0,2],[3,0,0]],
+                             [[0,0,2,5],[2,0,0,1],"linear",[0,0,2],[3,0,0]],
+                             [[0,0,1,5],[2,0,0,1],"linear",[0.5,0,1.5],[3,0,0]],
+                             [[1,0,1,5],[2,0,0,1],"linear",[1.5,0,1],[3,0,0]],
+                             [[1,0,0,5],[2,0,0,1],"linear",[1.5,0,1],[3,0,0]],
+                             [[2,0,0,5],[2,0,0,1],"linear",[2.5,0,0.5],[3,0,0]]
+                             ],
     compatible_roamers:     [5],
     #The idea behind this would be
     # roamer_position_nodes: Hash[[5,3]=>[[0,0,2],[0.25,0,1.833],[0.5,0,1.666],[0.75,0,1.5]......]
@@ -146,7 +154,7 @@ arrow = ObjectProperty.create(
 )
 arrow.display = Display.create(
     image_file:             'arrow-png.png',
-    obj_file:               'StarterArrow.obj',
+    obj_file:               'StarterArrow.js',
     texture_file:           'null',
 )
 arrow.updateDisplay
