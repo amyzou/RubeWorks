@@ -30,8 +30,8 @@ function initGraphics( container_id ) {
 	//picking
 	container.addEventListener( 'mousemove', onMouseMove , false );
 	container.addEventListener( 'mousedown', onMouseDown, false );
-	document.addEventListener( 'keydown', onKeyDown, true );
-	document.addEventListener( 'keyup', onKeyUp , true );
+	document.addEventListener( 'keydown', onKeyDown, false );
+	document.addEventListener( 'keyup', onKeyUp , false );
 	window.addEventListener ('resize', resizeViewport, false);
 }
 
@@ -43,7 +43,7 @@ function resizeViewport() {
 }
 
 function initGeometry(){
-	objLoader = new THREE.OBJLoader();
+	// objLoader = new THREE.OBJLoader();
 	JSONLoader = new THREE.JSONLoader();
 
 	// roll-over Mesh
