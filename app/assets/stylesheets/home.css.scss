@@ -2,12 +2,52 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
+
 * { margin: 0; padding: 0; }
 a { text-decoration: none; }
 
 #grid_container {
 	height:	512px;
 }
+
+.loading{
+	width:100%;
+	color: #dedada;
+	background-color:#272f45;
+	padding:50px;
+	text-align: center;
+	opacity:0.7;
+}
+
+/* BUTTONS */
+#button_container {
+	position:absolute;
+	right: 20px;
+	top: 10px;
+	font-size: 14px;
+	z-index:100;
+}
+
+.button{
+	width: 50px;
+	text-align:center;
+	padding:12px 0;
+	color: #dedada;
+	background-color:#272f45;
+	opacity: 0.9;
+	border: 1px solid #2c2b2b;
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	border-radius: 4px;
+	cursor:pointer;
+}
+
+.button:hover{
+	color: white;
+	background-color:#384463;
+	opacity: 1;
+}
+
 /* TOOLBOX TABS */
 .hide { position: absolute; top: -9999px; left: -9999px; }
 

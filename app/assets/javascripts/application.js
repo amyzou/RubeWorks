@@ -16,6 +16,7 @@
 //= require controller
 //= require rubeJectPropertiesTable
 //= require initialize
+//= require animate
 //= require objectdisplay
 //= require inputEvents
 //= require_tree .

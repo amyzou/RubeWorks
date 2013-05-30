@@ -65,48 +65,4 @@ function initLighting(){
 	scene.add( directionalLight );
 }
 
-function getRealIntersector( intersects ) {
-	for( i = 0; i < intersects.length; i++ ) {
-		intersector = intersects[ i ];
-		if ( intersector.object != rollOverMesh ) {
-			return intersector;
-		}
-	}
-	return null;
-}
-
-function animate() {
-	requestAnimationFrame( animate );
-	render();
-}
-
-function render() {
-	if ( shiftDown ) {
-		theta += mouse2D.x * 1.5;
-	}
-	
-	if (buildMode) {
-		
-
-		raycaster = projector.pickingRay( mouse2D.clone(), camera );
-		var intersects = raycaster.intersectObjects( scene.children );
-		if ( intersects.length > 0 ) {
-			intersector = getRealIntersector( intersects );
-			if ( intersector ) {
-				updateObjectPosition( intersector );
-				rollOverMesh.position = objectWorldPosition;
-			}
-		}
-
-		camera.position.x = 1400 * Math.sin( THREE.Math.degToRad( theta ) );
-		camera.position.z = 1400 * Math.cos( THREE.Math.degToRad( theta ) );
-
-		camera.lookAt( scene.position );
-		renderer.render( scene, camera );	
-	} else {
-		//SONYAS FUNCTION 
-	}
-	
-}
-
 

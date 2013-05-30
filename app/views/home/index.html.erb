@@ -3,6 +3,7 @@
 <script>
 
 //SHARED GLOBALS
+var pause = false;
 var buildMode = true;
 
 var controller;
@@ -16,6 +17,7 @@ var objectMeshes = [];
 var NObjectsToLoad;
 
 var sceneObjects = [];
+var saveState = [];
 var currSceneID = 0;
 
 //inputHandlers
@@ -68,7 +70,6 @@ $(function(){
 	// @param speed: Speed of the animation (scrollPosition += direction * speed)
 	var direction = 0, speed = 0;
 	$(".scroll-div")[0].startMoving(direction, speed);
-	
 
 	if ( ! Detector.webgl ) 
 		Detector.addGetWebGLMessage();
@@ -79,6 +80,11 @@ $(function(){
 			setCurrentObject( $(this).attr('id') );
 		}
 	);
+
+	$(".button").click( switchMode );
+	$(".button").hide();
+	$('.buildmode').fadeIn();
+	$('.runmode').fadeOut();
 
 	//DISPLAY
 	initGraphics("grid_container");
@@ -129,15 +135,16 @@ $(function(){
 	// Test chaining
 	controller.CreateChains();
 	// Ending testing of controller ------------------------------------------------------
-
+	$('.loading').hide();
 	animate();
 });
 
 </script>
+<div class='loading'>Loading...</div>
 <div id='grid_container'>
 </div>
 
-<div id="toolbox">
+<div id="toolbox" class='buildmode'>
 					
 	<ul class="nav">
 		<li class="nav-one"><a href="#cat1" class="current">Inerts</a></li>
@@ -164,6 +171,10 @@ $(function(){
 		</div>
 
 	</div> <!-- END List Wrap -->
-</div> <!-- END toolbox  -->	
+</div> 	
 
+<div id="button_container">
+	<div class='button buildmode'>Run</div>
+	<div class='button runmode'>Stop</div>
+</div>
 
