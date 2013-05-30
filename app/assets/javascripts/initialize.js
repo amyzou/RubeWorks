@@ -2,7 +2,7 @@ function initGraphics( container_id ) {
 	scene = new THREE.Scene();
 	projector = new THREE.Projector();
 
-	canvas_width = $('#'+ container_id).width();
+	canvas_width = $(window).width();
 	canvas_height = $('#'+ container_id).height();
 
 	camera = new THREE.PerspectiveCamera( 45, canvas_width/canvas_height, 1, 10000 );
@@ -16,6 +16,8 @@ function initGraphics( container_id ) {
 		new THREE.MeshBasicMaterial( { color: 0x2c364f, wireframe: true } ) 
 	);
 	plane.rotation.x = - Math.PI / 2;
+	plane.matrixAutoUpdate = false;
+	plane.updateMatrix();
 	scene.add( plane );
 
 	initGeometry();
@@ -30,6 +32,14 @@ function initGraphics( container_id ) {
 	container.addEventListener( 'mousedown', onMouseDown, false );
 	document.addEventListener( 'keydown', onKeyDown, true );
 	document.addEventListener( 'keyup', onKeyUp , true );
+	window.addEventListener ('resize', resizeViewport, false);
+}
+
+function resizeViewport() {
+	canvas_width = $(window).width();
+	camera.aspect = canvas_width/canvas_height;
+	camera.updateProjectionMatrix();
+	renderer.setSize( canvas_width, canvas_height);
 }
 
 function initGeometry(){
@@ -43,6 +53,7 @@ function initGeometry(){
 	rollOverErrorMaterial = new THREE.MeshBasicMaterial( { color: 0xb93131, wireframe: true, opacity: 0.5, transparent: true } );
 	defaultMaterial = new THREE.MeshLambertMaterial( { color: 0x384463, ambient: 0x384463, shading: THREE.FlatShading });
 	rollOverMesh = new THREE.Mesh(cubeGeo, rollOverMaterial);
+	rollOverMesh.position = objectWorldPosition;
 	scene.add(rollOverMesh);
 }
 
@@ -70,10 +81,12 @@ function animate() {
 }
 
 function render() {
+	if ( shiftDown ) {
+		theta += mouse2D.x * 1.5;
+	}
+	
 	if (buildMode) {
-		if ( shiftDown ) {
-			theta += mouse2D.x * 1.5;
-		}
+		
 
 		raycaster = projector.pickingRay( mouse2D.clone(), camera );
 		var intersects = raycaster.intersectObjects( scene.children );
@@ -96,15 +109,4 @@ function render() {
 	
 }
 
-function addObjectToScene( intersector, intersects ){
-	updateObjectPosition( intersector );
 
-	var newMesh = new THREE.Mesh(rollOverMesh.geometry.clone(), defaultMaterial);
-	
-	newMesh.position.copy(objectWorldPosition);
-	scene.add( newMesh );
-	sceneObjects[currSceneID] = newMesh;
-	//CreateRubeJect ( currMeshID, currSceneID );
-	console.log("added new mesh id = " + currSceneID);
-	currSceneID++;
-}

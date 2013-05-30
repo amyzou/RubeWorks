@@ -8,8 +8,8 @@ var buildMode = true;
 var controller;
 
 var mainGrid = [];
-var GRID_SIZE = 20;
-var GRID_HEIGHT = 10;
+var GRID_SIZE = 30;
+var GRID_HEIGHT = 8;
 var VOXEL_SIZE = 50;
 
 var objectMeshes = [];
@@ -22,7 +22,7 @@ var currSceneID = 0;
 var keyeventhandler;
 var mouseeventhandler;
 var shiftDown = false, ctrlDown = false;
-var mouse2D = new THREE.Vector3(0, 10000, 0.5);
+var mouse2D = new THREE.Vector3(0.5, 10000, 0);
 
 
 //RENDERING 
@@ -31,7 +31,7 @@ var canvas_width, canvas_height;
 var scene, camera, plane;
 var projector, raycaster;
 
-var theta = 45 * 0.5;
+var theta = 0;;
 
 var shiftDown = false, ctrlDown = false;
 var rollOveredFace;
@@ -47,8 +47,8 @@ var tmpVec = new THREE.Vector3();
 var normalMatrix = new THREE.Matrix3();
 var i, intersector;
 
-var objectWorldPosition = new THREE.Vector3();
-var gridPosition = new THREE.Vector3();
+var objectWorldPosition = new THREE.Vector3(-VOXEL_SIZE/2, VOXEL_SIZE/2,-VOXEL_SIZE/2);
+var gridPosition = new THREE.Vector3(0,0,0);
 
 var objLoader;	
 var JSONLoader;
@@ -62,7 +62,7 @@ $(function(){
 
 	//TOOLBOX: tabs, hover-scroll
 	$("#toolbox").organicTabs({ });
-	$('.scroll-div').hoverscroll({fixedArrows: true, width: 800, height: 105});
+	$('.scroll-div').hoverscroll({fixedArrows: true, width: 800, height: 112});
 	// Starting the movement automatically at loading
 	// @param direction: right/bottom = 1, left/top = -1
 	// @param speed: Speed of the animation (scrollPosition += direction * speed)

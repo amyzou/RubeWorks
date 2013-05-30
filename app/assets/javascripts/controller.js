@@ -1,5 +1,4 @@
- /* 
-  * the way face works:
+ /* the way face works:
   * x, y, z, facenum
   * facenums (
   * looking down from z:
@@ -29,7 +28,6 @@
 	2. When the person switches to run mode, iterate through all starting objects,
 		create chain for all, append freefalls when needed in this stage
 		//Todo: a function that adds freefall onto things if applicable
-  //todo: make lazy updates: only update runlist when there are changes between now and then
   */
 
 // Testing: create the below thing and get chaining working.
@@ -126,8 +124,10 @@ function RubeJectController(){
 		PlaceObjectIntoSpace(objectSceneIDCounter);
 		if (isStartingObject) {
 			startingObjectList[startingObjectCounter] = new Array();
-			var outface = GetAbsoluteFace(rubeJect.getOutFaceByIndex(0), rubeJect.position);
-			startingObjectList[startingObjectCounter][0] = createChainEntry(-1, objectSceneIDCounter, outface);
+			var outface = 
+				GetAbsoluteFace(rubeJect.getOutFaceByIndex(0), rubeJect.position);
+			startingObjectList[startingObjectCounter][0] = 
+				createChainEntry(-1, objectSceneIDCounter, outface);
 			startingObjectCounter ++;
 		}
 		objectSceneIDCounter ++;
@@ -144,13 +144,13 @@ function RubeJectController(){
 		PlaceObjectIntoSpace(objectSceneIDCounter);
 	}
 
-	// I don't think this should be the controller's job, since controller is only accessed 
-	// when placing objects, and rotations happen before that.
+	/* legacy/extension?
 	this.ModifyObject_Rotate = function(sceneID, newRotation){
 		//todo
 		RemoveObjectFromSpace(sceneID);
 		//ask to rotate
 	}
+	*/
 
 	//quick method to see if the faces are the same
 	var IsSameFace = function(faceA, faceB){
@@ -220,7 +220,8 @@ function RubeJectController(){
 	}
 
 	var GetObjectFromGrid = function(pos) {
-		if (mainGrid[pos[0]][pos[1]][pos[2]] == null || isUndefined(mainGrid[pos[0]][pos[1]][pos[2]])) 
+		if (mainGrid[pos[0]][pos[1]][pos[2]] == null 
+			|| isUndefined(mainGrid[pos[0]][pos[1]][pos[2]])) 
 			return null;
 		else return mainGrid[pos[0]][pos[1]][pos[2]];
 	}
@@ -298,7 +299,8 @@ function RubeJectController(){
 			if (nextObj.category === "roamer") {
 				// If roamer, outface is as far as it can go on ground (up to GRID_WIDTH)
 				if (OnGroundOrInert(nextPos)) {
-					while (OnGroundOrInert(nextPos) && isWithinLimits(nextPos,direction)) {
+					while (OnGroundOrInert(nextPos) 
+								&& isWithinLimits(nextPos,direction)) {
 						position = nextPos;
 						nextPos = GetNextBlock(position,direction);
 					}
@@ -361,7 +363,8 @@ function RubeJectController(){
 		console.log("ADDED ENTRY: " + startingObjectList[listNum][index+1]);
 		console.log("");
 		if (nextEntry != null) 
-			GetNextChainLink(listNum,startingObjectList[listNum].length-1,startingObjectList[listNum][index+1][1]);
+			GetNextChainLink(listNum,startingObjectList[listNum].length-1,
+				startingObjectList[listNum][index+1][1]);
 	};
 
 	// Position after starter must contain a roamer or gadget.
@@ -403,37 +406,92 @@ function RubeJectController(){
 	/*-----------------Animation code-----------------*/
 
 	var currentHardcodedNumberForRendering = 60;
-
-	//updating objects in scene required : ID, absoluteposition
-
 	var stateList = new Array();
 
-	// calculate path: interpolate and store results in a list
-	// return array of positions
-	// [0] : new momentum
-	// start: midpoint of in face
-	// endface: the one midpoint of out face
-	this.CalculatePath = function(objectID, prevOutface, inMomentum){
+	 /* start: midpoint of inblock
+	  * endface: the one midpoint of outface's inblock
+	  *
+	  * facenums (
+	  * looking down from z:
+	  * y |  +-0-+
+	  *   | 3|   |1
+	  *   |  +-2-+
+	  * --+-------------
+	  *   |  x
+	  *
+	  * looking from -y:
+	  * z |  +-5-+
+	  *   |  |   |
+	  *   |  +-4-+
+	  * --+-------------
+	  *   |  x
+	  */
 
+	var InblockForOutface = function(outface){
+		switch(outface[3]){
+			case 0: return [outface[0], outface[1] + 1, outface[2]];
+			case 1: return [outface[0] + 1, outface[1], outface[2]];
+			case 2: return [outface[0], outface[1] - 1, outface[2]];
+			case 3: return [outface[0] - 1, outface[1], outface[2]];
+			case 4: return [outface[0], outface[1], outface[2] - 1];
+			case 5: return [outface[0], outface[1] + 1, outface[2]];
+			default : return false;
+		}
 	};
 
-	//initiate states for all starting points; first create chains though.
+	//initiate states for all starting points. Chains have to be created already.
 	this.InitiateAnimation = function(){
 		for (var i = 0; i < startingObjectCounter; i++){
 				stateList[i] = new Object();
 				// Chain entry: [carrier, roamer, outface]
 				// startingObjectList entry = array of chain entries
-				// To get the sceneID in the chain entry, you need startingObjectList[i][0][0] (carrier)
+				// To get the sceneID in the chain entry, 
+				// you need startingObjectList[i][0][0] (carrier)
 				// or startingObjectList[i][0][1] (roamer)
-				// startingObjectList[i][0] refers to a chain entry, which is [carrierID,roamerID,face]
-				// IDs used are scene IDs. To get the objectID, use objectSceneIDList[carrierID].
-				stateList[i].currentCarrier = startingObjectList[i][1][0]; //objectID
+				// startingObjectList[i][0] refers to a chain entry, 
+				// which is [carrierID,roamerID,face]
+				// IDs used are scene IDs. To get the objectID, 
+				// use objectSceneIDList[carrierID].
+				stateList[i].currentCarrier = startingObjectList[i][1][0]; 
 				stateList[i].currentRoamer = startingObjectList[i][1][1];
-				stateList[i].path = CalculatePath(startingObjectList[i][1][0], startingObjectList[i][0][2], 
-									//objectSceneIDList[startingObjectList[i][0][0]].momentum
-									//for now, have a random val
-									12 );//this is an array
-				stateList[i].currPathPosition = 1; //this is which position in the path list it is using right now
+
+				//objectSceneIDList[startingObjectList[i][0][0]].momentum
+				//for now, have a random val
+				stateList[i].momentum = 12;
+				
+				// in momentum = mv = mass * v; thus v = momentum/mass
+				// d = new.outface's block - prev.outface's block 
+				// increment = d/total time
+				// v * tt = inc * refreshes made
+				// assume refreshes mad/tt = framerate 
+				//				= currentHardcodedNumberForRendering = v/inc
+				// we can get get inc = v/currentHardcodedNumberForRendering 
+				//		= (momentum/mass)/currentHardcodedNumberForRendering
+				// numIncs = d/inc 
+
+				//translate prev outface to in face, and retrieve block
+				var fromBlock = InblockForOutface( startingObjectList[i][0][2] );
+				var toBlock = InblockForOutface( startingObjectList[i][1][2] );
+
+				//calculate distance between in face and next outface's in block
+				var xDiff = toBlock[0] - fromBlock[0];
+				var yDiff = toBlock[1] - fromBlock[1];
+				var zDiff = toBlock[2] - fromBlock[2];
+				var absDiff = Math.sqrt( xDiff*xDiff + yDiff*yDiff + zDiff*zDiff);
+
+				//xyz should be calculated seperately but fffffff I'll do it later 
+
+				var inc = absDiff * currentHardcodedNumberForRendering 
+										* objectSceneIDList
+											[ stateList[i].currentRoamer ].mass / 
+											stateList[i].momentum;
+
+				stateList[i].xInc = inc * xDiff / absDiff;
+				stateList[i].yInc = inc * yDiff / absDiff;
+				stateList[i].yInc = inc * zDiff / absDiff;			
+				
+				stateList[i].stepsLeft = absDiff / inc;
+
 				stateList[i].currChainPosition = 0;
 		}
 	};
@@ -444,41 +502,55 @@ function RubeJectController(){
 		//to check if all chains are done
 		var numChainsRunning = startingObjectCounter;
 
-		/*
-		update state loop:
-			for each state:
-				if   last position in path, 
-					if mv != 0
-						move to the next object, 
-						calculate path for new object, 
-						change current carrier to new object
-						else delete state from state list or something
-		else  move current position to the next position in path
-					*/
+		for (var i = 0; i < startingObjectCounter; i ++ ){
+			if (stateList[i] == null) numChainsRunning -- ;
+			else if (stateList[i].stepsLeft > 1 ){
+				// updating objects in scene requires : ID, delta
 
-		for (var i = 0; i < startingObjectCounter; i++){
-			if (stateList[i] == null) numChainsRunning --;
-			else if (stateList[i].currPosition < stateList[i].path.len){
-				//update object position with emily
-				//object: stateList[i].currentRoamer
-				//position: 
+				/*+++++ EMILY PSEUDO-FUNCTION ALERT. BEEP BEEP BEEP +++++*/
+				//UpdateObjectInScene(stateList[i].currentRoamer, 
+				//	stateList[i].xInc, stateList[i].yInc, stateList[i].zInc);
 
-				stateList[i].currPosition ++;
+				stateList[i].stepsLeft -- ;
 
 			} else if (startingObjectList[i][stateList[i].currChainPosition + 1]
 																		!= null) {
+
 				stateList[i].currentCarrier = startingObjectList[i]
-												[stateList[i].currChainPosition + 1][0]; //objectID
+												[stateList[i].currChainPosition + 1][0]; 
 				stateList[i].currentRoamer = startingObjectList[i]
 												[stateList[i].currChainPosition + 1][1];
-				stateList[i].path = CalculatePath(startingObjectList[i]
-												[stateList[i].currChainPosition + 1][0], 
-												startingObjectList[i]
-												[stateList[i].currChainPosition][2],//prev. outface = new inface 
-												stateList[i].path[0] );
-				stateList[i].currPosition = 1; 
-				//this is which position in the path list it is using right now
-				//path[0] is prev. outcoming momentum
+				
+				var fromBlock = InblockForOutface( startingObjectList[i]
+												[stateList[i].currChainPosition][2] );
+				
+				// TODO : update object position to fromblock
+				/*+++++ EMILY PSEUDO-FUNCTION ALERT. BEEP BEEP BEEP +++++*/
+				//UpdateObjectInScene(stateList[i].currentRoamer, 
+				//	fromBlock[0], fromBlock[1], fromBlock[2]);
+				
+				var toBlock = InblockForOutface( startingObjectList[i]
+												[stateList[i].currChainPosition + 1][2] );
+
+				//calculate distance between in face and next outface's in block
+				var xDiff = toBlock[0] - fromBlock[0];
+				var yDiff = toBlock[1] - fromBlock[1];
+				var zDiff = toBlock[2] - fromBlock[2];
+				var absDiff = Math.sqrt( xDiff*xDiff + yDiff*yDiff + zDiff*zDiff);
+
+				//xyz should be calculated seperately but fffffff I'll do it later 
+
+				var inc = absDiff 
+							* currentHardcodedNumberForRendering 
+								* objectSceneIDList[ stateList[i].currentRoamer ].mass / 
+											stateList[i].momentum;
+
+				stateList[i].xInc = inc * xDiff / absDiff;
+				stateList[i].yInc = inc * yDiff / absDiff;
+				stateList[i].zInc = inc * zDiff / absDiff;			
+				
+				stateList[i].stepsLeft = absDiff / inc;
+
 			} else stateList[i] = null;
 		}
 
@@ -500,7 +572,8 @@ function RubeJectController(){
   		for (var i = 0; i <startingObjectCounter; i++)
   		{
   			var sceneObject = objectSceneIDList[startingObjectList[i][0][1]];
-  			console.log("Starting Object " + i + " is a(n) " + sceneObject.name + "; position: " + sceneObject.position);
+  			console.log("Starting Object " + i + " is a(n) " + sceneObject.name 
+  							+ "; position: " + sceneObject.position);
   		} 
   	};
 
@@ -509,7 +582,8 @@ function RubeJectController(){
   			for (var y = 0; y < mainGrid[x].length; y++) {
   				for (var z = 0; z < mainGrid[x][y].length; z++) {
   					if (mainGrid[x][y][z] != null)
-  						console.log("Found object at " + x + "," + y + "," + z + ", is a " + objectSceneIDList[mainGrid[x][y][z]].name);
+  						console.log("Found object at " + x + "," + y + "," + z 
+  							+ ", is a " + objectSceneIDList[mainGrid[x][y][z]].name);
   				}
   			}
   		}
@@ -519,10 +593,12 @@ function RubeJectController(){
   		for (var i = 0; i <startingObjectCounter; i++)
   		{
   			console.log("Chain " + i);
-  			console.log("Starting Object " + i + " is a(n) " + startingObjectList[i][0].name );
+  			console.log("Starting Object " + i + " is a(n) " 
+  							+ startingObjectList[i][0].name );
   			for (var k = 1, len = startingObjectList[i].len; k < len; k++ )
   			{
-  				console.log("The " + k + "th object is a(n) " + startingObjectList[i][k].name );
+  				console.log("The " + k + "th object is a(n) " 
+  								+ startingObjectList[i][k].name );
   			}
   		} 
   	};
