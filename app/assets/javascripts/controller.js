@@ -113,13 +113,13 @@ function RubeJectController(){
 
 	this.ContainsObject = function(x,y,z) {
 		if (isUndefined(mainGrid[x][y][z]) || mainGrid[x][y][z] == null)
-			return true;
-		return false;
+			return false;
+		return true;
 	}
 
 	this.CanPlaceObject = function(blockList, pos, category) {
 		for (var i = 0; i < blockList.length; i++) {
-			if (ContainsObject(blockList[i][0] + pos[0],
+			if (this.ContainsObject(blockList[i][0] + pos[0],
 							   blockList[i][1] + pos[1],
 							   blockList[i][2] + pos[2])) 
 				return false;
@@ -133,6 +133,7 @@ function RubeJectController(){
 					return false;
 			}
 		}
+		return true;
 
 	}
 

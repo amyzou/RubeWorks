@@ -10,13 +10,13 @@ function loadObject( obj ) {
 	console.log(obj);
 	if (obj.id == 4) {
 		JSONLoader.load( "models/ramp30.js", function(geometry) { 
-			loadJSONGeometry (obj.id, geometry, obj.block_num, obj.blocks) ;
+			loadJSONGeometry (obj, geometry ) ;
 		} );		
 	}
 
 	else if (obj.id == 5) {
 		JSONLoader.load( "models/ball.js" , function(geometry) { 
-			loadJSONGeometry (obj.id, geometry, obj.block_num, obj.blocks) ;
+			loadJSONGeometry (obj, geometry ) ;
 		} );
 	}
 	else {
@@ -29,12 +29,14 @@ function loadObject( obj ) {
 	} 
 }
 
-function loadJSONGeometry( id, geometry, block_num, blocks) {
-    objectMeshes[id] = 
+function loadJSONGeometry( obj, geometry) {
+    objectMeshes[obj.id] = 
     { 
     	geometry : geometry,
-    	block_num: block_num,
-    	blocks: blocks
+    	block_num: obj.block_num,
+    	blocks: obj.blocks,
+    	category: obj.category
+
     };
     
     NObjectsToLoad--;
@@ -89,10 +91,6 @@ function updateObjectPosition( intersector ) {
 	gridPosition[2] = Math.round((objectWorldPosition.y - offset.y)/VOXEL_SIZE);
 }
 
-function checkGridPosition( pos , block ){
-	return controller.ContainsObject (pos[0], pos[1], pos[2]);
-}
-
 function rotateCurrentObject(){
 	currRotation = (currRotation+1)%4;
 	console.log("ROTATE " + currRotation);
@@ -109,20 +107,18 @@ function removeObjectFromScene( object ){
 
 function addObjectToScene( intersector, intersects ){
 	updateObjectPosition( intersector );
-	var numBlocks = objectMeshes[currMeshID].block_num;
-	if ( numBlocks == 1 ) {
-		if (!checkGridPosition(gridPosition, [0,0,0])) {
+	var obj = objectMeshes[currMeshID];
+	if (obj == undefined) return;
+	if ( obj.block_num == 1 ) {
+		if (!controller.CanPlaceObject( obj.blocks, gridPosition, obj.category)) {
 			console.log("NICE TRY MUDDERFUCKA");
 			return false;
 		}
 	} else {
-		var blocks = objectMeshes[currMeshID].blocks[currRotation];
-		console.log(objectMeshes[currMeshID]);
-		for (var n = 0; n < objectMeshes[currMeshID].block_num; n++ ){
-			if (!checkGridPosition(gridPosition, blocks[n] )) {
-				console.log("NICE TRY MUDDERFUCKA");
-				return false;
-			}
+		console.log("NICE TRY MUDDERFUCKA");
+		if (!controller.CanPlaceObject( obj.blocks[currRotation], gridPosition, obj.category)) {
+			console.log("NICE TRY MUDDERFUCKA");
+			return false;
 		}	
 	}
 			
