@@ -27,22 +27,22 @@ block.display = Display.create(
 )
 block.updateDisplay
 
-# Domino
-domino = ObjectProperty.create(
+# Dominos Gadget
+dominos = ObjectProperty.create(
     name:                   'domino',
-    category:               'roamer', 
-    block_num:              1, 
-    blocks:                 [[0,0,0]],
+    category:               'gadget', 
+    block_num:              2, 
+    blocks:                 [[0,0,0],[1,0,0]],
     mass:                   1.0,
     elasticity:             1.0,
     change_in_height:       0,
-    io_map:                 [],
-    compatible_roamers:     'array',
+    io_map:                 [[[0,0,0,3],[1,0,0,5]]],
+    compatible_roamers:     'null',
 )
 domino.display = Display.create(
     image_file:             'dominoes.png', 
-    obj_file:               'null', 
-    texture_file:           'null', 
+    obj_file:               'dominos.js', 
+    texture_file:           'dominosTex.jpg', 
 )
 domino.updateDisplay
 
