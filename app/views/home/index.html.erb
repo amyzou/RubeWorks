@@ -48,15 +48,6 @@ $(function(){
 	if ( ! Detector.webgl ) 
 		Detector.addGetWebGLMessage();
 
-	// initialize grid with nulls
-	mainGrid = new Array(GRID_SIZE);
-	for ( var x = 0; x < GRID_SIZE; x++ ) {
-		mainGrid[x] = new Array(GRID_SIZE);
-		for ( var y = 0; y < GRID_SIZE; y++ ) {
-			mainGrid[x][y] = new Array(GRID_HEIGHT);
-		}
-	}
-
 	// Currently prints to console, but could potentially be used to load object on click. 
 	$(".object").click(
 		function(){
@@ -88,6 +79,30 @@ $(function(){
 		block.rotate();
 		//console.log("has outface: " + block.getOutFaceByIndex(0) + " with rotation " + block.rotation);
 	}
+
+	// CONTROLLER TESTING THINGS ----------------------------------------------------------
+	var controller = new RubeJectController();
+
+	// Instantiate objects needed.
+	var blocks = new Array();
+	blocks.push(new RubeJect(1,[1,0,0],0)); blocks.push(new RubeJect(1,[1,0,1],0)); 
+	blocks.push(new RubeJect(1,[2,0,0],0)); blocks.push(new RubeJect(1,[2,0,1],0)); 
+	blocks.push(new RubeJect(1,[3,0,0],0)); blocks.push(new RubeJect(1,[4,0,0],0));
+	var arrow = new RubeJect(7,[0,0,2],0);
+	var sphere = new RubeJect(5,[1,0,2],0);
+	var ramp = new RubeJect(4,[3,0,1],0);
+
+	// Add all objects to controller.
+	for (var i = 0; i < blocks.length; i++) {controller.AddObject(blocks[i], false);}
+	controller.AddObject(arrow,true); controller.AddObject(ramp,false); controller.AddObject(sphere,false); 
+	//controller.PrintAllObjects();
+	//controller.PrintAllStartingObjects();
+	//controller.PrintGrid();
+
+	// Test chaining
+	controller.CreateChains();
+	// Ending testing of controller ------------------------------------------------------
+
 	animate();
 });
 
