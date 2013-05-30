@@ -52,7 +52,7 @@ var ramp = new RubeJect(4,[3,0,1],0);
 
 // Add all objects to controller.
 for (var i = 0; i < blocks.length; i++) {controller.AddObject(blocks[i], false);}
-controller.AddObject(arrow,true); controller.AddObject(sphere,false); controller.AddObject(ramp,false);
+controller.AddObject(arrow,true); controller.AddObject(ramp,false); controller.AddObject(sphere,false); 
 //controller.PrintAllObjects();
 //controller.PrintAllStartingObjects();
 //controller.PrintGrid();
@@ -149,8 +149,10 @@ function RubeJectController(){
 		objectSceneIDList[objectSceneIDCounter] = rubeJect;
 		PlaceObjectIntoSpace(objectSceneIDCounter);
 		if (isStartingObject) {
+			startingObjectList[startingObjectCounter] = new Array();
 			var outface = translateOutface(rubeJect.getOutFaceByIndex(0), rubeJect.position);
-			startingObjectList[startingObjectCounter] = createChainEntry(-1, objectSceneIDCounter, outface);
+			startingObjectList[startingObjectCounter][0] = createChainEntry(-1, objectSceneIDCounter, outface);
+			//console.log(startingObjectList[startingObjectCounter][0]);
 			startingObjectCounter ++;
 		}
 		objectSceneIDCounter ++;
@@ -242,6 +244,12 @@ function RubeJectController(){
 		return face.slice(0,3);
 	}
 
+	var GetObjectFromGrid = function(pos) {
+		if (mainGrid[pos[0]][pos[1]][pos[2]] == null || isUndefined(mainGrid[pos[0]][pos[1]][pos[2]])) 
+			return null;
+		else return mainGrid[pos[0]][pos[1]][pos[2]];
+	}
+
 	//method for chaining - used recursively
 	/* object in chain list:
 	 * carrierID (-1 for floor/falls with linear paths)
@@ -249,25 +257,61 @@ function RubeJectController(){
 	 * outface (inface should be equal to previous element's outface)
 	 * Use array to hold: [carrierID, roamerID, outface]
 	 */
-
-	var CreateChainLink = function(num){
-		var chainEntry = startingObjectList[num];
-		// obtain outface
-		//console.log("chain entry: " + chainEntry);
+	var GetNextEntry = function(chainEntry, roamerID) {
 		var outface = chainEntry[2];
-		
-		// TODO: Get next outface.
-		
-		// TODO: Add new outface + objects relevant to chain.
+		var position = GetPositionFromOutface(outface);
+		var thisID = GetObjectFromGrid(position);
+		var next = GetNextBlock(outface,position);
+		var direction = outface[3];
+		// If has a roamer/gadget:
+			// As long as below is an inert or ground, keep searching in face direction for next roamer/gadget.
+			// If below the next block is a carrier, current outface is new entry's outface.
+			// If below block is nothing, add previous block as outface.
+		// If no roamer/gadget:
+			// Return null, since nothing is moving, and no forces are being applied.
+	}
+
+	// Continue to chain. Recursive.
+	var GetNextChainLink = function(listNum,index,roamerID){
+		var nextEntry = GetNextEntry(startingObjectList[listNum][index],roamerID);
+		startingObjectList[listNum][index + 1] = nextEntry;
+		//if (nextEntry != null) GetNextChainLink(listNum,startingObjectList[listNum].length-1);
 	};
+
+	// Position after starter must contain a roamer or gadget.
+	var getFirstRoamer = function(listNum) {
+		var chainEntry = startingObjectList[listNum][0];
+		var outface = chainEntry[2];
+		var position = GetPositionFromOutface(outface);
+		var next = GetNextBlock(outface,position);
+		var nextID = GetObjectFromGrid(next);	
+
+		if (!isUndefined(objectSceneIDList[nextID])) {
+			var nextCategory = objectSceneIDList[nextID].category;
+			if (nextCategory === "roamer" || nextCategory === "gadget") {
+				console.log("next is a " + nextCategory);
+				return nextID;
+			}
+		} else {
+			console.log("no next roamer/gadget.");
+			return null;
+		}
+	}
 
 	//method to create chains for run mode
 	this.CreateChains = function(){
 		for (var i = 0; i < startingObjectCounter; i++)
 		{
-			CreateChainLink(0);
+			var firstID = getFirstRoamer(i);
+			if (firstID != null) 
+				GetNextChainLink(i,0,firstID);
+			else startingObjectList[i][1] = null;
 		}
 	};
+
+	var isUndefined = function(obj) {
+		return (typeof obj === "undefined")
+	}
 
 	/*-----------------Animation code-----------------*/
 
@@ -317,7 +361,7 @@ function RubeJectController(){
   	this.PrintAllStartingObjects = function(){
   		for (var i = 0; i <startingObjectCounter; i++)
   		{
-  			var sceneObject = objectSceneIDList[startingObjectList[i][1]];
+  			var sceneObject = objectSceneIDList[startingObjectList[i][0][1]];
   			console.log("Starting Object " + i + " is a(n) " + sceneObject.name + "; position: " + sceneObject.position);
   		} 
   	};
