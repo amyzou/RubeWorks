@@ -32,8 +32,6 @@ function initGraphics( container_id ) {
 	container.appendChild( renderer.domElement );
 
 	// picking
-	//mouse2D = new THREE.Vector3( 0, 10000, 0.5 );
-	var mousemove = mouse
 	container.addEventListener( 'mousemove', mouseeventhandler.down , false );
 	container.addEventListener( 'mousedown', mouseeventhandler.down, false );
 	document.addEventListener( 'keydown', keyeventhandler.press, true );
