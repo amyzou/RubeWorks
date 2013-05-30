@@ -19,6 +19,14 @@ function loadObject( obj ) {
 			loadJSONGeometry (obj.id, geometry, obj.block_num, obj.blocks) ;
 		} );
 	}
+	else {
+		objectMeshes[obj.id] = 
+	    { 
+	    	geometry : cubeGeo,
+	    	block_num: obj.block_num,
+	    	blocks: obj.blocks
+	    };
+	} 
 }
 
 function loadJSONGeometry( id, geometry, block_num, blocks) {
@@ -45,16 +53,12 @@ function setCurrentObject ( objectID ) {
 	currObjPropertyId = objectID;
 
 	scene.remove(rollOverMesh);
-	if (objectID < 4 || objectID > 5 ) {
-		//if (objectID < 1 || objectID + 1 >= objectMeshes.size )
-		currMeshID = 1;
-		rollOverMesh = new THREE.Mesh( cubeGeo, rollOverMaterial );
-	} else {
-		currMeshID = objectID;
-		rollOverMesh = new THREE.Mesh( objectMeshes[objectID].geometry, rollOverMaterial );
-		var scale = 25;//objectMeshes[currMeshID].scaleFactor;
-		rollOverMesh.scale = new THREE.Vector3(scale, scale, scale);
-	}
+	currMeshID = objectID;
+	rollOverMesh = new THREE.Mesh( objectMeshes[objectID].geometry, rollOverMaterial );
+	if (currMeshID == 5) var scale = 25;//objectMeshes[currMeshID].scaleFactor;
+	if (currMeshID == 4) scale = 75/2;
+	rollOverMesh.scale = new THREE.Vector3(scale, scale, scale);
+	
 
 	rollOverMesh.position = objectWorldPosition;
 	scene.add(rollOverMesh);
@@ -87,6 +91,8 @@ function checkGridPosition( pos , block ){
 }
 
 function rotateCurrentObject(){
+	currRotation = (currRotation+1)%4;
+	console.log("ROTATE " + currRotation);
 }
 
 function removeObjectFromScene( object ){
@@ -100,17 +106,18 @@ function removeObjectFromScene( object ){
 
 function addObjectToScene( intersector, intersects ){
 	updateObjectPosition( intersector );
-	if (currMeshID == 1) {
+	var numBlocks = objectMeshes[currMeshID].block_num;
+	if ( numBlocks == 1 ) {
 		if (!checkGridPosition(gridPosition, [0,0,0])) {
-			console.log("NICE TRY MUTHERFUCKA");
+			console.log("NICE TRY MUDDERFUCKA");
 			return false;
 		}
 	} else {
-		var blocks = objectMeshes[currMeshID].blocks;
+		var blocks = objectMeshes[currMeshID].blocks[currRotation];
 		console.log(objectMeshes[currMeshID]);
 		for (var n = 0; n < objectMeshes[currMeshID].block_num; n++ ){
 			if (!checkGridPosition(gridPosition, blocks[n] )) {
-				console.log("NICE TRY MUTHERFUCKA");
+				console.log("NICE TRY MUDDERFUCKA");
 				return false;
 			}
 		}	

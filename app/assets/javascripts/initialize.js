@@ -43,7 +43,7 @@ function resizeViewport() {
 }
 
 function initGeometry(){
-	objLoader = new THREE.OBJLoader();
+	// objLoader = new THREE.OBJLoader();
 	JSONLoader = new THREE.JSONLoader();
 
 	// roll-over Mesh
