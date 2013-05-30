@@ -343,10 +343,11 @@ function RubeJectController(){
 	// calculate path: interpolate and store results in a list
 	// return array of positions
 	// [0] : new momentum
-	// start: midpoint of in face
-	// endface: the one midpoint of out face
-	this.CalculatePath = function(objectID, prevOutface, inMomentum){
+	// start: midpoint of inblock
+	// endface: the one midpoint of outface's inblock
 
+	var InblockForOutface = function(outface){
+		return inblock = [0, 1, 2];
 	};
 
 	//initiate states for all starting points; first create chains though.
@@ -361,11 +362,42 @@ function RubeJectController(){
 				// IDs used are scene IDs. To get the objectID, use objectSceneIDList[carrierID].
 				stateList[i].currentCarrier = startingObjectList[i][1][0]; //objectID
 				stateList[i].currentRoamer = startingObjectList[i][1][1];
-				stateList[i].path = CalculatePath(startingObjectList[i][1][0], startingObjectList[i][0][2], 
-									//objectSceneIDList[startingObjectList[i][0][0]].momentum
-									//for now, have a random val
-									12 );//this is an array
-				stateList[i].currPathPosition = 1; //this is which position in the path list it is using right now
+
+				//objectSceneIDList[startingObjectList[i][0][0]].momentum
+				//for now, have a random val
+				stateList[i].momentum = 12;
+				
+				//in momentum = mv = mass * v; thus v = momentum/mass
+				//d = new.outface's block - prev.outface's block 
+				//increment = d/total time
+				// v * tt = inc * refreshes made
+				//assume refreshes mad/tt = framerate = currentHardcodedNumberForRendering = v/inc
+				//we can get get inc = v/currentHardcodedNumberForRendering 
+				//		= (momentum/mass)/currentHardcodedNumberForRendering
+				//numIncs = d/inc 
+
+				//translate prev outface to in face, and retrieve block
+				var fromBlock = InblockForOutface( startingObjectList[i][0][2] );
+				var toBlock = InblockForOutface( startingObjectList[i][1][2] );
+
+				//calculate distance between in face and next outface's in block
+				var xDiff = toBlock[0] - fromBlock[0];
+				var yDiff = toBlock[1] - fromBlock[1];
+				var zDiff = toBlock[2] - fromBlock[2];
+				var absDiff = Math.sqrt( xDiff*xDiff + yDiff*yDiff + zDiff*zDiff);
+
+				//xyz should be calculated seperately but fffffff I'll do it later 
+
+				var inc = absDiff * currentHardcodedNumberForRendering 
+										* objectSceneIDList[ stateList[i].currentRoamer ].mass / 
+											stateList[i].momentum;
+
+				stateList[i].xInc = inc * xDiff / absDiff;
+				stateList[i].yInc = inc * yDiff / absDiff;
+				stateList[i].yInc = inc * zDiff / absDiff;			
+				
+				stateList[i].stepsLeft = absDiff / inc;
+
 				stateList[i].currChainPosition = 0;
 		}
 	};
@@ -376,41 +408,47 @@ function RubeJectController(){
 		//to check if all chains are done
 		var numChainsRunning = startingObjectCounter;
 
-		/*
-		update state loop:
-			for each state:
-				if   last position in path, 
-					if mv != 0
-						move to the next object, 
-						calculate path for new object, 
-						change current carrier to new object
-						else delete state from state list or something
-		else  move current position to the next position in path
-					*/
-
-		for (var i = 0; i < startingObjectCounter; i++){
-			if (stateList[i] == null) numChainsRunning --;
-			else if (stateList[i].currPosition < stateList[i].path.len){
-				//update object position with emily
+		for (var i = 0; i < startingObjectCounter; i ++ ){
+			if (stateList[i] == null) numChainsRunning -- ;
+			else if (stateList[i].stepsLeft > 1 ){
+				// TODO : update object position with emily
 				//object: stateList[i].currentRoamer
 				//position: 
 
-				stateList[i].currPosition ++;
+				stateList[i].stepsLeft -- ;
 
 			} else if (startingObjectList[i][stateList[i].currChainPosition + 1]
 																		!= null) {
+
 				stateList[i].currentCarrier = startingObjectList[i]
 												[stateList[i].currChainPosition + 1][0]; //objectID
 				stateList[i].currentRoamer = startingObjectList[i]
 												[stateList[i].currChainPosition + 1][1];
-				stateList[i].path = CalculatePath(startingObjectList[i]
-												[stateList[i].currChainPosition + 1][0], 
-												startingObjectList[i]
-												[stateList[i].currChainPosition][2],//prev. outface = new inface 
-												stateList[i].path[0] );
-				stateList[i].currPosition = 1; 
-				//this is which position in the path list it is using right now
-				//path[0] is prev. outcoming momentum
+				
+				var fromBlock = InblockForOutface( startingObjectList[i][stateList[i].currChainPosition][2] );
+				
+				// TODO : update object position to fromblock
+				
+				var toBlock = InblockForOutface( startingObjectList[i][stateList[i].currChainPosition + 1][2] );
+
+				//calculate distance between in face and next outface's in block
+				var xDiff = toBlock[0] - fromBlock[0];
+				var yDiff = toBlock[1] - fromBlock[1];
+				var zDiff = toBlock[2] - fromBlock[2];
+				var absDiff = Math.sqrt( xDiff*xDiff + yDiff*yDiff + zDiff*zDiff);
+
+				//xyz should be calculated seperately but fffffff I'll do it later 
+
+				var inc = absDiff * currentHardcodedNumberForRendering 
+										* objectSceneIDList[ stateList[i].currentRoamer ].mass / 
+											stateList[i].momentum;
+
+				stateList[i].xInc = inc * xDiff / absDiff;
+				stateList[i].yInc = inc * yDiff / absDiff;
+				stateList[i].yInc = inc * zDiff / absDiff;			
+				
+				stateList[i].stepsLeft = absDiff / inc;
+
 			} else stateList[i] = null;
 		}
 
