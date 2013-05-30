@@ -1,8 +1,3 @@
-function initInputHandlers(){
-	keyeventhandler = new KeyHandler();
-	mouseeventhandler = new MouseHandler();
-}
-
 function initGraphics( container_id ) {
 	scene = new THREE.Scene();
 	projector = new THREE.Projector();
@@ -25,17 +20,16 @@ function initGraphics( container_id ) {
 
 	initGeometry();
 	initLighting();
-	initInputHandlers();
 
 	//APPEND CANVAS
 	container = document.getElementById( container_id );
 	container.appendChild( renderer.domElement );
 
-	// picking
-	container.addEventListener( 'mousemove', mouseeventhandler.down , false );
-	container.addEventListener( 'mousedown', mouseeventhandler.down, false );
-	document.addEventListener( 'keydown', keyeventhandler.press, true );
-	document.addEventListener( 'keyup', keyeventhandler.release, true );
+	//picking
+	container.addEventListener( 'mousemove', onMouseMove , false );
+	container.addEventListener( 'mousedown', onMouseDown, false );
+	document.addEventListener( 'keydown', onKeyDown, true );
+	document.addEventListener( 'keyup', onKeyUp , true );
 }
 
 function initGeometry(){
@@ -44,11 +38,11 @@ function initGeometry(){
 
 	// roll-over Mesh
 	//rollOverGeo = new THREE.CubeGeometry( VOXEL_SIZE, VOXEL_SIZE, VOXEL_SIZE );
+	cubeGeo = new THREE.CubeGeometry( VOXEL_SIZE, VOXEL_SIZE, VOXEL_SIZE );
 	rollOverMaterial = new THREE.MeshBasicMaterial( { color: 0xfcd87f, wireframe: true, opacity: 0.5, transparent: true } );
 	rollOverErrorMaterial = new THREE.MeshBasicMaterial( { color: 0xb93131, wireframe: true, opacity: 0.5, transparent: true } );
-	defaultMaterial = new THREE.MeshBasicMaterial( { color: 0xfeb74c } );
-	rollOverMesh = new THREE.Mesh(new THREE.CubeGeometry( VOXEL_SIZE, VOXEL_SIZE, VOXEL_SIZE ), rollOverMaterial);
-	rollOverMesh.matrixAutoUpdate = false;
+	defaultMaterial = new THREE.MeshLambertMaterial( { color: 0x384463, ambient: 0x384463, shading: THREE.FlatShading });
+	rollOverMesh = new THREE.Mesh(cubeGeo, rollOverMaterial);
 	scene.add(rollOverMesh);
 }
 
@@ -77,7 +71,7 @@ function animate() {
 
 function render() {
 	if (buildMode) {
-		if ( keyeventhandler.shiftDown ) {
+		if ( shiftDown ) {
 			theta += mouse2D.x * 1.5;
 		}
 
@@ -105,12 +99,9 @@ function render() {
 function addObjectToScene( intersector, intersects ){
 	updateObjectPosition( intersector );
 
-	var newMesh = new THREE.Mesh( objectMeshes[currMeshID].geometry, defaultMaterial);
-
-	//CALL CONTROLLER TO CREATE NEW RUBEJECT HERE
+	var newMesh = new THREE.Mesh(rollOverMesh.geometry.clone(), defaultMaterial);
+	
 	newMesh.position.copy(objectWorldPosition);
-	newMesh.matrixAutoUpdate = false;
-	newMesh.updateMatrix();
 	scene.add( newMesh );
 	sceneObjects[currSceneID] = newMesh;
 	//CreateRubeJect ( currMeshID, currSceneID );

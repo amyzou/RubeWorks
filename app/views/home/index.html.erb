@@ -21,8 +21,8 @@ var currSceneID = 0;
 //inputHandlers
 var keyeventhandler;
 var mouseeventhandler;
-
-var mouse2D;
+var shiftDown = false, ctrlDown = false;
+var mouse2D = new THREE.Vector3(0, 10000, 0.5);
 
 
 //RENDERING 
@@ -31,19 +31,20 @@ var canvas_width, canvas_height;
 var scene, camera, plane;
 var projector, raycaster;
 
-
 var theta = 45 * 0.5;
 
 var shiftDown = false, ctrlDown = false;
 var rollOveredFace;
 
+var cubeGeo;
 var rollOverMesh, rollOverMaterial;
 var rollOverErrorMaterial;
 var defaultMaterial;
-var currMeshID = 1;
+var currMeshID = 0;
 
-var currPos = new THREE.Vector3(), tmpVec = new THREE.Vector3(), normalMatrix = new THREE.Matrix3();
-
+var scaleVec = new THREE.Vector3(VOXEL_SIZE/2, VOXEL_SIZE/2, VOXEL_SIZE/2);
+var tmpVec = new THREE.Vector3();
+var normalMatrix = new THREE.Matrix3();
 var i, intersector;
 
 var objectWorldPosition = new THREE.Vector3();

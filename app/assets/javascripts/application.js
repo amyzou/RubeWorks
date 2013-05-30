@@ -17,6 +17,5 @@
 //= require rubeJectPropertiesTable
 //= require initialize
 //= require objectdisplay
-//= require keyHandler
-//= require mouseHandler
+//= require inputEvents
 //= require_tree .
