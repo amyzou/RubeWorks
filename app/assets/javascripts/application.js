@@ -11,14 +11,12 @@
 // GO AFTER THE REQUIRES BELOW.
 //= require jquery
 //= require jquery_ujs
-//= require three.min
-//= require OBJLoader
-//= require rubeJect
-//= require Detector
-//= require rw
-//= require organictabs
-//= require rubeJectPropertiesTable
+//= require plugins.js
 //= require rubeJect
 //= require controller
-//= require hoverscroll
+//= require rubeJectPropertiesTable
+//= require initialize
+//= require objectdisplay
+//= require keyHandler
+//= require mouseHandler
 //= require_tree .

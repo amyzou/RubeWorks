@@ -1,6 +1,3 @@
-//= require keyHandler
-//= require mouseHandler
-
 function initInputHandlers(){
 	keyeventhandler = new KeyHandler();
 	mouseeventhandler = new MouseHandler();
@@ -35,8 +32,9 @@ function initGraphics( container_id ) {
 	container.appendChild( renderer.domElement );
 
 	// picking
-	mouse2D = new THREE.Vector3( 0, 10000, 0.5 );
-	container.addEventListener( 'mousemove', mouseeventhandler.move, false );
+	//mouse2D = new THREE.Vector3( 0, 10000, 0.5 );
+	var mousemove = mouse
+	container.addEventListener( 'mousemove', mouseeventhandler.down , false );
 	container.addEventListener( 'mousedown', mouseeventhandler.down, false );
 	document.addEventListener( 'keydown', keyeventhandler.press, true );
 	document.addEventListener( 'keyup', keyeventhandler.release, true );
@@ -82,7 +80,7 @@ function animate() {
 function render() {
 	if (buildMode) {
 		if ( keyeventhandler.shiftDown ) {
-			theta += mousehandler.mouse2D.x * 1.5;
+			theta += mouse2D.x * 1.5;
 		}
 
 		raycaster = projector.pickingRay( mouse2D.clone(), camera );

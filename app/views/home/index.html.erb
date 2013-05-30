@@ -3,41 +3,64 @@
 <script>
 
 //SHARED GLOBALS
+var buildMode = true;
+
+var controller;
+
 var mainGrid = [];
 var GRID_SIZE = 20;
 var GRID_HEIGHT = 10;
 var VOXEL_SIZE = 50;
 
 var objectMeshes = [];
+var NObjectsToLoad;
+
 var sceneObjects = [];
 var currSceneID = 0;
 
+//inputHandlers
+var keyeventhandler;
+var mouseeventhandler;
+
+var mouse2D;
+
+
 //RENDERING 
-var container;
-var camera, scene, renderer;
+var container, renderer;
 var canvas_width, canvas_height;
+var scene, camera, plane;
+var projector, raycaster;
+
+
 var theta = 45 * 0.5;
 
-var projector, plane, cube;
-var mouse2D, mouse3D, raycaster;
 var shiftDown = false, ctrlDown = false;
 var rollOveredFace;
 
 var rollOverMesh, rollOverMaterial;
+var rollOverErrorMaterial;
+var defaultMaterial;
+var currMeshID = 1;
 
 var currPos = new THREE.Vector3(), tmpVec = new THREE.Vector3(), normalMatrix = new THREE.Matrix3();
 
-var cubeGeo, cubeMaterial;
 var i, intersector;
 
-var voxelPosition = new THREE.Vector3();
+var objectWorldPosition = new THREE.Vector3();
+var gridPosition = new THREE.Vector3();
 
-var objLoader;
-// var jsonLoader = new THREE.JSONLoader();
+var objLoader;	
+var JSONLoader;
 
 $(function(){
-	$("#toolbox").organicTabs({ });
+	if ( ! Detector.webgl )  {
+		Detector.addGetWebGLMessage();	
+		$("#toolbox").hide();
+		return;	
+	}
 
+	//TOOLBOX: tabs, hover-scroll
+	$("#toolbox").organicTabs({ });
 	$('.scroll-div').hoverscroll({fixedArrows: true, width: 800, height: 105});
 	// Starting the movement automatically at loading
 	// @param direction: right/bottom = 1, left/top = -1
@@ -45,9 +68,7 @@ $(function(){
 	var direction = 0, speed = 0;
 	$(".scroll-div")[0].startMoving(direction, speed);
 	
-	if ( ! Detector.webgl ) 
-		Detector.addGetWebGLMessage();
-
+	
 	// initialize grid with nulls
 	mainGrid = new Array(GRID_SIZE);
 	for ( var x = 0; x < GRID_SIZE; x++ ) {
@@ -57,15 +78,10 @@ $(function(){
 		}
 	}
 
-	// Currently prints to console, but could potentially be used to load object on click. 
-	$(".object").click(
-		function(){
-			setCurrentObject( $(this).attr('id') );
-		}
-	);
+	//controller = new RubeJectController();
 
 	//DISPLAY
-	initGraphics();
+	initGraphics("grid_container");
 	
 	$.ajax({
 		url: '/home/get_all_objects',
@@ -77,18 +93,18 @@ $(function(){
 	});
 
 	// Testing constructor: 
-	objectPropertyID = 7;
+	objectPropertyID = 4;
 	objectPosition = [0,0,0];
 	for (var i = 0; i < 4; i ++) {
-		var block = new RubeJect(objectPropertyID, objectPosition, i);		
-		//console.log("has outface: " + block.getOutFaceByIndex(0) + " with rotation " + block.rotation);
+		console.log("Sending a property ID of " + objectPropertyID);
+		var block = new RubeJect(objectPropertyID, objectPosition, i);
+		
+		console.log(block.name + "; " + block.blockList[0]);
+		console.log(block.name + "; " + block.blockList[1]);
+		console.log(block.name + "; " + block.blockList[2]);
+		console.log(block.name + "; " + block.blockList[3]);
+		
 	}
-
-	for (var i = 0; i < 4; i ++) {
-		block.rotate();
-		//console.log("has outface: " + block.getOutFaceByIndex(0) + " with rotation " + block.rotation);
-	}
-	animate();
 });
 
 </script>
@@ -102,7 +118,6 @@ $(function(){
 		<li class="nav-two"><a href="#cat2">Roamers</a></li>
 		<li class="nav-three"><a href="#cat3">Carriers</a></li>
 		<li class="nav-four"><a href="#cat4">Gadgets</a></li>
-		<li class="nav-five"><a href="#cat5">Initial Forces</a></li>
 	</ul>
     		
     <div class="list-wrap">
@@ -120,10 +135,6 @@ $(function(){
 
 		<div id="cat4" class="hide">
 	   		<%= render :partial => "tabs", :locals => {:tabset => @gadgets}  %>
-		</div>
-
-		<div id="cat5" class="hide">
-	   		<%= render :partial => "tabs", :locals => {:tabset => @starters}  %>
 		</div>
 
 	</div> <!-- END List Wrap -->
