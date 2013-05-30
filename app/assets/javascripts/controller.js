@@ -39,26 +39,6 @@
 	|  |_||_||_||_|
 	|--|--|--|--|--|- x
 */
-var controller = new RubeJectController();
-
-// Instantiate objects needed.
-var blocks = new Array();
-blocks.push(new RubeJect(1,[1,0,0],0)); blocks.push(new RubeJect(1,[1,0,1],0)); 
-blocks.push(new RubeJect(1,[2,0,0],0)); blocks.push(new RubeJect(1,[2,0,1],0)); 
-blocks.push(new RubeJect(1,[3,0,0],0)); blocks.push(new RubeJect(1,[4,0,0],0));
-var arrow = new RubeJect(7,[0,0,2],0);
-var sphere = new RubeJect(5,[1,0,2],0);
-var ramp = new RubeJect(4,[3,0,1],0);
-
-// Add all objects to controller.
-for (var i = 0; i < blocks.length; i++) {controller.AddObject(blocks[i], false);}
-controller.AddObject(arrow,true); controller.AddObject(ramp,false); controller.AddObject(sphere,false); 
-//controller.PrintAllObjects();
-//controller.PrintAllStartingObjects();
-//controller.PrintGrid();
-
-// Test chaining
-controller.CreateChains();
 
 function RubeJectController(){
 
@@ -68,11 +48,7 @@ function RubeJectController(){
 	var objectSceneIDCounter = 0;
 	var startingObjectList = new Array();
 	var startingObjectCounter = 0;
-	var mainGrid = new Array();
-	mainGrid[0] = new Array();
-	mainGrid[0][0] = new Array();
-	var xMax = 0;
-	var yMax = 0;
+	var mainGrid;
 	
 	
 	var PlaceObjectIntoSpace = function(sceneID){
@@ -85,37 +61,24 @@ function RubeJectController(){
 			    y = blockList[i][1] + position[1],
 			    z = blockList[i][2] + position[2];
 
-			// Initiate arrays if not initiated. 
-			InitiateArrays(x,y);
 			// Set sceneID in grid.
 			mainGrid[x][y][z] = sceneID;
 		}
 	}
 
-	var InitiateArrays = function(x,y) {
-		// If grid hasn't been initiated up to this value of x
-		if (x > xMax) {
-			// Initiate to new x.
-			for (var i = xMax + 1; i <= x; i++) {
-				mainGrid[i] = new Array();
-				// Initiate y array for each new x up to current max y.
-				for (var j = 0; j <= yMax; j++) {
-					mainGrid[i][j] = new Array();
+	var InitializeGrid = function() {
+		mainGrid = new Array(GRID_SIZE);
+		for ( var x = 0; x < GRID_SIZE; x++ ) {
+			mainGrid[x] = new Array(GRID_SIZE);
+			for ( var y = 0; y < GRID_SIZE; y++ ) {
+				mainGrid[x][y] = new Array(GRID_HEIGHT);
+				for (var z = 0; z < GRID_SIZE; z++) {
+					mainGrid[x][y][z] = null;
 				}
-			}
-			xMax = x;
-		} else {
-			// Initiate up to new y for all x.
-			if (y > yMax) {
-				for (var i = 0; i <= xMax; i++) {
-					for (var j = yMax + 1; j <= y; j++) {
-						mainGrid[i][j] = new Array();
-					}	
-				}
-				yMax = y;
 			}
 		}
 	}
+	InitializeGrid();	
 
 	var RemoveObjectFromSpace = function(sceneID){
 		//delete object from space grid
@@ -141,6 +104,12 @@ function RubeJectController(){
 		outface[1] += position[1];
 		outface[2] += position[2];
 		return outface;
+	}
+
+	this.ContainsObject = function(x,y,z) {
+		if (isUndefined(mainGrid[x][y][z]) || mainGrid[x][y][z] == null)
+			return true;
+		return false;
 	}
 
 	//method to add object
@@ -225,7 +194,7 @@ function RubeJectController(){
 		}
 	}
   
-	// Retrive next block from pos and direction.
+	// Retrieve next block from pos and direction.
 	var GetNextBlock = function(pos,direction){
 		var nextPos = pos.slice(0);
 		switch(direction){
@@ -292,15 +261,19 @@ function RubeJectController(){
 		// If next block contains object:
 		if (!isUndefined(nextID)) {
 			// If next object is roamer/gadget:
-			if (nextObj.category === "roamer" || nextObj.category === "gadget") {
-				// If on inert or ground, keep searching in face direction for next roamer/gadget.
+			if (nextObj.category === "roamer") {
+				// If roamer, outface is as far as it can go on ground
 				if (OnGroundOrInert(nextPos)) {
 					while (OnGroundOrInert(nextPos)) {
 						position = nextPos;
 						nextPos = GetNextBlock(position,direction);
 					}
-					return createChainEntry(-1, roamerID, GetOutface(position,direction));	
+					return createChainEntry(-1, nextID, GetOutface(position,direction));	
 				}
+			} 
+			// If gadget, outface is outface corresponding to 
+			else if (nextObj.category === "gadget") {
+
 			}
 			// If next object is an inert:
 			// TODO: Bounce back.
