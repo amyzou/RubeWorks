@@ -9,21 +9,21 @@
   <%= csrf_meta_tags %>
 </head>
 <body>
-<div id='sidebar'>
-	<h2>CS 194 Project: Rubeworks</h2>
-	<p style='padding-top:10px'>
-		Amy Zou<br/>
-		Austin Hulse<br/>
-		Emily Ye<br/>
-		Sonya Juang<br/>
-	</p>
+<div id='sidebar' class='buildmode'>
+	<div>
+		<h1>Rubeworks<h1>
+		<h3>CS 194 Project</h3>
+		<div>Amy Zou, Austin Hulse, Emily Ye, Sonya Juang</div>
 
-	<div class="hidden" style='padding-top:40px'>
-		<h3>DEBUG PANEL</h3>
-		X:<input type="number" name="width" min="1" max="5" step="1" value="1">
-		Y:<input type="number" name="length" min="1" max="5" step="1" value="1">
-		Z:<input type="number" name="height" min="1" max="5" step="1" value="1">
-		<input type="submit" onclick="changeObjSize();">
+		<div style='margin: 20px 0;'>
+			An interactive WebGL experiment using <a href="http://threejs.org/">three.js</a> 
+			to create unusual machines from small components</br>
+		</div>
+		<div>
+			Press SHIFT to rotate canvas.<br/>
+			Press CTRL and click to delete items.<br/>
+			Press R to rotate object.<br/>
+		</div>
 </form>
 	</div>
 </div>

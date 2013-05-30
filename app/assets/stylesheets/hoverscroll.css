@@ -10,6 +10,7 @@
 div.hoverscroll {
 	position:relative;
 	border:none;
+	margin:0 auto;
 }
 
 
@@ -46,6 +47,7 @@ div.hoverscroll div.arrow {
     width:60px;
     background-position: center;
     background-repeat: no-repeat;
+    cursor:pointer;
 }
 
 div.hoverscroll div.arrow.left,

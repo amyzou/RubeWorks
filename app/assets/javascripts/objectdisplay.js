@@ -2,44 +2,61 @@ function loadObjects ( objects ) {
 	NObjectsToLoad = objects.length;
 	for (var i in objects) {
 		var obj = objects[i];
-		loadObject(obj.id, obj.obj_file, obj.texture_file, obj.block_num, obj.blocks);
+		loadObject(obj);
 	}
 }
 
-function loadObject( id, objFile, textureFile, nBlocks, blocks ) {
-	console.log("LOADING OBJECT id " + id);
+function loadObject( obj ) {
+	console.log(obj);
+	if (obj.id == 4) {
+		JSONLoader.load( "models/ramp30.js", function(geometry) { 
+			loadJSONGeometry (obj.id, geometry, obj.block_num, obj.blocks) ;
+		} );		
+	}
 
-	var material = new THREE.MeshBasicMaterial( { color: 0xfeb74c } );
-	JSONLoader.load( "models/ball.js", function( geometry ) {
-		geometry.computeBoundingSphere();
-        objectMeshes[id] = 
-        { 
-        	geometry : geometry,
-        	nBlocks: nBlocks,
-        	blocks: blocks,
-        	scaleFactor: 25
-        };
-        	NObjectsToLoad--;
-		if (NObjectsToLoad <= 0) {
-			$(".object").click( function() {
-				setCurrentObject(parseInt($(this).attr("id")),10);
-			});
-			$(".object").first().click();
-			animate();
-		}
-    } );
+	else if (obj.id == 5) {
+		JSONLoader.load( "models/ball.js" , function(geometry) { 
+			loadJSONGeometry (obj.id, geometry, obj.block_num, obj.blocks) ;
+		} );
+	}
+}
+
+function loadJSONGeometry( id, geometry, block_num, blocks) {
+    objectMeshes[id] = 
+    { 
+    	geometry : geometry,
+    	block_num: block_num,
+    	blocks: blocks
+    };
+    
+    NObjectsToLoad--;
+	if (NObjectsToLoad <= 0) {
+		$(".object").click( function() {
+			setCurrentObject(parseInt($(this).attr("id")),10);
+		});
+		setCurrentObject(0);
+		animate();
+	}
 }
 
 // on select object in toolbox
 function setCurrentObject ( objectID ) {
-	console.log( objectMeshes );
-	currMeshID = objectID;
+	if (currObjPropertyId == objectID) return;
+	currObjPropertyId = objectID;
+
 	scene.remove(rollOverMesh);
-	
-	rollOverMesh = new THREE.Mesh( objectMeshes[objectID].geometry, rollOverMaterial );
-	rollOverMesh.position = new THREE.Vector3(0,0,0);
-	rollOverMesh.scale = new THREE.Vector3( objectMeshes[objectID].scaleFactor, objectMeshes[objectID].scaleFactor, objectMeshes[objectID].scaleFactor );
-	
+	if (objectID < 4 || objectID > 5 ) {
+		//if (objectID < 1 || objectID + 1 >= objectMeshes.size )
+		currMeshID = 1;
+		rollOverMesh = new THREE.Mesh( cubeGeo, rollOverMaterial );
+	} else {
+		currMeshID = objectID;
+		rollOverMesh = new THREE.Mesh( objectMeshes[objectID].geometry, rollOverMaterial );
+		var scale = 25;//objectMeshes[currMeshID].scaleFactor;
+		rollOverMesh.scale = new THREE.Vector3(scale, scale, scale);
+	}
+
+	rollOverMesh.position = objectWorldPosition;
 	scene.add(rollOverMesh);
 }
 
@@ -53,11 +70,58 @@ function updateObjectPosition( intersector ) {
 	objectWorldPosition.y = Math.floor( objectWorldPosition.y / VOXEL_SIZE ) * VOXEL_SIZE + VOXEL_SIZE/2;
 	objectWorldPosition.z = Math.floor( objectWorldPosition.z / VOXEL_SIZE ) * VOXEL_SIZE + VOXEL_SIZE/2;
 	
-	gridPosition.x = Math.round(objectWorldPosition.x/VOXEL_SIZE + (GRID_SIZE - 1)/2);
-	gridPosition.y = Math.round((objectWorldPosition.y - plane.position.y)/VOXEL_SIZE - 0.5);
-	gridPosition.z = Math.round(objectWorldPosition.z/VOXEL_SIZE + (GRID_SIZE - 1)/2);
+	gridPosition[0] = Math.round(objectWorldPosition.x/VOXEL_SIZE + (GRID_SIZE - 1)/2);
+	gridPosition[1] = Math.round(objectWorldPosition.z/VOXEL_SIZE + (GRID_SIZE - 1)/2);
+	gridPosition[2] = Math.round((objectWorldPosition.y - plane.position.y)/VOXEL_SIZE - 0.5);
+}
+
+function checkGridPosition( pos , block ){
+	console.log(pos);
+	console.log(block);
+	if (pos[0] + block[0] < 0 || pos[0] + block[0] >= GRID_SIZE &&
+		pos[1] + block[1] < 0 || pos[1] + block[1] >= GRID_SIZE &&
+		pos[2] + block[2] < 0 || pos[2] + block[2] >= GRID_HEIGHT)
+			return false;
+
+	return controller.ContainsObject (pos[0], pos[1], pos[2]);
 }
 
 function rotateCurrentObject(){
-	
+}
+
+function removeObjectFromScene( object ){
+	scene.remove(object);
+	for ( var obj in sceneObjects ){
+		if (sceneObjects[obj] == object ){
+			sceneObjects[obj] = undefined;
+		}
+	}
+}
+
+function addObjectToScene( intersector, intersects ){
+	updateObjectPosition( intersector );
+	if (currMeshID == 1) {
+		if (!checkGridPosition(gridPosition, [0,0,0])) {
+			console.log("NICE TRY MUTHERFUCKA");
+			return false;
+		}
+	} else {
+		var blocks = objectMeshes[currMeshID].blocks;
+		console.log(objectMeshes[currMeshID]);
+		for (var n = 0; n < objectMeshes[currMeshID].block_num; n++ ){
+			if (!checkGridPosition(gridPosition, blocks[n] )) {
+				console.log("NICE TRY MUTHERFUCKA");
+				return false;
+			}
+		}	
+	}
+			
+	var newMesh = new THREE.Mesh(rollOverMesh.geometry.clone(), defaultMaterial);
+	newMesh.scale.copy(rollOverMesh.scale);
+	newMesh.position.copy(objectWorldPosition);
+	scene.add( newMesh );
+	sceneObjects[currSceneID] = newMesh;
+	controller.AddObject(new RubeJect ( currObjPropertyId, gridPosition, false));
+	console.log("added new mesh id = " + currSceneID);
+	currSceneID++;
 }

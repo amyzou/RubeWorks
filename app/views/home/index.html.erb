@@ -3,26 +3,28 @@
 <script>
 
 //SHARED GLOBALS
+var pause = false;
 var buildMode = true;
 
 var controller;
 
 var mainGrid = [];
-var GRID_SIZE = 20;
-var GRID_HEIGHT = 10;
+var GRID_SIZE = 30;
+var GRID_HEIGHT = 8;
 var VOXEL_SIZE = 50;
 
 var objectMeshes = [];
 var NObjectsToLoad;
 
 var sceneObjects = [];
+var saveState = [];
 var currSceneID = 0;
 
 //inputHandlers
 var keyeventhandler;
 var mouseeventhandler;
-
-var mouse2D;
+var shiftDown = false, ctrlDown = false;
+var mouse2D = new THREE.Vector3(0.5, 10000, 0);
 
 
 //RENDERING 
@@ -31,23 +33,25 @@ var canvas_width, canvas_height;
 var scene, camera, plane;
 var projector, raycaster;
 
-
-var theta = 45 * 0.5;
+var theta = 0;;
 
 var shiftDown = false, ctrlDown = false;
 var rollOveredFace;
 
+var cubeGeo;
 var rollOverMesh, rollOverMaterial;
 var rollOverErrorMaterial;
 var defaultMaterial;
 var currMeshID = 1;
+var currObjPropertyId = 1;
 
-var currPos = new THREE.Vector3(), tmpVec = new THREE.Vector3(), normalMatrix = new THREE.Matrix3();
+var scaleVec = new THREE.Vector3(VOXEL_SIZE/2, VOXEL_SIZE/2, VOXEL_SIZE/2);
+var tmpVec = new THREE.Vector3();
+var normalMatrix = new THREE.Matrix3();
+var idx, intersector;
 
-var i, intersector;
-
-var objectWorldPosition = new THREE.Vector3();
-var gridPosition = new THREE.Vector3();
+var objectWorldPosition = new THREE.Vector3(-VOXEL_SIZE/2, VOXEL_SIZE/2,-VOXEL_SIZE/2);
+var gridPosition = [0,0,0];
 
 var objLoader;	
 var JSONLoader;
@@ -61,13 +65,12 @@ $(function(){
 
 	//TOOLBOX: tabs, hover-scroll
 	$("#toolbox").organicTabs({ });
-	$('.scroll-div').hoverscroll({fixedArrows: true, width: 800, height: 105});
+	$('.scroll-div').hoverscroll({fixedArrows: true, width: 800, height: 112});
 	// Starting the movement automatically at loading
 	// @param direction: right/bottom = 1, left/top = -1
 	// @param speed: Speed of the animation (scrollPosition += direction * speed)
 	var direction = 0, speed = 0;
 	$(".scroll-div")[0].startMoving(direction, speed);
-	
 
 	if ( ! Detector.webgl ) 
 		Detector.addGetWebGLMessage();
@@ -78,6 +81,11 @@ $(function(){
 			setCurrentObject( $(this).attr('id') );
 		}
 	);
+
+	$(".button").click( switchMode );
+	$(".button").hide();
+	$('.buildmode').fadeIn();
+	$('.runmode').fadeOut();
 
 	//DISPLAY
 	initGraphics("grid_container");
@@ -109,16 +117,17 @@ $(function(){
 	} */
 
 	// CONTROLLER TESTING THINGS ----------------------------------------------------------
-	var controller = new RubeJectController();
+	console.log("CONTROLLER TESTING ----------------------------------------------------------");
+	
+	controller = new RubeJectController();
 
 	// Instantiate objects needed.
 	var blocks = new Array();
-	blocks.push(new RubeJect(1,[1,0,0],0)); blocks.push(new RubeJect(1,[1,0,1],0)); 
-	blocks.push(new RubeJect(1,[2,0,0],0)); blocks.push(new RubeJect(1,[2,0,1],0)); 
-	blocks.push(new RubeJect(1,[3,0,0],0)); blocks.push(new RubeJect(1,[4,0,0],0));
-	var arrow = new RubeJect(7,[0,0,2],0);
-	var sphere = new RubeJect(5,[1,0,2],0);
-	var ramp = new RubeJect(4,[3,0,1],0);
+	blocks.push(new RubeJect(1,[1,0,5],0)); blocks.push(new RubeJect(1,[2,0,5],0)); 
+	blocks.push(new RubeJect(1,[6,0,0],0));
+	var arrow = new RubeJect(7,[0,0,6],0);
+	var sphere = new RubeJect(5,[1,0,6],0);
+	var ramp = new RubeJect(4,[3,0,3],0);
 
 	// Add all objects to controller.
 	for (var i = 0; i < blocks.length; i++) {controller.AddObject(blocks[i], false);}
@@ -129,16 +138,18 @@ $(function(){
 
 	// Test chaining
 	controller.CreateChains();
+	console.log("ENDING TESTING OF CONTROLLER -----------------------------------------------");
 	// Ending testing of controller ------------------------------------------------------
-
+	$('.loading').hide();
 	animate();
 });
 
 </script>
+<div class='loading'>Loading...</div>
 <div id='grid_container'>
 </div>
 
-<div id="toolbox">
+<div id="toolbox" class='buildmode'>
 					
 	<ul class="nav">
 		<li class="nav-one"><a href="#cat1" class="current">Inerts</a></li>
@@ -165,6 +176,10 @@ $(function(){
 		</div>
 
 	</div> <!-- END List Wrap -->
-</div> <!-- END toolbox  -->	
+</div> 	
 
+<div id="button_container">
+	<div class='button buildmode'>Run</div>
+	<div class='button runmode'>Stop</div>
+</div>
 

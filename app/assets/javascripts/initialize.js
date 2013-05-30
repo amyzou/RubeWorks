@@ -1,13 +1,8 @@
-function initInputHandlers(){
-	keyeventhandler = new KeyHandler();
-	mouseeventhandler = new MouseHandler();
-}
-
 function initGraphics( container_id ) {
 	scene = new THREE.Scene();
 	projector = new THREE.Projector();
 
-	canvas_width = $('#'+ container_id).width();
+	canvas_width = $(window).width();
 	canvas_height = $('#'+ container_id).height();
 
 	camera = new THREE.PerspectiveCamera( 45, canvas_width/canvas_height, 1, 10000 );
@@ -21,21 +16,30 @@ function initGraphics( container_id ) {
 		new THREE.MeshBasicMaterial( { color: 0x2c364f, wireframe: true } ) 
 	);
 	plane.rotation.x = - Math.PI / 2;
+	plane.matrixAutoUpdate = false;
+	plane.updateMatrix();
 	scene.add( plane );
 
 	initGeometry();
 	initLighting();
-	initInputHandlers();
 
 	//APPEND CANVAS
 	container = document.getElementById( container_id );
 	container.appendChild( renderer.domElement );
 
-	// picking
-	container.addEventListener( 'mousemove', mouseeventhandler.down , false );
-	container.addEventListener( 'mousedown', mouseeventhandler.down, false );
-	document.addEventListener( 'keydown', keyeventhandler.press, true );
-	document.addEventListener( 'keyup', keyeventhandler.release, true );
+	//picking
+	container.addEventListener( 'mousemove', onMouseMove , false );
+	container.addEventListener( 'mousedown', onMouseDown, false );
+	document.addEventListener( 'keydown', onKeyDown, false );
+	document.addEventListener( 'keyup', onKeyUp , false );
+	window.addEventListener ('resize', resizeViewport, false);
+}
+
+function resizeViewport() {
+	canvas_width = $(window).width();
+	camera.aspect = canvas_width/canvas_height;
+	camera.updateProjectionMatrix();
+	renderer.setSize( canvas_width, canvas_height);
 }
 
 function initGeometry(){
@@ -44,11 +48,12 @@ function initGeometry(){
 
 	// roll-over Mesh
 	//rollOverGeo = new THREE.CubeGeometry( VOXEL_SIZE, VOXEL_SIZE, VOXEL_SIZE );
+	cubeGeo = new THREE.CubeGeometry( VOXEL_SIZE, VOXEL_SIZE, VOXEL_SIZE );
 	rollOverMaterial = new THREE.MeshBasicMaterial( { color: 0xfcd87f, wireframe: true, opacity: 0.5, transparent: true } );
 	rollOverErrorMaterial = new THREE.MeshBasicMaterial( { color: 0xb93131, wireframe: true, opacity: 0.5, transparent: true } );
-	defaultMaterial = new THREE.MeshBasicMaterial( { color: 0xfeb74c } );
-	rollOverMesh = new THREE.Mesh(new THREE.CubeGeometry( VOXEL_SIZE, VOXEL_SIZE, VOXEL_SIZE ), rollOverMaterial);
-	rollOverMesh.matrixAutoUpdate = false;
+	defaultMaterial = new THREE.MeshLambertMaterial( { color: 0x384463, ambient: 0x384463, shading: THREE.FlatShading });
+	rollOverMesh = new THREE.Mesh(cubeGeo, rollOverMaterial);
+	rollOverMesh.position = objectWorldPosition;
 	scene.add(rollOverMesh);
 }
 
@@ -60,60 +65,4 @@ function initLighting(){
 	scene.add( directionalLight );
 }
 
-function getRealIntersector( intersects ) {
-	for( i = 0; i < intersects.length; i++ ) {
-		intersector = intersects[ i ];
-		if ( intersector.object != rollOverMesh ) {
-			return intersector;
-		}
-	}
-	return null;
-}
 
-function animate() {
-	requestAnimationFrame( animate );
-	render();
-}
-
-function render() {
-	if (buildMode) {
-		if ( keyeventhandler.shiftDown ) {
-			theta += mouse2D.x * 1.5;
-		}
-
-		raycaster = projector.pickingRay( mouse2D.clone(), camera );
-		var intersects = raycaster.intersectObjects( scene.children );
-		if ( intersects.length > 0 ) {
-			intersector = getRealIntersector( intersects );
-			if ( intersector ) {
-				updateObjectPosition( intersector );
-				rollOverMesh.position = objectWorldPosition;
-			}
-		}
-
-		camera.position.x = 1400 * Math.sin( THREE.Math.degToRad( theta ) );
-		camera.position.z = 1400 * Math.cos( THREE.Math.degToRad( theta ) );
-
-		camera.lookAt( scene.position );
-		renderer.render( scene, camera );	
-	} else {
-		//SONYAS FUNCTION 
-	}
-	
-}
-
-function addObjectToScene( intersector, intersects ){
-	updateObjectPosition( intersector );
-
-	var newMesh = new THREE.Mesh( objectMeshes[currMeshID].geometry, defaultMaterial);
-
-	//CALL CONTROLLER TO CREATE NEW RUBEJECT HERE
-	newMesh.position.copy(objectWorldPosition);
-	newMesh.matrixAutoUpdate = false;
-	newMesh.updateMatrix();
-	scene.add( newMesh );
-	sceneObjects[currSceneID] = newMesh;
-	//CreateRubeJect ( currMeshID, currSceneID );
-	console.log("added new mesh id = " + currSceneID);
-	currSceneID++;
-}
