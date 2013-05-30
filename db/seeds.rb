@@ -39,12 +39,12 @@ dominos = ObjectProperty.create(
     io_map:                 [[[0,0,0,3],[1,0,0,5]]],
     compatible_roamers:     'null',
 )
-domino.display = Display.create(
+dominos.display = Display.create(
     image_file:             'dominoes.png', 
     obj_file:               'dominos.js', 
     texture_file:           'dominosTex.jpg', 
 )
-domino.updateDisplay
+dominos.updateDisplay
 
 # Fan
 fan = ObjectProperty.create(
@@ -97,8 +97,8 @@ ramp = ObjectProperty.create(
 )
 ramp.display = Display.create(
     image_file:             'ramp.png', 
-    obj_file:               'WoodRamp30.obj', 
-    texture_file:           'null', 
+    obj_file:               'WoodRamp30.js', 
+    texture_file:           'WoodTex', 
 )
 ramp.updateDisplay
 
