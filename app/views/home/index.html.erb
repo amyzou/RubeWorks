@@ -81,24 +81,27 @@ $(function(){
 	}
 
 	// CONTROLLER TESTING THINGS ----------------------------------------------------------
+	console.log("CONTROLLER TESTING ----------------------------------------------------------");
 	var controller = new RubeJectController();
 
 	// Instantiate objects needed.
 	var blocks = new Array();
-	blocks.push(new RubeJect(1,[1,0,3],0)); blocks.push(new RubeJect(1,[2,0,3],0)); 
-	var arrow = new RubeJect(7,[0,0,4],0);
-	var sphere = new RubeJect(5,[1,0,4],0);
-	var ramp = new RubeJect(4,[3,0,1],0);
+	blocks.push(new RubeJect(1,[1,0,5],0)); blocks.push(new RubeJect(1,[2,0,5],0)); 
+	blocks.push(new RubeJect(1,[6,0,0],0));
+	var arrow = new RubeJect(7,[0,0,6],0);
+	var sphere = new RubeJect(5,[1,0,6],0);
+	var ramp = new RubeJect(4,[3,0,3],0);
 
 	// Add all objects to controller.
 	for (var i = 0; i < blocks.length; i++) {controller.AddObject(blocks[i], false);}
 	controller.AddObject(arrow,true); controller.AddObject(ramp,false); controller.AddObject(sphere,false); 
 	//controller.PrintAllObjects();
 	//controller.PrintAllStartingObjects();
-	controller.PrintGrid();
+	//controller.PrintGrid();
 
 	// Test chaining
 	controller.CreateChains();
+	console.log("ENDING TESTING OF CONTROLLER -----------------------------------------------");
 	// Ending testing of controller ------------------------------------------------------
 
 	animate();
