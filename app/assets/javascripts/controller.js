@@ -132,7 +132,8 @@ function RubeJectController(){
 	}
 
 	//method to add object
-	this.AddObject = function(rubeJect, isStartingObject){
+	this.AddObject = function(rubeJect){
+		var isStartingObject = rubeJect.category === "starter";
 		//console.log("Adding: " + rubeJect.position + ";" + objectSceneIDCounter);
 		objectSceneIDList[objectSceneIDCounter] = rubeJect;
 		PlaceObjectIntoSpace(objectSceneIDCounter);
