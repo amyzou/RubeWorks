@@ -1,5 +1,4 @@
- /* 
-  * the way face works:
+ /* the way face works:
   * x, y, z, facenum
   * facenums (
   * looking down from z:
@@ -389,22 +388,40 @@ function RubeJectController(){
 	/*-----------------Animation code-----------------*/
 
 	var currentHardcodedNumberForRendering = 60;
-
-	//updating objects in scene required : ID, absoluteposition
-
 	var stateList = new Array();
 
-	// calculate path: interpolate and store results in a list
-	// return array of positions
-	// [0] : new momentum
-	// start: midpoint of inblock
-	// endface: the one midpoint of outface's inblock
+	 /* start: midpoint of inblock
+	  * endface: the one midpoint of outface's inblock
+	  *
+	  * facenums (
+	  * looking down from z:
+	  * y |  +-0-+
+	  *   | 3|   |1
+	  *   |  +-2-+
+	  * --+-------------
+	  *   |  x
+	  *
+	  * looking from -y:
+	  * z |  +-5-+
+	  *   |  |   |
+	  *   |  +-4-+
+	  * --+-------------
+	  *   |  x
+	  */
 
 	var InblockForOutface = function(outface){
-		return inblock = [0, 1, 2];
+		switch(outface[3]){
+			case 0: return [outface[0], outface[1] + 1, outface[2]];
+			case 1: return [outface[0] + 1, outface[1], outface[2]];
+			case 2: return [outface[0], outface[1] - 1, outface[2]];
+			case 3: return [outface[0] - 1, outface[1], outface[2]];
+			case 4: return [outface[0], outface[1], outface[2] - 1];
+			case 5: return [outface[0], outface[1] + 1, outface[2]];
+			default : return false;
+		}
 	};
 
-	//initiate states for all starting points; first create chains though.
+	//initiate states for all starting points. Chains have to be created already.
 	this.InitiateAnimation = function(){
 		for (var i = 0; i < startingObjectCounter; i++){
 				stateList[i] = new Object();
@@ -470,6 +487,8 @@ function RubeJectController(){
 		for (var i = 0; i < startingObjectCounter; i ++ ){
 			if (stateList[i] == null) numChainsRunning -- ;
 			else if (stateList[i].stepsLeft > 1 ){
+				// updating objects in scene requires : ID, absoluteposition
+
 				// TODO : update object position with emily
 				//object: stateList[i].currentRoamer
 				//position: 
