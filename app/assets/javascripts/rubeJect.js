@@ -10,7 +10,7 @@
  */
 
 //2x the minimum frame rate before lag?
-var OBJECT_FRAME_RATE = 48;
+var OBJECT_FRAME_RATE = 24;
 
 function RubeJect(objectPropertyID, position, rotation){
 	
