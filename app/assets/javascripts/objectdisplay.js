@@ -88,11 +88,6 @@ function updateObjectPosition( intersector ) {
 
 function checkGridPosition( pos , block ){
 	console.log(pos);
-	if (pos[0] + block[0] < 0 || pos[0] + block[0] >= GRID_SIZE &&
-		pos[1] + block[2] < 0 || pos[1] + block[2] >= GRID_SIZE &&
-		pos[2] + block[1] < 0 || pos[2] + block[1] >= GRID_HEIGHT)
-			return false;
-
 	return controller.ContainsObject (pos[0], pos[1], pos[2]);
 }
 
