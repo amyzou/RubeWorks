@@ -334,43 +334,90 @@ function RubeJectController(){
 
 	/*-----------------Animation code-----------------*/
 
+	var currentHardcodedNumberForRendering = 60;
+
 	//updating objects in scene required : ID, absoluteposition
 
 	var stateList = new Array();
+
+	// calculate path: interpolate and store results in a list
+	// return array of positions
+	// [0] : new momentum
+	// start: midpoint of in face
+	// endface: the one midpoint of out face
+	this.CalculatePath = function(objectID, prevOutface, inMomentum){
+
+	};
 
 	//initiate states for all starting points; first create chains though.
 	this.InitiateAnimation = function(){
 		for (var i = 0; i < startingObjectCounter; i++){
 				stateList[i] = new Object();
+				// Chain entry: [carrier, roamer, outface]
+				// startingObjectList entry = array of chain entries
 				// To get the sceneID in the chain entry, you need startingObjectList[i][0][0] (carrier)
-				// or startingObjectList[i][0][0] (roamer)
+				// or startingObjectList[i][0][1] (roamer)
 				// startingObjectList[i][0] refers to a chain entry, which is [carrierID,roamerID,face]
 				// IDs used are scene IDs. To get the objectID, use objectSceneIDList[carrierID].
-				stateList[i].currentCarrier = startingObjectList[i][0]; //objectID
-				stateList[i].currentRoamer;
-				stateList[i].path;//this is an array
-				stateList[i].currPosition = 0; //this is which position it is using right now
+				stateList[i].currentCarrier = startingObjectList[i][1][0]; //objectID
+				stateList[i].currentRoamer = startingObjectList[i][1][1];
+				stateList[i].path = CalculatePath(startingObjectList[i][1][0], startingObjectList[i][0][2], 
+									//objectSceneIDList[startingObjectList[i][0][0]].momentum
+									//for now, have a random val
+									12 );//this is an array
+				stateList[i].currPathPosition = 1; //this is which position in the path list it is using right now
+				stateList[i].currChainPosition = 0;
 		}
 	};
 
-	this.CalculatePath = function(objectID, inface){
-		//calculate path: interpolate and store results in a list
-		//return array of positions
-	};
-
-	/*
+	// returns true while still animating
+	// when done, return false
 	this.UpdateAnimation = function(){
-		update state
+		//to check if all chains are done
+		var numChainsRunning = startingObjectCounter;
+
+		/*
+		update state loop:
 			for each state:
 				if   last position in path, 
 					if mv != 0
-		move to the next object, 
-		calculate path for new object, 
-		change current carrier to new object
-		else delete state from state list or something
-				else  move current position to the next position in path
+						move to the next object, 
+						calculate path for new object, 
+						change current carrier to new object
+						else delete state from state list or something
+		else  move current position to the next position in path
+					*/
+
+		for (var i = 0; i < startingObjectCounter; i++){
+			if (stateList[i] == null) numChainsRunning --;
+			else if (stateList[i].currPosition < stateList[i].path.len){
+				//update object position with emily
+				//object: stateList[i].currentRoamer
+				//position: 
+
+				stateList[i].currPosition ++;
+
+			} else if (startingObjectList[i][stateList[i].currChainPosition + 1]
+																		!= null) {
+				stateList[i].currentCarrier = startingObjectList[i]
+												[stateList[i].currChainPosition + 1][0]; //objectID
+				stateList[i].currentRoamer = startingObjectList[i]
+												[stateList[i].currChainPosition + 1][1];
+				stateList[i].path = CalculatePath(startingObjectList[i]
+												[stateList[i].currChainPosition + 1][0], 
+												startingObjectList[i]
+												[stateList[i].currChainPosition][2],//prev. outface = new inface 
+												stateList[i].path[0] );
+				stateList[i].currPosition = 1; 
+				//this is which position in the path list it is using right now
+				//path[0] is prev. outcoming momentum
+			} else stateList[i] = null;
+		}
+
+		if (numChainsRunning != 0) return true;
+		else return false;
 	};
-*/
+
 
   	/*-----------------For testing purposes-----------------*/
   	this.PrintAllObjects = function(){
