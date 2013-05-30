@@ -97,8 +97,8 @@ ramp = ObjectProperty.create(
 )
 ramp.display = Display.create(
     image_file:             'ramp.png', 
-    obj_file:               'WoodRamp30.obj', 
-    texture_file:           'null', 
+    obj_file:               'WoodRamp30.js', 
+    texture_file:           'WoodTex', 
 )
 ramp.updateDisplay
 
