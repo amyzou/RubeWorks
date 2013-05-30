@@ -55,7 +55,10 @@ function RubeJect(objectPropertyID, position, rotation){
 	// Search for face in format "x,y,z,face"
 	this.hasInFace = function(inFace){
 		for (var i = 0; i < this.ioMap.length; i++) {
-			if (this.ioMap[i][0] === inFace) return true;
+			if (this.ioMap[i][0][0] === inFace[0] && this.ioMap[i][0][1] === inFace[1]
+				&& this.ioMap[i][0][2] === inFace[2] && this.ioMap[i][0][3] === inFace[3]) {
+				return true;
+			}
 		}
 		return false;
 	};
@@ -64,7 +67,9 @@ function RubeJect(objectPropertyID, position, rotation){
 	// Returns empty string otherwise. 
 	this.getOutFace = function(inFace){
 		for (var i = 0; i < this.ioMap.length; i++) {
-			if (this.ioMap[i][0] === inFace) return this.ioMap[i][1];
+			if (this.ioMap[i][0][0] === inFace[0] && this.ioMap[i][0][1] === inFace[1]
+				&& this.ioMap[i][0][2] === inFace[2] && this.ioMap[i][0][3] === inFace[3])
+				return this.ioMap[i][1];
 		}
 		return "";
 	};
