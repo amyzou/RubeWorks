@@ -5,8 +5,8 @@ function initGraphics( container_id ) {
 	canvas_width = $(window).width();
 	canvas_height = $('#'+ container_id).height();
 
-	camera = new THREE.PerspectiveCamera( 40, canvas_width/canvas_height, 1, 10000 );
-	camera.position.y = 600;
+	camera = new THREE.PerspectiveCamera( 45, canvas_width/canvas_height, 1, 10000 );
+	camera.position.y = 500;
 
 	renderer = new THREE.WebGLRenderer( { antialias: true, preserveDrawingBuffer: true } );
 	renderer.setSize( canvas_width, canvas_height);
@@ -41,6 +41,7 @@ function resizeViewport() {
 	camera.updateProjectionMatrix();
 	renderer.setSize( canvas_width, canvas_height);
 }
+
 function initGeometry(){
 	objLoader = new THREE.OBJLoader();
 	JSONLoader = new THREE.JSONLoader();
@@ -80,10 +81,12 @@ function animate() {
 }
 
 function render() {
+	if ( shiftDown ) {
+		theta += mouse2D.x * 1.5;
+	}
+	
 	if (buildMode) {
-		if ( shiftDown ) {
-			theta += mouse2D.x * 1.5;
-		}
+		
 
 		raycaster = projector.pickingRay( mouse2D.clone(), camera );
 		var intersects = raycaster.intersectObjects( scene.children );
