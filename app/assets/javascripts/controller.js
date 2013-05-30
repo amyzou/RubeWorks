@@ -117,6 +117,20 @@ function RubeJectController(){
 		return false;
 	}
 
+	this.CanPlace = function(blockList, pos, category) {
+		for (var i = 0; i < blockList.length; i++) {
+			if (ContainsObject(blockList[i][0] + pos[0],
+							   blockList[i][1] + pos[1],
+							   blockList[i][2] + pos[2])) 
+				return false;
+		}
+		// Roamers and gadgets must be on an inert or ground
+		if (category === "roamer") {
+
+		}
+
+	}
+
 	//method to add object
 	this.AddObject = function(rubeJect, isStartingObject){
 		//console.log("Adding: " + rubeJect.position + ";" + objectSceneIDCounter);
@@ -278,6 +292,8 @@ function RubeJectController(){
 	 * CarrierID:
 	 * -1 => Linear paths along inert objects or ground
 	 * -2 => Free fall.
+	 * 
+	 * Assumes that roamers are 1 block. (probably needs extending)
 	 */
 	var GetNextEntry = function(chainEntry, roamerID) {
 		var outface = chainEntry[2];
