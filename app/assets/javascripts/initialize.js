@@ -6,7 +6,7 @@ function initGraphics( container_id ) {
 	canvas_height = $('#'+ container_id).height();
 
 	camera = new THREE.PerspectiveCamera( 45, canvas_width/canvas_height, 1, 10000 );
-	camera.position.y = 500;
+	camera.position.y = 600;
 
 	renderer = new THREE.WebGLRenderer( { antialias: true, preserveDrawingBuffer: true } );
 	renderer.setSize( canvas_width, canvas_height);

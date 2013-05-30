@@ -58,20 +58,23 @@ function setCurrentObject ( objectID ) {
 	var scale = 1;
 	if (currMeshID == 5) 
 		scale = 25;//objectMeshes[currMeshID].scaleFactor;
-	if (currMeshID == 4) {
-		scale = 25 * 1.5;
-	}
 	rollOverMesh.scale = new THREE.Vector3(scale, scale, scale);
+	if (currMeshID == 4) {
+		rollOverMesh.scale.x = 25 * 1.5;
+		rollOverMesh.scale.y = 25 * 1.5;
+		rollOverMesh.scale.z = 25 * 1.9;
+	}
 	rollOverMesh.position = objectWorldPosition;
 	scene.add(rollOverMesh);
 }
 
 function updateObjectPosition( intersector ) {
 	var offset = new THREE.Vector3(VOXEL_SIZE/2,VOXEL_SIZE/2,VOXEL_SIZE/2);
-	// if (currMeshID == 4) {
-	// 	offset.x = VOXEL_SIZE * 3/2;
-	// 	offset.z = VOXEL_SIZE * .5;
-	// }
+	if (currMeshID == 4) {
+		offset.x = -VOXEL_SIZE * 3/2;
+		offset.y = 0;
+		offset.z = VOXEL_SIZE;
+	}
 	normalMatrix.getNormalMatrix( intersector.object.matrixWorld );
 	tmpVec.copy( intersector.face.normal );
 	tmpVec.applyMatrix3( normalMatrix ).normalize();
@@ -83,11 +86,10 @@ function updateObjectPosition( intersector ) {
 	
 	gridPosition[0] = Math.round((objectWorldPosition.x - offset.x)/VOXEL_SIZE + (GRID_SIZE)/2);
 	gridPosition[1] = Math.round((objectWorldPosition.z - offset.z)/VOXEL_SIZE + (GRID_SIZE)/2);
-	gridPosition[2] = Math.round((objectWorldPosition.y - offset.y/VOXEL_SIZE) - 0.5);
+	gridPosition[2] = Math.round((objectWorldPosition.y - offset.y)/VOXEL_SIZE);
 }
 
 function checkGridPosition( pos , block ){
-	console.log(pos);
 	return controller.ContainsObject (pos[0], pos[1], pos[2]);
 }
 
