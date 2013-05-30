@@ -99,11 +99,19 @@ function RubeJectController(){
 		return chainEntry;
 	}
 
-	var translateOutface = function(outface, position) {
-		outface[0] += position[0];
-		outface[1] += position[1];
-		outface[2] += position[2];
-		return outface;
+	var GetAbsoluteFace = function(face, position) {
+		face[0] += position[0];
+		face[1] += position[1];
+		face[2] += position[2];
+		return face;
+	}
+
+	var GetRelativeFace = function(face, position) {
+		console.log("Get relative: " + face + "|" + position);
+		face[0] -= position[0];
+		face[1] -= position[1];
+		face[2] -= position[2];
+		return face;	
 	}
 
 	this.ContainsObject = function(x,y,z) {
@@ -119,7 +127,7 @@ function RubeJectController(){
 		PlaceObjectIntoSpace(objectSceneIDCounter);
 		if (isStartingObject) {
 			startingObjectList[startingObjectCounter] = new Array();
-			var outface = translateOutface(rubeJect.getOutFaceByIndex(0), rubeJect.position);
+			var outface = GetAbsoluteFace(rubeJect.getOutFaceByIndex(0), rubeJect.position);
 			startingObjectList[startingObjectCounter][0] = createChainEntry(-1, objectSceneIDCounter, outface);
 			startingObjectCounter ++;
 		}
@@ -154,42 +162,36 @@ function RubeJectController(){
 			  		&& (faceA[1] + 1 == faceB[1])
 			  		&& faceB[3] == 2) return true;
 			  	else return false;
-			    break;
 			case 1:
 				if (faceA[1] == faceB[1] 
 					&& faceA[2] == faceB[2] 
 					&& (faceA[0] + 1 == faceB[0]) 
 					&& faceB[3] == 3) return true;
 				else return false;
-			    break;
 			case 2:
 			  	if (faceA[0] == faceB[0] 
 			  		&& faceA[2] == faceB[2]
 			  		&& (faceA[1] == faceB[1] + 1)
 			  		&& faceB[3] == 0) return true;
 			  	else return false;
-			    break;
 			case 3:
 			  	if (faceA[1] == faceB[1] 
 				  	&& faceA[2] == faceB[2]
 			  		&& (faceA[0] == faceB[0] + 1)
 			  		&& faceB[3] == 1) return true;
 			  	else return false;
-			    break;
 			case 4:
 			  	if (faceA[0] == faceB[0] 
 			  		&& faceA[1] == faceB[1]
 			  		&& faceA[2] == faceB[2] + 1
 			  		&& faceB[3] == 5) return true;
 			  	else return false;
-			    break;
 			case 5:
 			  	if (faceA[0] == faceB[0] 
 			  		&& faceA[1] == faceB[1]
 			  		&& faceA[2] + 1 == faceB[2]
 			  		&& faceB[3] == 4) return true;
 			  	else return false;
-			    break;
 			default: return false;
 		}
 	}
@@ -209,12 +211,12 @@ function RubeJectController(){
 	}
 
 	var GetOutface = function(pos,direction) {
-		var outface = pos.splice(0);
+		var outface = pos.slice(0);
 		outface[3] = direction;
 		return outface;
 	}
 
-	var GetPositionFromOutface = function(face) {
+	var GetPositionFromFace = function(face) {
 		return face.slice(0,3);
 	}
 
@@ -238,6 +240,34 @@ function RubeJectController(){
 		return false;
 	}
 
+	var isWithinLimits = function(pos,direction){
+		switch(direction){
+			case 0:	return pos[1] < GRID_SIZE;
+			case 1: return pos[0] < GRID_SIZE;
+			case 2:	return pos[1] >= 0;
+			case 3:	return pos[0] >= 0;
+			case 4:	return pos[2] >= 0;
+			case 5:	return pos[2] < GRID_SIZE;
+		}
+	}
+
+	var getInface = function(pos,face) {
+		var inface = pos.slice(0);
+		inface[3] = face;
+		return inface;
+	}
+
+	var getOppositeDirection = function(direction) {
+		switch(direction){
+			case 0:	return 2;
+			case 1: return 3;
+			case 2:	return 0;
+			case 3:	return 1;
+			case 4:	return 5;
+			case 5:	return 4;
+		}	
+	}
+
 	//method for chaining - used recursively
 	/* object in chain list:
 	 * carrierID (-1 for floor/falls with linear paths)
@@ -247,31 +277,31 @@ function RubeJectController(){
 	 */
 	var GetNextEntry = function(chainEntry, roamerID) {
 		var outface = chainEntry[2];
-		var position = GetPositionFromOutface(outface);
+		var position = GetPositionFromFace(outface);
 		var thisID = GetObjectFromGrid(position);
 		var direction = outface[3];
 		var nextPos = GetNextBlock(position,direction);
 		var nextID = GetObjectFromGrid(nextPos);
 
-		console.log("Chain entry: " + chainEntry);
+		/*console.log("Chain entry: " + chainEntry);
 		console.log("Position: " + position);
-		console.log("Next position: " + nextPos);
+		console.log("Next position: " + nextPos);*/
 
 		var nextObj = objectSceneIDList[nextID];
 		// If next block contains object:
-		if (!isUndefined(nextID)) {
+		if (nextObj != null) {
 			// If next object is roamer/gadget:
 			if (nextObj.category === "roamer") {
-				// If roamer, outface is as far as it can go on ground
+				// If roamer, outface is as far as it can go on ground (up to GRID_WIDTH)
 				if (OnGroundOrInert(nextPos)) {
-					while (OnGroundOrInert(nextPos)) {
+					while (OnGroundOrInert(nextPos) && isWithinLimits(nextPos,direction)) {
 						position = nextPos;
 						nextPos = GetNextBlock(position,direction);
 					}
 					return createChainEntry(-1, nextID, GetOutface(position,direction));	
 				}
 			} 
-			// If gadget, outface is outface corresponding to 
+			// If gadget, outface is the one corresponding to inface
 			else if (nextObj.category === "gadget") {
 
 			}
@@ -283,7 +313,25 @@ function RubeJectController(){
 		// Next position is empty:
 		else {
 			// TODO: Check below for carriers/freefall.
+			console.log("Position empty.");
+			var belowNextID = GetObjectFromGrid(GetNextBlock(nextPos,4));
+			nextObj = objectSceneIDList[belowNextID];
+			// If object below
+			if (nextObj != null) {
+				console.log("Found object below.");
+				if (nextObj.category === "carrier") {
+					var inface = getInface(nextPos,getOppositeDirection(direction));
+					// If outface matches an inface.
+					if (nextObj.hasInFace(GetRelativeFace(inface,nextObj.position))) {
+						console.log("Found object contains correct inface.");
+						var outface = GetAbsoluteFace(nextObj.getOutFace(inface),nextObj.position);
+						return createChainEntry(belowNextID,roamerID,outface);
+					} else return null;
+						
+				}
+			}
 		}	
+		return null;
 	}
 
 	// Continue to chain. Recursive.
@@ -292,8 +340,9 @@ function RubeJectController(){
 		startingObjectList[listNum][index + 1] = nextEntry;
 
 		// TODO: Recurse after GetNextEntry is completed.
-		console.log("Added entry: " + startingObjectList[listNum][index+1]);
-		// if (nextEntry != null) GetNextChainLink(listNum,startingObjectList[listNum].length-1);
+		console.log("ADDED ENTRY: " + startingObjectList[listNum][index+1]);
+		if (nextEntry != null) 
+			GetNextChainLink(listNum,startingObjectList[listNum].length-1,startingObjectList[listNum][index+1][1]);
 	};
 
 	// Position after starter must contain a roamer or gadget.
@@ -301,7 +350,7 @@ function RubeJectController(){
 		var chainEntry = startingObjectList[listNum][0];
 		var outface = chainEntry[2];
 		var direction = outface[3];
-		var position = GetPositionFromOutface(outface);
+		var position = GetPositionFromFace(outface);
 		var next = GetNextBlock(position,direction);
 		var nextID = GetObjectFromGrid(next);	
 
