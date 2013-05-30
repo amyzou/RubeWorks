@@ -80,7 +80,7 @@ ramp = ObjectProperty.create(
     # the index in the block list "2", which correlates to block (2,0,0), and the face. 
     #This key, value represents rolling down the ramp.
     io_map:                 [
-                             [[0,0,3,3],[2,0,0,1],"linear",[0,0,2],[3,0,0]],
+                             [[0,0,2,3],[2,0,0,1],"linear",[0,0,2],[3,0,0]],
                              [[2,0,0,1],[0,0,2,3],"linear",[3,0,0],[0,0,2]],
                              [[0,0,2,5],[2,0,0,1],"linear",[0,0,2],[3,0,0]],
                              [[0,0,2,5],[2,0,0,1],"linear",[0,0,2],[3,0,0]],
