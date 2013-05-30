@@ -42,15 +42,16 @@ var cubeGeo;
 var rollOverMesh, rollOverMaterial;
 var rollOverErrorMaterial;
 var defaultMaterial;
-var currMeshID = 0;
+var currMeshID = 1;
+var currObjPropertyId = 1;
 
 var scaleVec = new THREE.Vector3(VOXEL_SIZE/2, VOXEL_SIZE/2, VOXEL_SIZE/2);
 var tmpVec = new THREE.Vector3();
 var normalMatrix = new THREE.Matrix3();
-var i, intersector;
+var idx, intersector;
 
 var objectWorldPosition = new THREE.Vector3(-VOXEL_SIZE/2, VOXEL_SIZE/2,-VOXEL_SIZE/2);
-var gridPosition = new THREE.Vector3(0,0,0);
+var gridPosition = [0,0,0];
 
 var objLoader;	
 var JSONLoader;
@@ -117,7 +118,8 @@ $(function(){
 
 	// CONTROLLER TESTING THINGS ----------------------------------------------------------
 	console.log("CONTROLLER TESTING ----------------------------------------------------------");
-	var controller = new RubeJectController();
+	
+	controller = new RubeJectController();
 
 	// Instantiate objects needed.
 	var blocks = new Array();

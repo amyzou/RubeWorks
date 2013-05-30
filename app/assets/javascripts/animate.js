@@ -15,7 +15,7 @@ function render() {
 	if (buildMode) {
 		updateBuildScene();
 	} else {
-		//runObjectAnimations();
+		pause = controller.UpdateAnimation();
 	}
 	renderer.render( scene, camera );	
 }
@@ -33,8 +33,8 @@ function updateBuildScene(){
 }
 
 function getRealIntersector( intersects ) {
-	for( i = 0; i < intersects.length; i++ ) {
-		intersector = intersects[ i ];
+	for( idx = 0; idx < intersects.length; idx++ ) {
+		intersector = intersects[ idx ];
 		if ( intersector.object != rollOverMesh ) {
 			return intersector;
 		}

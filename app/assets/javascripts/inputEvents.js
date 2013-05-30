@@ -32,7 +32,7 @@ function onMouseDown ( event ) {
 	if ( intersects.length > 0 ) {
 		intersector = getRealIntersector( intersects );
 		if ( ctrlDown && intersector.object != plane ) {
-			scene.remove( intersector.object );
+			removeObjectFromScene( intersector.object  );
 		} else {
 			addObjectToScene ( intersector, intersects );
 		}
