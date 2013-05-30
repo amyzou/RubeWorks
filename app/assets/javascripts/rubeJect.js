@@ -38,13 +38,11 @@ function RubeJect(objectPropertyID, position, rotation){
 			self.compatibleRoamers 		= obj.compatible_roamers;
 			self.ioMap 					= obj.io_map[rotation];
 
-			console.log("rubeject blocks: " + obj.blocks);
 			// Retrieve the right rotation.			
 			if (obj.blocks.length != 1) 
 				self.blockList 			= obj.blocks[rotation];
 			else self.blockList 		= obj.blocks;
 
-			console.log("stored blocks: " + self.blockList);
 			allBlockLists 				= obj.blocks;
 			allIOMaps	 				= obj.io_map;
 		}

@@ -137,6 +137,19 @@ $(function(){
 	//controller.PrintAllStartingObjects();
 	//controller.PrintGrid();
 
+	var ramp2 = new RubeJect(4,[5,0,3],0);
+	if (controller.CanPlaceObject(ramp2)) console.log("WRONG");
+	else console.log("Can't place ramp2 at 5,0,3");
+
+	var sphere2 = new RubeJect(7,[8,0,3],0);
+	if (controller.CanPlaceObject(ramp2)) console.log("WRONG");
+	else console.log("Can't place sphere2 at 8,0,3");
+
+	var block2 = new RubeJect(1,[0,0,21],0);
+	if (controller.CanPlaceObject(block2)) console.log("WRONG");
+	else console.log("Can't place block2 at 0,0,21");
+
+
 	// Test chaining
 	controller.CreateChains();
 	console.log("Animation construction --------------------------------------");

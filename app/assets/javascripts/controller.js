@@ -115,23 +115,44 @@ function RubeJectController(){
 
 	this.ContainsObject = function(x,y,z) {
 		if (isUndefined(mainGrid[x][y][z]) || mainGrid[x][y][z] == null)
-			return true;
-		return false;
+			return false;
+		return true;
 	}
 
-	this.CanPlace = function(blockList, pos, category) {
+	this.CanPlaceObject = function(blockList, pos, category) {
 		for (var i = 0; i < blockList.length; i++) {
-			if (ContainsObject(blockList[i][0] + pos[0],
+			if (this.ContainsObject(blockList[i][0] + pos[0],
 							   blockList[i][1] + pos[1],
 							   blockList[i][2] + pos[2])) 
 				return false;
+			if (!allWithinLimits) return false;
 		}
 		// Roamers and gadgets must be on an inert or ground
-		if (category === "roamer") {
-
+		if (category === "roamer" || category === "gadget") {
+			var groundBlocks = GetGroundBlocks(blockList, pos); 
+			for (var i = 0; i < groundBlocks.length; i++) {
+				if (!OnGroundOrInert(groundBlocks[i]))
+					return false;
+			}
 		}
+		return true;
 
 	}
+
+	var GetGroundBlocks = function (blockList, pos) {
+		var groundBlocks = new Array();
+		for (var i = 0; i < blockList.length; i++) {
+			if (blockList[i][2] === 0) {
+				console.log("this block: " + blockList[i]);
+				blockList[i][0] += pos[0];
+				blockList[i][1] += pos[1];
+				blockList[i][2] += pos[2];
+				groundBlocks.push(blockList[i]);
+			}
+		}
+		return groundBlocks;
+	}
+
 
 	//method to add object
 	this.AddObject = function(rubeJect){
@@ -256,6 +277,14 @@ function RubeJectController(){
 			return true;
 		}
 		return false;
+	}
+
+	var allWithinLimits = function(pos) {
+		for (var i = 0; i < 6; i++) {
+			if (!isWithinLimits(pos,i))
+				return false;
+		}
+		return true;
 	}
 
 	var isWithinLimits = function(pos,direction){
