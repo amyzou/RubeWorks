@@ -152,7 +152,6 @@ function RubeJectController(){
 			startingObjectList[startingObjectCounter] = new Array();
 			var outface = translateOutface(rubeJect.getOutFaceByIndex(0), rubeJect.position);
 			startingObjectList[startingObjectCounter][0] = createChainEntry(-1, objectSceneIDCounter, outface);
-			//console.log(startingObjectList[startingObjectCounter][0]);
 			startingObjectCounter ++;
 		}
 		objectSceneIDCounter ++;
@@ -226,19 +225,25 @@ function RubeJectController(){
 		}
 	}
   
-	// Retrive next block from outface.
-	var GetNextBlock = function(face){
-		switch(face[3]){
-			case 0:	face[1] += 1; break;
-			case 1: face[0] += 1; break;
-			case 2:	face[1] -= 1; break;
-			case 3:	face[0] -= 1; break;
-			case 4:	face[2] -= 1; break;
-			case 5:	face[2] += 1; break;
+	// Retrive next block from pos and direction.
+	var GetNextBlock = function(pos,direction){
+		var nextPos = pos.slice(0);
+		switch(direction){
+			case 0:	nextPos[1] += 1; break;
+			case 1: nextPos[0] += 1; break;
+			case 2:	nextPos[1] -= 1; break;
+			case 3:	nextPos[0] -= 1; break;
+			case 4:	nextPos[2] -= 1; break;
+			case 5:	nextPos[2] += 1; break;
 		}
-		return GetPositionFromOutface(face);
+		return nextPos;
 	}
 
+	var GetOutface = function(pos,direction) {
+		var outface = pos.splice(0);
+		outface[3] = direction;
+		return outface;
+	}
 
 	var GetPositionFromOutface = function(face) {
 		return face.slice(0,3);
@@ -248,6 +253,20 @@ function RubeJectController(){
 		if (mainGrid[pos[0]][pos[1]][pos[2]] == null || isUndefined(mainGrid[pos[0]][pos[1]][pos[2]])) 
 			return null;
 		else return mainGrid[pos[0]][pos[1]][pos[2]];
+	}
+
+	var OnGroundOrInert = function(pos) {
+		// Is ground.
+		if (pos[2] == 0) {
+			//console.log("On ground.");
+			return true;
+		}
+		var belowID = mainGrid[pos[0]][pos[1]][pos[2]-1];
+		if (objectSceneIDList[belowID].category === "inert") {
+			//console.log("On inert.");
+			return true;
+		}
+		return false;
 	}
 
 	//method for chaining - used recursively
@@ -261,29 +280,56 @@ function RubeJectController(){
 		var outface = chainEntry[2];
 		var position = GetPositionFromOutface(outface);
 		var thisID = GetObjectFromGrid(position);
-		var next = GetNextBlock(outface,position);
 		var direction = outface[3];
-		// If has a roamer/gadget:
-			// As long as below is an inert or ground, keep searching in face direction for next roamer/gadget.
-			// If below the next block is a carrier, current outface is new entry's outface.
-			// If below block is nothing, add previous block as outface.
-		// If no roamer/gadget:
-			// Return null, since nothing is moving, and no forces are being applied.
+		var nextPos = GetNextBlock(position,direction);
+		var nextID = GetObjectFromGrid(nextPos);
+
+		console.log("Chain entry: " + chainEntry);
+		console.log("Position: " + position);
+		console.log("Next position: " + nextPos);
+
+		var nextObj = objectSceneIDList[nextID];
+		// If next block contains object:
+		if (!isUndefined(nextID)) {
+			// If next object is roamer/gadget:
+			if (nextObj.category === "roamer" || nextObj.category === "gadget") {
+				// If on inert or ground, keep searching in face direction for next roamer/gadget.
+				if (OnGroundOrInert(nextPos)) {
+					while (OnGroundOrInert(nextPos)) {
+						position = nextPos;
+						nextPos = GetNextBlock(position,direction);
+					}
+					return createChainEntry(-1, roamerID, GetOutface(position,direction));	
+				}
+			}
+			// If next object is an inert:
+			// TODO: Bounce back.
+			// If next object is a carrier.
+			// TODO: If inface, then get outface. Else, bouce back.
+		} 
+		// Next position is empty:
+		else {
+			// TODO: Check below for carriers/freefall.
+		}	
 	}
 
 	// Continue to chain. Recursive.
 	var GetNextChainLink = function(listNum,index,roamerID){
 		var nextEntry = GetNextEntry(startingObjectList[listNum][index],roamerID);
 		startingObjectList[listNum][index + 1] = nextEntry;
-		//if (nextEntry != null) GetNextChainLink(listNum,startingObjectList[listNum].length-1);
+
+		// TODO: Recurse after GetNextEntry is completed.
+		console.log("Added entry: " + startingObjectList[listNum][index+1]);
+		// if (nextEntry != null) GetNextChainLink(listNum,startingObjectList[listNum].length-1);
 	};
 
 	// Position after starter must contain a roamer or gadget.
 	var getFirstRoamer = function(listNum) {
 		var chainEntry = startingObjectList[listNum][0];
 		var outface = chainEntry[2];
+		var direction = outface[3];
 		var position = GetPositionFromOutface(outface);
-		var next = GetNextBlock(outface,position);
+		var next = GetNextBlock(position,direction);
 		var nextID = GetObjectFromGrid(next);	
 
 		if (!isUndefined(objectSceneIDList[nextID])) {
@@ -323,6 +369,10 @@ function RubeJectController(){
 	this.InitiateAnimation = function(){
 		for (var i = 0; i < startingObjectCounter; i++){
 				stateList[i] = new Object();
+				// To get the sceneID in the chain entry, you need startingObjectList[i][0][0] (carrier)
+				// or startingObjectList[i][0][0] (roamer)
+				// startingObjectList[i][0] refers to a chain entry, which is [carrierID,roamerID,face]
+				// IDs used are scene IDs. To get the objectID, use objectSceneIDList[carrierID].
 				stateList[i].currentCarrier = startingObjectList[i][0]; //objectID
 				stateList[i].currentRoamer;
 				stateList[i].path;//this is an array
