@@ -68,7 +68,7 @@ fan.updateDisplay
 # Ramp
 #Can we rename 'ramp' to 'low wood ramp'?
 ramp = ObjectProperty.create(
-    name:                   'LowWoodRamp',
+    name:                   'ramp',
     category:               'carrier', 
     block_num:              6, 
     blocks:                 [[0,0,0], [1,0,0], [2,0,0], [0,0,1], [1,0,1], [0,0,2]], 
