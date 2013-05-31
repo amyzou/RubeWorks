@@ -22,7 +22,7 @@ block = ObjectProperty.create(
 )
 block.display = Display.create(
     image_file:             'block.png', 
-    obj_file:               'null', 
+    obj_file:               'chromeBall.js', 
     texture_file:           'null', 
 )
 block.updateDisplay
@@ -80,7 +80,7 @@ ramp = ObjectProperty.create(
 ramp.display = Display.create(
     image_file:             'ramp.png', 
     obj_file:               'WoodRamp30.js', 
-    texture_file:           'null',
+    texture_file:           'WoodTex.jpg',
 )
 ramp.updateDisplay
 
@@ -98,7 +98,7 @@ sphere = ObjectProperty.create(
 )
 sphere.display = Display.create(
     image_file:             'sphere.png', 
-    obj_file:               'sphere.obj', 
+    obj_file:               'chromeBall.js', 
     texture_file:           'null', 
 )
 sphere.updateDisplay
@@ -117,7 +117,7 @@ trampoline = ObjectProperty.create(
 )
 trampoline.display = Display.create(
     image_file:             'tramp.png', 
-    obj_file:               'trampoline.obj', 
+    obj_file:               'chromeBall.js', 
     texture_file:           'null', 
 )
 trampoline.updateDisplay
