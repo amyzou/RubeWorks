@@ -66,19 +66,6 @@ class ObjectProperty < ActiveRecord::Base
 		end
 	end
 
-	def rotateFace(face)
-		# Convert from "0,0,0,0" to [0,0,0,0]
-		face_array = face.split(",").map { |s| s.to_i }
-		# Rotate the point portion of array
-		rotate_array = rotatePoint(face_array)
-		# Rotate face portion
-		rotate_array[3] = nextFace(rotate_array[3])
-		# Convert ints to string
-		rotate_array = rotate_array.collect{|i| i.to_s}
-		rotate_array = rotate_array.join(',');
-		return rotate_array
-	end
-
 	def rotatePoint(point)
 		new_point = point.clone
 		tempx = point[0]
