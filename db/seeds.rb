@@ -29,10 +29,11 @@ block.updateDisplay
 
 # Dominos Gadget
 dominos = ObjectProperty.create(
-    name:                   'domino',
+    name:                   'dominos',
     category:               'gadget', 
     block_num:              2, 
     blocks:                 [[0,0,0],[1,0,0]],
+    #Animation data... what is it?
     mass:                   1.0,
     elasticity:             1.0,
     change_in_height:       0,
@@ -45,25 +46,6 @@ dominos.display = Display.create(
     texture_file:           'dominosTex.jpg', 
 )
 dominos.updateDisplay
-
-# Fan
-fan = ObjectProperty.create(
-    name:                   'fan',
-    category:               'gadget', 
-    block_num:              1, 
-    blocks:                 [[0,0,0]],
-    mass:                   1.0,
-    elasticity:             1.0,
-    change_in_height:       0,
-    io_map:                 [],
-    compatible_roamers:     'array',
-)
-fan.display = Display.create(
-    image_file:             'fan.png', 
-    obj_file:               'null', 
-    texture_file:           'null', 
-)
-fan.updateDisplay
 
 # Ramp
 #Can we rename 'ramp' to 'low wood ramp'?
@@ -146,6 +128,7 @@ arrow = ObjectProperty.create(
     category:               'starter',
     block_num:              1,
     blocks:                 [[0,0,0]],
+    #Initial momentum
     mass:                   1.0,
     elasticity:             1.0, 
     change_in_height:       0,
@@ -158,3 +141,35 @@ arrow.display = Display.create(
     texture_file:           'null',
 )
 arrow.updateDisplay
+
+#Fan Object
+fan = ObjectProperty.create(
+    name:                   'fan',
+    category:               'gadget',
+    block_num:              27,
+    blocks:                 [
+                             [0,0,0],[1,0,0],[2,0,0],
+                             [0,1,0],[1,1,0],[2,1,0],
+                             [0,2,0],[1,2,0],[2,2,0],
+                             [0,0,1],[1,0,1],[2,0,1],
+                             [0,1,1],[1,1,1],[2,1,1],
+                             [0,2,1],[1,2,1],[2,2,1],
+                             [0,0,2],[1,0,2],[2,0,2],
+                             [0,1,2],[1,1,2],[2,1,2],
+                             [0,2,2],[1,2,2],[2,2,2]
+                            ],
+    mass:                   27.0,
+    elasticity:             1.0, 
+    change_in_height:       0,
+    #Relative Animation Information
+    io_map:                 [
+                             
+                            ],
+    compatible_roamers:     'array',
+)
+fan.display = Display.create(
+    image_file:             'fan.png',
+    obj_file:               'sphere.js',
+    texture_file:           'null',
+)
+fan.updateDisplay
