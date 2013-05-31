@@ -156,7 +156,7 @@ straightRail = ObjectProperty.create(
     compatible_roamers:     [5],
 )
 straightRail.display = Display.create(
-    image_file:             'straightRail.png',
+    image_file:             'straightRail.PNG',
     obj_file:               'StraightRail.js',
     texture_file:           'null',
 )
