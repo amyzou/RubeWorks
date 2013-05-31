@@ -128,7 +128,7 @@ $(function(){
 	blocks.push(new RubeJect(1,[6,0,0],0));
 	var arrow = new RubeJect(7,[0,0,6],0);
 	var sphere = new RubeJect(5,[1,0,6],0);
-	var ramp = new RubeJect(4,[3,0,4],0);
+	var ramp = new RubeJect(4,[3,0,3],0);
 
 	// Add all objects to controller.
 	for (var i = 0; i < blocks.length; i++) {controller.AddObject(blocks[i], false);}
@@ -137,7 +137,7 @@ $(function(){
 	controller.PrintAllStartingObjects();
 	controller.PrintGrid();
 
-	/*var ramp2 = new RubeJect(4,[5,0,3],0);
+	var ramp2 = new RubeJect(4,[5,0,3],0);
 	if (controller.CanPlaceObject(ramp2)) console.log("WRONG");
 	else console.log("Can't place ramp2 at 5,0,3");
 
@@ -147,7 +147,7 @@ $(function(){
 
 	var block2 = new RubeJect(1,[0,0,21],0);
 	if (controller.CanPlaceObject(block2)) console.log("WRONG");
-	else console.log("Can't place block2 at 0,0,21");*/
+	else console.log("Can't place block2 at 0,0,21");
 
 
 	// Test chaining
@@ -175,6 +175,7 @@ $(function(){
 		<li class="nav-two"><a href="#cat2">Roamers</a></li>
 		<li class="nav-three"><a href="#cat3">Carriers</a></li>
 		<li class="nav-four"><a href="#cat4">Gadgets</a></li>
+		<li class="nav-five"><a href="#cat5">Initial Forces</a></li>
 	</ul>
     		
     <div class="list-wrap">
@@ -192,6 +193,10 @@ $(function(){
 
 		<div id="cat4" class="hide">
 	   		<%= render :partial => "tabs", :locals => {:tabset => @gadgets}  %>
+		</div>
+
+		<div id="cat5" class="hide">
+	   		<%= render :partial => "tabs", :locals => {:tabset => @starters}  %>
 		</div>
 
 	</div> <!-- END List Wrap -->
