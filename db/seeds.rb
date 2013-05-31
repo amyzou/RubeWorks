@@ -71,7 +71,7 @@ ramp = ObjectProperty.create(
     name:                   'ramp',
     category:               'carrier', 
     block_num:              6, 
-    blocks:                 [[0,0,0], [1,0,0], [2,0,0], [0,0,1], [1,0,1], [0,0,2]], 
+    blocks:                 [[0,0,0], [1,0,0], [2,0,0], [0,0,1], [1,0,1]], 
     mass:                   4.3,
     elasticity:             0.5,
     change_in_height:       3,
