@@ -22,17 +22,18 @@ block = ObjectProperty.create(
 )
 block.display = Display.create(
     image_file:             'block.png', 
-    obj_file:               'null', 
+    obj_file:               'chromeBall.js', 
     texture_file:           'null', 
 )
 block.updateDisplay
 
 # Dominos Gadget
 dominos = ObjectProperty.create(
-    name:                   'domino',
+    name:                   'dominos',
     category:               'gadget', 
     block_num:              2, 
     blocks:                 [[0,0,0],[1,0,0]],
+    #Animation data... what is it?
     mass:                   1.0,
     elasticity:             1.0,
     change_in_height:       0,
@@ -45,25 +46,6 @@ dominos.display = Display.create(
     texture_file:           'dominosTex.jpg', 
 )
 dominos.updateDisplay
-
-# Fan
-fan = ObjectProperty.create(
-    name:                   'fan',
-    category:               'gadget', 
-    block_num:              1, 
-    blocks:                 [[0,0,0]],
-    mass:                   1.0,
-    elasticity:             1.0,
-    change_in_height:       0,
-    io_map:                 [],
-    compatible_roamers:     'array',
-)
-fan.display = Display.create(
-    image_file:             'fan.png', 
-    obj_file:               'null', 
-    texture_file:           'null', 
-)
-fan.updateDisplay
 
 # Ramp
 #Can we rename 'ramp' to 'low wood ramp'?
@@ -98,7 +80,7 @@ ramp = ObjectProperty.create(
 ramp.display = Display.create(
     image_file:             'ramp.png', 
     obj_file:               'WoodRamp30.js', 
-    texture_file:           'null',
+    texture_file:           'WoodTex.jpg',
 )
 ramp.updateDisplay
 
@@ -116,7 +98,7 @@ sphere = ObjectProperty.create(
 )
 sphere.display = Display.create(
     image_file:             'sphere.png', 
-    obj_file:               'sphere.obj', 
+    obj_file:               'chromeBall.js', 
     texture_file:           'null', 
 )
 sphere.updateDisplay
@@ -135,7 +117,7 @@ trampoline = ObjectProperty.create(
 )
 trampoline.display = Display.create(
     image_file:             'tramp.png', 
-    obj_file:               'trampoline.obj', 
+    obj_file:               'chromeBall.js', 
     texture_file:           'null', 
 )
 trampoline.updateDisplay
@@ -146,6 +128,7 @@ arrow = ObjectProperty.create(
     category:               'starter',
     block_num:              1,
     blocks:                 [[0,0,0]],
+    #Initial momentum
     mass:                   1.0,
     elasticity:             1.0, 
     change_in_height:       0,
@@ -158,3 +141,24 @@ arrow.display = Display.create(
     texture_file:           'null',
 )
 arrow.updateDisplay
+
+#Straight Rail Object
+straightRail = ObjectProperty.create(
+    name:                   'straight rail',
+    category:               'carrier',
+    block_num:              2,
+    blocks:                 [[0,0,0],[0,0,1]],
+    mass:                   6.0,
+    elasticity:             1.0, 
+    change_in_height:       0,
+    #Relative Animation Information
+    io_map:                 [[[0,0,1,3],[0,0,1,1]], [[0,0,1,1],[0,0,1,3]]],
+    compatible_roamers:     [5],
+)
+straightRail.display = Display.create(
+    image_file:             'straightRail.png',
+    obj_file:               'StraightRail.js',
+    texture_file:           'null',
+)
+straightRail.updateDisplay
+
