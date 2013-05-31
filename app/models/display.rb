@@ -2,7 +2,8 @@ class Display < ActiveRecord::Base
 	# attr_accessible :title, :body
 	belongs_to :object_property
 	serialize :blocks
-	attr_accessible :obj_file, :texture_file, :image_file, :blocks, :category, :block_num
+	serialize :dimensions
+	attr_accessible :obj_file, :texture_file, :image_file, :blocks, :category, :block_num, :dimensions
 
 	# If extra time, add validation:
 		# Obj File:		Exists in the correct folder (doesn't exist yet)
