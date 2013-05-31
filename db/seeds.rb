@@ -22,7 +22,7 @@ block = ObjectProperty.create(
 )
 block.display = Display.create(
     image_file:             'block.png', 
-    obj_file:               'chromeBall.js', 
+    obj_file:               '', 
     texture_file:           'null', 
 )
 block.updateDisplay
@@ -43,7 +43,7 @@ dominos = ObjectProperty.create(
 dominos.display = Display.create(
     image_file:             'dominoes.png', 
     obj_file:               'dominos.js', 
-    texture_file:           'dominosTex.jpg', 
+    texture_file:           'dominos.jpg', 
 )
 dominos.updateDisplay
 
@@ -52,7 +52,7 @@ dominos.updateDisplay
 ramp = ObjectProperty.create(
     name:                   'ramp',
     category:               'carrier', 
-    block_num:              6, 
+    block_num:              5, 
     blocks:                 [[0,0,0], [1,0,0], [2,0,0], [0,0,1], [1,0,1]], 
     mass:                   4.3,
     elasticity:             0.5,
@@ -79,8 +79,8 @@ ramp = ObjectProperty.create(
 )
 ramp.display = Display.create(
     image_file:             'ramp.png', 
-    obj_file:               'WoodRamp30.js', 
-    texture_file:           'WoodTex.jpg',
+    obj_file:               'ramp.js', 
+    texture_file:           'ramp.jpg',
 )
 ramp.updateDisplay
 
@@ -98,7 +98,7 @@ sphere = ObjectProperty.create(
 )
 sphere.display = Display.create(
     image_file:             'sphere.png', 
-    obj_file:               'chromeBall.js', 
+    obj_file:               '', 
     texture_file:           'null', 
 )
 sphere.updateDisplay
@@ -117,7 +117,7 @@ trampoline = ObjectProperty.create(
 )
 trampoline.display = Display.create(
     image_file:             'tramp.png', 
-    obj_file:               'chromeBall.js', 
+    obj_file:               'ball.js', 
     texture_file:           'null', 
 )
 trampoline.updateDisplay
@@ -156,7 +156,7 @@ straightRail = ObjectProperty.create(
     compatible_roamers:     [5],
 )
 straightRail.display = Display.create(
-    image_file:             'straightRail.png',
+    image_file:             'straightRail.PNG',
     obj_file:               'StraightRail.js',
     texture_file:           'null',
 )

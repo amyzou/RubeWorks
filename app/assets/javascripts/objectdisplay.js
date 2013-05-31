@@ -7,39 +7,41 @@ function loadObjects ( objects ) {
 }
 
 function loadObject( obj ) {
-	console.log(obj);
-	if (obj.id == 4) {
-		JSONLoader.load( "models/ramp30.js", function(geometry) { 
-			loadJSONGeometry (obj, geometry ) ;
+	var blocks = obj.blocks;
+
+	objectMeshes[obj.id] = 
+   	{ 
+    	geometry : cubeGeo,
+    	block_num: obj.block_num,
+    	blocks: new Array((obj.block_num > 1 ? 4 : 1)),
+		category: obj.category
+    };
+
+    //CLONE_ARRAY;
+    if (obj.block_num == 1){
+    	objectMeshes[obj.id].blocks[0] = blocks[0].slice(0);
+    } else {
+    	for (var rot = 0; rot < 4; rot++){
+    		objectMeshes[obj.id].blocks[ rot ] = new Array( obj.block_num ); //each rot = 1 blocklist
+    		for (var i = 0; i < obj.block_num; i++){
+    			objectMeshes[obj.id].blocks[ rot ][ i ] = blocks[rot][i].slice(0);
+    		}
+    	}
+    }
+
+	if (obj.id == 5){
+		objectMeshes[obj.id].geometry =  new THREE.SphereGeometry( VOXEL_SIZE/2, 10, 8);
+	} else if (obj.objFile == ''){
+		JSONLoader.load( "models/" + obj.objFile, function(geometry) { 
+			loadJSONGeometry (obj.id, geometry ) ;
 		} );		
 	}
-
-	else if (obj.id == 5) {
-		JSONLoader.load( "models/ball.js" , function(geometry) { 
-			loadJSONGeometry (obj, geometry ) ;
-		} );
-	}
-	else {
-		objectMeshes[obj.id] = 
-	    { 
-	    	geometry : cubeGeo,
-	    	block_num: obj.block_num,
-	    	blocks: obj.blocks
-	    };
-	} 
+	NObjectsToLoad--;
 }
 
-function loadJSONGeometry( obj, geometry) {
-    objectMeshes[obj.id] = 
-    { 
-    	geometry : geometry,
-    	block_num: obj.block_num,
-    	blocks: obj.blocks,
-    	category: obj.category
-
-    };
+function loadJSONGeometry( id, geometry) {
+    objectMeshes[id].geometry = geometry;
     
-    NObjectsToLoad--;
 	if (NObjectsToLoad <= 0) {
 		$(".object").click( function() {
 			setCurrentObject(parseInt($(this).attr("id")),10);
@@ -58,8 +60,6 @@ function setCurrentObject ( objectID ) {
 	currMeshID = objectID;
 	rollOverMesh = new THREE.Mesh( objectMeshes[objectID].geometry, rollOverMaterial );
 	var scale = 1;
-	if (currMeshID == 5) 
-		scale = 25;//objectMeshes[currMeshID].scaleFactor;
 	rollOverMesh.scale = new THREE.Vector3(scale, scale, scale);
 	if (currMeshID == 4) {
 		rollOverMesh.scale.x = 25 * 1.5;
@@ -107,15 +107,18 @@ function removeObjectFromScene( object ){
 
 function addObjectToScene( intersector, intersects ){
 	updateObjectPosition( intersector );
+	console.log(currMeshID);
+	console.log( objectMeshes[currMeshID].blocks);
 	var obj = objectMeshes[currMeshID];
 	if (obj == undefined) return;
 	if ( obj.block_num == 1 ) {
-		if (!controller.CanPlaceObject( obj.blocks, gridPosition, obj.category)) {
+		console.log(objectMeshes[currMeshID]);
+		if (!controller.CanPlaceObject( obj.blocks , gridPosition, obj.category)) {
 			console.log("NICE TRY MUDDERFUCKA");
 			return false;
 		}
 	} else {
-		console.log("NICE TRY MUDDERFUCKA");
+		console.log(obj.blocks[currRotation]);
 		if (!controller.CanPlaceObject( obj.blocks[currRotation], gridPosition, obj.category)) {
 			console.log("NICE TRY MUDDERFUCKA");
 			return false;
@@ -127,7 +130,7 @@ function addObjectToScene( intersector, intersects ){
 	newMesh.position.copy(objectWorldPosition);
 	scene.add( newMesh );
 	sceneObjects[currSceneID] = newMesh;
-	controller.AddObject(new RubeJect ( currObjPropertyId, gridPosition, currRotation));
+	controller.AddObject(new RubeJect ( currMeshID, gridPosition, currRotation));
 	console.log("added new mesh id = " + currSceneID);
 	currSceneID++;
 }
