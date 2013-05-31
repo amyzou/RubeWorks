@@ -131,3 +131,17 @@ function addObjectToScene( intersector, intersects ){
 	console.log("added new mesh id = " + currSceneID);
 	currSceneID++;
 }
+
+function UpdateObjectInScene(id, rel_gx, rel_gy, rel_gz ) {
+	console.log("OLD POSITION: ");
+	console.log(sceneObjects[id].position);
+	var grid_delta = new Vector3(rel_gx, rel_gz, rel_gy)
+	console.log("CHANGE BY: ");
+	console.log(grid_delta);
+	grid_delta.multiplyScalar(VOXEL_SIZE);
+	console.log(grid_delta);
+
+	sceneObjects[id].position.add( grid_delta );
+	console.log("NEW POSITION: ");
+	console.log(sceneObjects[id].position);
+}
