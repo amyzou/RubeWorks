@@ -142,34 +142,23 @@ arrow.display = Display.create(
 )
 arrow.updateDisplay
 
-#Fan Object
-fan = ObjectProperty.create(
-    name:                   'fan',
-    category:               'gadget',
-    block_num:              27,
-    blocks:                 [
-                             [0,0,0],[1,0,0],[2,0,0],
-                             [0,1,0],[1,1,0],[2,1,0],
-                             [0,2,0],[1,2,0],[2,2,0],
-                             [0,0,1],[1,0,1],[2,0,1],
-                             [0,1,1],[1,1,1],[2,1,1],
-                             [0,2,1],[1,2,1],[2,2,1],
-                             [0,0,2],[1,0,2],[2,0,2],
-                             [0,1,2],[1,1,2],[2,1,2],
-                             [0,2,2],[1,2,2],[2,2,2]
-                            ],
-    mass:                   27.0,
+#Straight Rail Object
+straightRail = ObjectProperty.create(
+    name:                   'straight rail',
+    category:               'carrier',
+    block_num:              2,
+    blocks:                 [[0,0,0],[0,0,1]],
+    mass:                   6.0,
     elasticity:             1.0, 
     change_in_height:       0,
     #Relative Animation Information
-    io_map:                 [
-                             
-                            ],
-    compatible_roamers:     'array',
+    io_map:                 [[[0,0,1,3],[0,0,1,1]], [[0,0,1,1],[0,0,1,3]]]
+    compatible_roamers:     [5],
 )
-fan.display = Display.create(
-    image_file:             'fan.png',
-    obj_file:               'sphere.js',
+straightRail.display = Display.create(
+    image_file:             'straightRail.png',
+    obj_file:               'StraightRail.js',
     texture_file:           'null',
 )
-fan.updateDisplay
+strailRail.updateDisplay
+
