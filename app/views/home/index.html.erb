@@ -100,23 +100,6 @@ $(function(){
 		}
 	});
 
-	// Testing constructor: 
-	/*objectPropertyID = 4;
-	objectPosition = [0,0,0];
-	for (var i = 0; i < 4; i ++) {
-		console.log("Sending a property ID of " + objectPropertyID);
-		var block = new RubeJect(objectPropertyID, objectPosition, i);
-		
-		console.log(block.name + "; " + block.blockList[0]);
-		console.log(block.name + "; " + block.blockList[1]);
-		console.log(block.name + "; " + block.blockList[2]);
-		console.log(block.name + "; " + block.blockList[3]);
-	} 
-	for (var i = 0; i < 4; i ++) {
-		block.rotate();
-		//console.log("has outface: " + block.getOutFaceByIndex(0) + " with rotation " + block.rotation);
-	} */
-
 	// CONTROLLER TESTING THINGS -------------------------------------------
 	console.log("CONTROLLER TESTING ------------------------------------------");
 	console.log("Controller construction -------------------------------------");
@@ -133,22 +116,26 @@ $(function(){
 	// Add all objects to controller.
 	for (var i = 0; i < blocks.length; i++) {controller.AddObject(blocks[i], false);}
 	controller.AddObject(arrow,true); controller.AddObject(ramp,false); controller.AddObject(sphere,false); 
-	controller.PrintAllObjects();
-	controller.PrintAllStartingObjects();
-	controller.PrintGrid();
+	//controller.PrintAllObjects();
+	//controller.PrintAllStartingObjects();
+	//controller.PrintGrid();
 
-	/*var ramp2 = new RubeJect(4,[5,0,3],0);
-	if (controller.CanPlaceObject(ramp2)) console.log("WRONG");
-	else console.log("Can't place ramp2 at 5,0,3");
+	var ramp2 = new RubeJect(4,[5,0,4],0);
+	if (controller.CanPlaceObject(ramp2.blockList,ramp.position,ramp.category)) 
+		console.log("Intersection test FAILED.");
+	else console.log("Intersection test passed.");
 
-	var sphere2 = new RubeJect(7,[8,0,3],0);
-	if (controller.CanPlaceObject(ramp2)) console.log("WRONG");
-	else console.log("Can't place sphere2 at 8,0,3");
+	var sphere2 = new RubeJect(5,[8,0,3],0);
+	if (controller.CanPlaceObject(sphere2.blockList,sphere2.position,sphere2.category)) 
+		console.log("Floating test FAILED.");
+	else console.log("Floating test passed.");
 
-	var block2 = new RubeJect(1,[0,0,21],0);
-	if (controller.CanPlaceObject(block2)) console.log("WRONG");
-	else console.log("Can't place block2 at 0,0,21");*/
+	var block2 = new RubeJect(1,[0,0,31],0);
+	if (controller.CanPlaceObject(block2.blockList,block2.position,block2.blockList)) 
+		console.log("Bounds test FAILED");
+	else console.log("Bounds test passed.");
 
+	console.log("");
 
 	// Test chaining
 	controller.CreateChains();
