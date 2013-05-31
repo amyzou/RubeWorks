@@ -32,14 +32,6 @@
 		//Todo: a function that adds freefall onto things if applicable
   */
 
-// Testing: create the below thing and get chaining working.
-/*  z 
-	|=> O  _ 
-	|  |_||_| ramp
-	|  |_||_||_||_|
-	|--|--|--|--|--|- x
-*/
-
 function RubeJectController(){
 
 	/*-----------------Basic functionality-----------------*/
@@ -113,28 +105,39 @@ function RubeJectController(){
 		return face;	
 	}
 
-	this.ContainsObject = function(x,y,z) {
-		if (isUndefined(mainGrid[x][y][z]) || mainGrid[x][y][z] == null)
-			return false;
-		return true;
+	var ContainsObject = function(x,y,z) {
+		if (mainGrid[x][y][z] != null) {
+			return true;
+		}
+		return false;
 	}
 
 	this.CanPlaceObject = function(blockList, pos, category) {
 		for (var i = 0; i < blockList.length; i++) {
-			if (this.ContainsObject(blockList[i][0] + pos[0],
-							   blockList[i][1] + pos[1],
-							   blockList[i][2] + pos[2])) 
+			var translatedPos = pos.slice(0);
+			translatedPos[0] += blockList[i][0];
+			translatedPos[1] += blockList[i][1];
+			translatedPos[2] += blockList[i][2];
+			console.log(translatedPos);
+			if (!allWithinLimits(translatedPos)) {
+				console.log("Out of limits.");
 				return false;
-			if (!allWithinLimits) return false;
+			} 
+			if (ContainsObject(translatedPos[0], translatedPos[1], translatedPos[2])) {
+				console.log("Intersection.");
+				return false;
+			} 
 		}
 		// Roamers and gadgets must be on an inert or ground
-		if (category === "roamer" || category === "gadget") {
+		if (category == "roamer" || category == "gadget" || category == "carrier") {
 			var groundBlocks = GetGroundBlocks(blockList, pos); 
 			for (var i = 0; i < groundBlocks.length; i++) {
-				if (!OnGroundOrInert(groundBlocks[i]))
+				if (!OnGroundOrInert(groundBlocks[i])) {
+					console.log("Floating/not on inert.");
 					return false;
+				}
 			}
-		}
+		} 
 		return true;
 
 	}
@@ -143,7 +146,6 @@ function RubeJectController(){
 		var groundBlocks = new Array();
 		for (var i = 0; i < blockList.length; i++) {
 			if (blockList[i][2] === 0) {
-				console.log("this block: " + blockList[i]);
 				blockList[i][0] += pos[0];
 				blockList[i][1] += pos[1];
 				blockList[i][2] += pos[2];
@@ -267,14 +269,12 @@ function RubeJectController(){
 
 	var OnGroundOrInert = function(pos) {
 		// Is ground.
-		console.log("Checking pos: " + pos);
-		if (pos[2] == 0) {
-			console.log("On ground.");
-			return true;
-		}
+		if (pos[2] == 0) return true;
+
+		// Otherwise check below.
 		var belowID = mainGrid[pos[0]][pos[1]][pos[2]-1];
+		if (objectSceneIDList[belowID] == null) return false;
 		if (objectSceneIDList[belowID].category === "inert") {
-			console.log("On inert.");
 			return true;
 		}
 		return false;
@@ -351,7 +351,7 @@ function RubeJectController(){
 				// (up to GRID_WIDTH)
 				if (OnGroundOrInert(nextPos)) {
 					while (OnGroundOrInert(nextPos) 
-								&& isWithinLimits(nextPos,direction)) {
+						   && isWithinLimits(nextPos,direction)) {
 						position = nextPos;
 						nextPos = GetNextBlock(position,direction);
 					}
