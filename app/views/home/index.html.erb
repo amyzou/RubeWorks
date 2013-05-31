@@ -117,9 +117,9 @@ $(function(){
 		//console.log("has outface: " + block.getOutFaceByIndex(0) + " with rotation " + block.rotation);
 	} */
 
-	// CONTROLLER TESTING THINGS ----------------------------------------------------------
-	console.log("CONTROLLER TESTING ----------------------------------------------------------");
-	
+	// CONTROLLER TESTING THINGS -------------------------------------------
+	console.log("CONTROLLER TESTING ------------------------------------------");
+	console.log("Controller construction -------------------------------------");
 	controller = new RubeJectController();
 
 	// Instantiate objects needed.
@@ -152,8 +152,13 @@ $(function(){
 
 	// Test chaining
 	controller.CreateChains();
-	console.log("ENDING TESTING OF CONTROLLER -----------------------------------------------");
-	// Ending testing of controller ------------------------------------------------------
+	console.log("Animation construction --------------------------------------");
+	controller.InitiateAnimation();
+	for (var i = 0; i < 80; i ++)
+		controller.UpdateAnimation();
+
+	console.log("ENDING TESTING OF CONTROLLER --------------------------------");
+	// Ending testing of controller -----------------------------------------
 	$('.loading').hide();
 	animate();
 });
