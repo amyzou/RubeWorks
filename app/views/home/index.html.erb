@@ -108,9 +108,9 @@ $(function(){
 	var blocks = new Array();
 	blocks.push(new RubeJect(1,[1,0,5],0)); blocks.push(new RubeJect(1,[2,0,5],0)); 
 	blocks.push(new RubeJect(1,[6,0,0],0));
-	var arrow = new RubeJect(7,[0,0,6],0);
-	var sphere = new RubeJect(5,[1,0,6],0);
-	var ramp = new RubeJect(4,[3,0,3],0);
+	var arrow = new RubeJect(6,[0,0,6],0);
+	var sphere = new RubeJect(4,[1,0,6],0);
+	var ramp = new RubeJect(3,[3,0,4],0);
 
 	// Add all objects to controller.
 	for (var i = 0; i < blocks.length; i++) {controller.AddObject(blocks[i], false);}
@@ -119,6 +119,7 @@ $(function(){
 	//controller.PrintAllStartingObjects();
 	//controller.PrintGrid();
 
+	/*
 	var ramp2 = new RubeJect(4,[5,0,4],0);
 	if (controller.CanPlaceObject(ramp2.blockList,ramp.position,ramp.category)) 
 		console.log("Intersection test FAILED.");
@@ -133,7 +134,7 @@ $(function(){
 	if (controller.CanPlaceObject(block2.blockList,block2.position,block2.blockList)) 
 		console.log("Bounds test FAILED");
 	else console.log("Bounds test passed.");
-
+	*/
 	console.log("");
 
 	// Test chaining

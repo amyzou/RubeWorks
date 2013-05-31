@@ -6,8 +6,13 @@ class ObjectProperty < ActiveRecord::Base
   	attr_accessible :name, :category, :block_num, :blocks, :mass, :elasticity, :change_in_height, :io_map, :compatible_roamers, :roamer_position_nodes
 
   	def updateDisplay
+		setDimensions
 		setRotations
-		display.update_attributes(:category => category, :block_num => block_num, :blocks => blocks)
+		display.update_attributes(
+			:category => category, 
+			:block_num => block_num, 
+			:blocks => blocks, 
+		)
 		save!
 	end
 
@@ -61,19 +66,6 @@ class ObjectProperty < ActiveRecord::Base
 		end
 	end
 
-	def rotateFace(face)
-		# Convert from "0,0,0,0" to [0,0,0,0]
-		face_array = face.split(",").map { |s| s.to_i }
-		# Rotate the point portion of array
-		rotate_array = rotatePoint(face_array)
-		# Rotate face portion
-		rotate_array[3] = nextFace(rotate_array[3])
-		# Convert ints to string
-		rotate_array = rotate_array.collect{|i| i.to_s}
-		rotate_array = rotate_array.join(',');
-		return rotate_array
-	end
-
 	def rotatePoint(point)
 		new_point = point.clone
 		tempx = point[0]
@@ -88,5 +80,25 @@ class ObjectProperty < ActiveRecord::Base
 			face_num = 0
 		end
 		return face_num
+	end
+
+
+	def setDimensions
+		x = 0
+		y = 0
+		z = 0
+		blocks.each do |block|
+			if block[0].to_s.to_i > x
+				x = block[0].to_s.to_i
+			end
+			if block[1].to_s.to_i > y
+				y = block[1].to_s.to_i
+			end
+			if block[2].to_s.to_i > z
+				z = block[2].to_s.to_i
+			end
+		end
+		display.update_attributes(:dimensions => [x+1, y+1, z+1])
+		save!
 	end
 end

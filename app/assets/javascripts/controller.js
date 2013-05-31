@@ -378,7 +378,7 @@ function RubeJectController(){
 			nextObj = objectSceneIDList[belowNextID];
 			// If object below
 			if (nextObj != null) {
-				console.log("Found object below.");
+				console.log("Found object below: " + nextObj.name);
 				if (nextObj.category === "carrier") {
 					var inface = getInface(nextPos,getOppositeDirection(direction));
 					// If outface matches an inface.
