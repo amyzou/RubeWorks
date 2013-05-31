@@ -167,7 +167,7 @@ lstraightRail = ObjectProperty.create(
     name:                   'Long straight rail',
     category:               'carrier',
     block_num:              4,
-    blocks:                 [[1,0,0],[0,0,1],[1,0,1],[2,0,1]]
+    blocks:                 [[1,0,0],[0,0,1],[1,0,1],[2,0,1]],
     mass:                   12.0,
     elasticity:             1.0, 
     change_in_height:       0,
