@@ -133,9 +133,9 @@ $(function(){
 	// Add all objects to controller.
 	for (var i = 0; i < blocks.length; i++) {controller.AddObject(blocks[i], false);}
 	controller.AddObject(arrow,true); controller.AddObject(ramp,false); controller.AddObject(sphere,false); 
-	//controller.PrintAllObjects();
-	//controller.PrintAllStartingObjects();
-	//controller.PrintGrid();
+	controller.PrintAllObjects();
+	controller.PrintAllStartingObjects();
+	controller.PrintGrid();
 
 	var ramp2 = new RubeJect(4,[5,0,3],0);
 	if (controller.CanPlaceObject(ramp2)) console.log("WRONG");
@@ -175,6 +175,7 @@ $(function(){
 		<li class="nav-two"><a href="#cat2">Roamers</a></li>
 		<li class="nav-three"><a href="#cat3">Carriers</a></li>
 		<li class="nav-four"><a href="#cat4">Gadgets</a></li>
+		<li class="nav-five"><a href="#cat5">Initial Forces</a></li>
 	</ul>
     		
     <div class="list-wrap">
@@ -192,6 +193,10 @@ $(function(){
 
 		<div id="cat4" class="hide">
 	   		<%= render :partial => "tabs", :locals => {:tabset => @gadgets}  %>
+		</div>
+
+		<div id="cat5" class="hide">
+	   		<%= render :partial => "tabs", :locals => {:tabset => @starters}  %>
 		</div>
 
 	</div> <!-- END List Wrap -->

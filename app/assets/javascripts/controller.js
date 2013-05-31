@@ -164,7 +164,7 @@ function RubeJectController(){
 			startingObjectList[startingObjectCounter] = new Array();
 			var outface = 
 				GetAbsoluteFace(rubeJect.getOutFaceByIndex(0), 
-					rubeJect.position);
+								rubeJect.position);
 			startingObjectList[startingObjectCounter][0] = 
 				createChainEntry(-1, objectSceneIDCounter, outface);
 			startingObjectCounter ++;
@@ -267,13 +267,14 @@ function RubeJectController(){
 
 	var OnGroundOrInert = function(pos) {
 		// Is ground.
+		console.log("Checking pos: " + pos);
 		if (pos[2] == 0) {
-			//console.log("On ground.");
+			console.log("On ground.");
 			return true;
 		}
 		var belowID = mainGrid[pos[0]][pos[1]][pos[2]-1];
 		if (objectSceneIDList[belowID].category === "inert") {
-			//console.log("On inert.");
+			console.log("On inert.");
 			return true;
 		}
 		return false;
