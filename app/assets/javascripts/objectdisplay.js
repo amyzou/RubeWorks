@@ -8,13 +8,13 @@ function loadObjects ( objects ) {
 
 function loadObject( obj ) {
 	var blocks = obj.blocks;
-
 	objectMeshes[obj.id] = 
    	{ 
     	geometry : cubeGeo,
     	block_num: obj.block_num,
     	blocks: new Array((obj.block_num > 1 ? 4 : 1)),
-		category: obj.category
+		category: obj.category,
+		scale: 1
     };
 
     //CLONE_ARRAY;
@@ -29,10 +29,11 @@ function loadObject( obj ) {
     	}
     }
 
-	if (obj.id == 5){
+	if (obj.id == 4 ) {
 		objectMeshes[obj.id].geometry =  new THREE.SphereGeometry( VOXEL_SIZE/2, 10, 8);
-	} else if (obj.objFile == ''){
-		JSONLoader.load( "models/" + obj.objFile, function(geometry) { 
+	} else if (obj.obj_file != "" ){
+		console.log('obj/' + obj.obj_file);
+		JSONLoader.load( "obj/" + obj.obj_file, function(geometry) { 
 			loadJSONGeometry (obj.id, geometry ) ;
 		} );		
 	}
@@ -41,42 +42,31 @@ function loadObject( obj ) {
 
 function loadJSONGeometry( id, geometry) {
     objectMeshes[id].geometry = geometry;
+    objectMeshes[id].scale = 25;
     
 	if (NObjectsToLoad <= 0) {
 		$(".object").click( function() {
 			setCurrentObject(parseInt($(this).attr("id")),10);
 		});
-		setCurrentObject(0);
+		setCurrentObject(1);
 		animate();
 	}
 }
 
 // on select object in toolbox
 function setCurrentObject ( objectID ) {
-	if (currObjPropertyId == objectID) return;
-	currObjPropertyId = objectID;
-
-	scene.remove(rollOverMesh);
+	if (currMeshID == objectID) return;
 	currMeshID = objectID;
-	rollOverMesh = new THREE.Mesh( objectMeshes[objectID].geometry, rollOverMaterial );
-	var scale = 1;
-	rollOverMesh.scale = new THREE.Vector3(scale, scale, scale);
-	if (currMeshID == 4) {
-		rollOverMesh.scale.x = 25 * 1.5;
-		rollOverMesh.scale.y = 25 * 1.5;
-		rollOverMesh.scale.z = 25 * 1.9;
-	}
+	console.log(objectMeshes[objectID].geometry );
+	scene.remove(rollOverMesh);
+	rollOverMesh = new THREE.Mesh( objectMeshes[objectID].geometry , rollOverMaterial);
+	rollOverMesh.scale = new THREE.Vector3(1,1,1).multiplyScalar(objectMeshes[objectID].scale);
 	rollOverMesh.position = objectWorldPosition;
 	scene.add(rollOverMesh);
 }
 
 function updateObjectPosition( intersector ) {
 	var offset = new THREE.Vector3(VOXEL_SIZE/2,VOXEL_SIZE/2,VOXEL_SIZE/2);
-	if (currMeshID == 4) {
-		offset.x = -VOXEL_SIZE * 3/2;
-		offset.y = 0;
-		offset.z = VOXEL_SIZE;
-	}
 	normalMatrix.getNormalMatrix( intersector.object.matrixWorld );
 	tmpVec.copy( intersector.face.normal );
 	tmpVec.applyMatrix3( normalMatrix ).normalize();
@@ -107,8 +97,6 @@ function removeObjectFromScene( object ){
 
 function addObjectToScene( intersector, intersects ){
 	updateObjectPosition( intersector );
-	console.log(currMeshID);
-	console.log( objectMeshes[currMeshID].blocks);
 	var obj = objectMeshes[currMeshID];
 	if (obj == undefined) return;
 	if ( obj.block_num == 1 ) {
