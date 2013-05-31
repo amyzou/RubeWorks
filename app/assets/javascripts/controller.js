@@ -139,17 +139,17 @@ function RubeJectController(){
 			}
 		} 
 		return true;
-
 	}
 
 	var GetGroundBlocks = function (blockList, pos) {
 		var groundBlocks = new Array();
 		for (var i = 0; i < blockList.length; i++) {
 			if (blockList[i][2] === 0) {
-				blockList[i][0] += pos[0];
-				blockList[i][1] += pos[1];
-				blockList[i][2] += pos[2];
-				groundBlocks.push(blockList[i]);
+				var groundBlock = blockList[i].slice(0);
+				groundBlock[0] += pos[0];
+				groundBlock[1] += pos[1];
+				groundBlock[2] += pos[2];
+				groundBlocks.push(groundBlock);
 			}
 		}
 		return groundBlocks;

@@ -12,22 +12,10 @@ function loadObject( obj ) {
    	{ 
     	geometry : cubeGeo,
     	block_num: obj.block_num,
-    	blocks: new Array((obj.block_num > 1 ? 4 : 1)),
+    	blocks: obj.blocks,
 		category: obj.category,
 		scale: 1
     };
-
-    //CLONE_ARRAY;
-    if (obj.block_num == 1){
-    	objectMeshes[obj.id].blocks[0] = blocks[0].slice(0);
-    } else {
-    	for (var rot = 0; rot < 4; rot++){
-    		objectMeshes[obj.id].blocks[ rot ] = new Array( obj.block_num ); //each rot = 1 blocklist
-    		for (var i = 0; i < obj.block_num; i++){
-    			objectMeshes[obj.id].blocks[ rot ][ i ] = blocks[rot][i].slice(0);
-    		}
-    	}
-    }
 
 	if (obj.id == 4 ) {
 		objectMeshes[obj.id].geometry =  new THREE.SphereGeometry( VOXEL_SIZE/2, 10, 8);
@@ -112,7 +100,6 @@ function addObjectToScene( intersector, intersects ){
 			return false;
 		}	
 	}
-			
 	var newMesh = new THREE.Mesh(rollOverMesh.geometry.clone(), defaultMaterial);
 	newMesh.scale.copy(rollOverMesh.scale);
 	newMesh.position.copy(objectWorldPosition);
