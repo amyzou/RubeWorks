@@ -152,7 +152,7 @@ straightRail = ObjectProperty.create(
     elasticity:             1.0, 
     change_in_height:       0,
     #Relative Animation Information
-    io_map:                 [[[0,0,1,3],[0,0,1,1]], [[0,0,1,1],[0,0,1,3]]]
+    io_map:                 [[[0,0,1,3],[0,0,1,1]], [[0,0,1,1],[0,0,1,3]]],
     compatible_roamers:     [5],
 )
 straightRail.display = Display.create(
@@ -160,5 +160,5 @@ straightRail.display = Display.create(
     obj_file:               'StraightRail.js',
     texture_file:           'null',
 )
-strailRail.updateDisplay
+straightRail.updateDisplay
 
