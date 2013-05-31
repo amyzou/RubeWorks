@@ -162,3 +162,23 @@ straightRail.display = Display.create(
 )
 straightRail.updateDisplay
 
+#Long Straight Rail Object
+lstraightRail = ObjectProperty.create(
+    name:                   'Long straight rail',
+    category:               'carrier',
+    block_num:              4,
+    blocks:                 [[1,0,0],[0,0,1],[1,0,1],[2,0,1]]
+    mass:                   12.0,
+    elasticity:             1.0, 
+    change_in_height:       0,
+    #Relative Animation Information
+    io_map:                 [[[0,0,1,3],[2,0,1,1]], [[2,0,1,1],[0,0,1,3]]],
+    compatible_roamers:     [5],
+)
+lstraightRail.display = Display.create(
+    image_file:             'lstraightrail.png',
+    obj_file:               'LongStraightRail.js',
+    texture_file:           'null',
+)
+lstraightRail.updateDisplay
+
