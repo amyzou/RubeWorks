@@ -62,20 +62,16 @@ ramp = ObjectProperty.create(
     # the index in the block list "2", which correlates to block (2,0,0), and the face. 
     #This key, value represents rolling down the ramp.
     io_map:                 [
-                             [[0,0,2,3],[2,0,0,1],"linear",[0,0,2],[3,0,0]],
-                             [[2,0,0,1],[0,0,2,3],"linear",[3,0,0],[0,0,2]],
-                             [[0,0,2,5],[2,0,0,1],"linear",[0,0,2],[3,0,0]],
-                             [[0,0,2,5],[2,0,0,1],"linear",[0,0,2],[3,0,0]],
-                             [[0,0,1,5],[2,0,0,1],"linear",[0.5,0,1.5],[3,0,0]],
-                             [[1,0,1,5],[2,0,0,1],"linear",[1.5,0,1],[3,0,0]],
-                             [[1,0,0,5],[2,0,0,1],"linear",[1.5,0,1],[3,0,0]],
-                             [[2,0,0,5],[2,0,0,1],"linear",[2.5,0,0.5],[3,0,0]]
-                             ],
+                                [[0,0,2,3],[2,0,0,1],"linear",[0,0,2],[3,0,0]],
+                                [[2,0,0,1],[0,0,2,3],"linear",[3,0,0],[0,0,2]],
+                                [[0,0,2,5],[2,0,0,1],"linear",[0,0,2],[3,0,0]],
+                                [[0,0,2,5],[2,0,0,1],"linear",[0,0,2],[3,0,0]],
+                                [[0,0,1,5],[2,0,0,1],"linear",[0.5,0,1.5],[3,0,0]],
+                                [[1,0,1,5],[2,0,0,1],"linear",[1.5,0,1],[3,0,0]],
+                                [[1,0,0,5],[2,0,0,1],"linear",[1.5,0,1],[3,0,0]],
+                                [[2,0,0,5],[2,0,0,1],"linear",[2.5,0,0.5],[3,0,0]]
+                            ],
     compatible_roamers:     [5],
-    #The idea behind this would be
-    # roamer_position_nodes: Hash[[5,3]=>[[0,0,2],[0.25,0,1.833],[0.5,0,1.666],[0.75,0,1.5]......]
-    # in this way, we would have an input consisting of inface and inblock, and then translate that into the array of 
-    # animation for the controller. 
 )
 ramp.display = Display.create(
     image_file:             'ramp.png', 
