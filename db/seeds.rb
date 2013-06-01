@@ -182,3 +182,21 @@ lstraightRail.display = Display.create(
 )
 lstraightRail.updateDisplay
 
+# Short Column
+shortColumn = ObjectProperty.create(
+    name:                   'Short Column',
+    category:               'inert', 
+    block_num:              2, 
+    blocks:                 [[0,0,0],[0,0,1]],
+    mass:                   5.0,
+    elasticity:             0.25,
+    change_in_height:       0,
+    io_map:                 [],
+    compatible_roamers:     'array',
+)
+shortColumn.display = Display.create(
+    image_file:             'shortColumn.png', 
+    obj_file:               'ShortColumn.js', 
+    texture_file:           'null', 
+)
+shortColumn.updateDisplay
