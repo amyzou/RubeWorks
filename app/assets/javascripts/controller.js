@@ -159,7 +159,7 @@ function RubeJectController(){
 	//method to add object
 	this.AddObject = function(rubeJect){
 		var isStartingObject = rubeJect.category === "starter";
-		//console.log("Adding: " + rubeJect.position + ";" + objectSceneIDCounter);
+		//console.log("Adding: " + rubeJect.position + ";" + rubeJect.blockList);
 		objectSceneIDList[objectSceneIDCounter] = rubeJect;
 		PlaceObjectIntoSpace(objectSceneIDCounter);
 		if (isStartingObject) {
@@ -316,6 +316,36 @@ function RubeJectController(){
 		}	
 	}
 
+	var GetOutfaceFromObj = function(obj, inface) {
+		// If outface matches an inface.
+		var outface = obj.getOutFace(GetRelativeFace(inface, obj.position));
+		if (outface != null)
+			return GetAbsoluteFace(obj.getOutFace(inface), obj.position);
+		else return null;
+	}
+
+	var GetFlatPathOutface = function(pos, dir) {
+		var prevPos;
+		while (OnGroundOrInert(pos) && isWithinLimits(pos, dir)) {
+			prevPos = pos;
+			pos = GetNextBlock(prevPos,dir);
+			if (GetObjectFromGrid(pos) != null) break;
+		}
+		return GetOutface(prevPos,dir);
+	}
+
+	var GetFreefallOutface = function(pos) {
+		var belowNextID = GetObjectFromGrid(pos);
+		var prevPos;
+		while (pos[2] > 0 && belowNextID == null) {
+			prevPos = pos;
+			pos = GetNextBlock(pos,4);
+			belowNextID = GetObjectFromGrid(pos);
+		}
+		if (belowNextID == null) return GetOutface(pos,4);
+		else return GetOutface(prevPos,4);
+	}
+
 	//method for chaining - used recursively
 	/* object in chain list:
 	 * carrierID (-1 for floor/falls with linear paths)
@@ -337,7 +367,6 @@ function RubeJectController(){
 		var nextPos = GetNextBlock(position,direction);
 		var nextID = GetObjectFromGrid(nextPos);
 		var nextObj = objectSceneIDList[nextID];
-
 		// Check bounds.
 		if (!isWithinLimits(nextPos,direction)) return null;
 		// Check if landed on top of inert.
@@ -350,30 +379,32 @@ function RubeJectController(){
 				// If roamer, outface is as far as it can go on ground 
 				// (up to GRID_WIDTH)
 				if (OnGroundOrInert(nextPos)) {
-					while (OnGroundOrInert(nextPos) 
-						   && isWithinLimits(nextPos,direction)) {
-						position = nextPos;
-						nextPos = GetNextBlock(position,direction);
-					}
-					return createChainEntry(-1, nextID, 
-											GetOutface(position,direction));	
+					var outface = GetFlatPathOutface(nextPos,direction);
+					return createChainEntry(-1, nextID, outface);	
 				}
 			} 
 			// If gadget, outface is the one corresponding to inface
 			else if (nextObj.category === "gadget") {
 				// TODO: Get inface, use it to get outface. Send gadget sceneID.
 			}
-			// If next object is an inert:
-			// TODO: Bounce back.
 			// If next object is a carrier.
-			// TODO: If inface, then get outface. Else, bouce back.
+			else if (nextObj.category === "carrier") {
+				console.log("Found carrier");
+				var inface = getInface(nextPos,getOppositeDirection(direction));
+				var outface = GetOutfaceFromObj(nextObj,inface);
+				if (outface != null)
+					return createChainEntry(nextID,roamerID,outface);
+			}
+			// If next object is an inert:
+			else if (nextObj.category === "inert") {
+				// TODO: Bounce back.
+			}
 		} 
 		// Next position is empty:
 		else {
 			// TODO: Check below for carriers/freefall.
 			console.log("Position empty.");
 			var belowPos = GetNextBlock(nextPos,4);
-
 			var belowNextID = GetObjectFromGrid(belowPos);
 			nextObj = objectSceneIDList[belowNextID];
 			// If object below
@@ -381,28 +412,15 @@ function RubeJectController(){
 				console.log("Found object below: " + nextObj.name);
 				if (nextObj.category === "carrier") {
 					var inface = getInface(nextPos,getOppositeDirection(direction));
-					// If outface matches an inface.
-					if (nextObj.hasInFace(GetRelativeFace(inface,
-						nextObj.position))) {
-						var outface = 
-							GetAbsoluteFace(nextObj.getOutFace(inface),
-								nextObj.position);
+					var outface = GetOutfaceFromObj(nextObj,inface);
+					if (outface != null) 
 						return createChainEntry(belowNextID,roamerID,outface);
-					} else return null;
-						
 				}
 			}
 			// Free fall
 			else {
 				console.log("Nothing below => Free fall.");
-				while (belowPos[2] > 0 && belowNextID == null) {
-					nextPos = belowPos;
-					belowPos = GetNextBlock(belowPos,4);
-					belowNextID = GetObjectFromGrid(belowPos);
-				}
-				if (belowNextID == null)
-					nextPos = belowPos;
-				var outface = GetOutface(nextPos,4);
+				var outface = GetFreefallOutface(belowPos);
 				return createChainEntry(-2,roamerID,outface);
 			}
 		}	

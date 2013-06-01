@@ -64,21 +64,21 @@ function RubeJect(objectPropertyID, position, rotation){
 	};
 
 	// Returns outface with corresponding inface. 
-	// Returns empty string otherwise. 
+	// Returns null otherwise. 
 	this.getOutFace = function(inFace){
 		for (var i = 0; i < this.ioMap.length; i++) {
 			if (this.ioMap[i][0][0] === inFace[0] && this.ioMap[i][0][1] === inFace[1]
 				&& this.ioMap[i][0][2] === inFace[2] && this.ioMap[i][0][3] === inFace[3])
 				return this.ioMap[i][1];
 		}
-		return "";
+		return null;
 	};
 
 	// Returns outface by index of ioMap.
 	this.getOutFaceByIndex = function(index) {
 		if (index < this.ioMap.length)
 			return this.ioMap[index][1];
-		return "";
+		return null;
 	}
 	
 	// Rotates RubeJect
