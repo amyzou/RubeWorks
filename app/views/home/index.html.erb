@@ -119,9 +119,14 @@ $(function(){
 	//controller.PrintAllStartingObjects();
 	//controller.PrintGrid();
 
+	/*var arrow = new RubeJect(6,[0,0,0],0);
+	var sphere = new RubeJect(4,[1,0,0],0);
+	controller.AddObject(arrow);
+	controller.AddObject(sphere);*/
+
 	
 	var ramp2 = new RubeJect(4,[5,0,4],0);
-	if (controller.CanPlaceObject(ramp2.blockList,ramp.position,ramp.category)) 
+	if (controller.CanPlaceObject(ramp2.blockList,ramp2.position,ramp2.category)) 
 		console.log("Intersection test FAILED.");
 	else console.log("Intersection test passed.");
 
