@@ -326,9 +326,10 @@ function RubeJectController(){
 
 	var GetFlatPathOutface = function(pos, dir) {
 		var prevPos;
-		while (OnGroundOrInert(pos) && isWithinLimits(pos, dir)) {
+		while (OnGroundOrInert(pos)) {
 			prevPos = pos;
 			pos = GetNextBlock(prevPos,dir);
+			if (!isWithinLimits(pos, dir)) break;
 			if (GetObjectFromGrid(pos) != null) break;
 		}
 		return GetOutface(prevPos,dir);
@@ -365,10 +366,10 @@ function RubeJectController(){
 		var thisID = GetObjectFromGrid(position);
 		var direction = outface[3];
 		var nextPos = GetNextBlock(position,direction);
-		var nextID = GetObjectFromGrid(nextPos);
-		var nextObj = objectSceneIDList[nextID];
 		// Check bounds.
 		if (!isWithinLimits(nextPos,direction)) return null;
+		var nextID = GetObjectFromGrid(nextPos);
+		var nextObj = objectSceneIDList[nextID];
 		// Check if landed on top of inert.
 		if (direction == 4 && nextObj.category == "inert") return null;
 
