@@ -86,9 +86,10 @@ function rotateCurrentObject(){
 
 function removeObjectFromScene( object ){
 	scene.remove(object);
-	for ( var obj in sceneObjects ){
-		if (sceneObjects[obj] == object ){
-			sceneObjects[obj] = undefined;
+	for ( var id in sceneObjects ){
+		if (sceneObjects[id] == object ){
+			sceneObjects[id] = undefined;
+			controller.RemoveObjectFromSpace(id);
 		}
 	}
 }

@@ -1,10 +1,10 @@
 function animate() {
-	if (pause) return;
 	requestAnimationFrame( animate );
 	render();
 }
 
 function render() {
+	if (pause) return;
 	if ( shiftDown ) {
 		theta += mouse2D.x * 1.5;
 	}
@@ -66,7 +66,9 @@ function switchMode(){
 		$('.buildmode').fadeIn();
 		$('.runmode').fadeOut();
 		buildMode = true;
+		setCurrentObject(currMeshID);
 	}
 	$('.loading').hide();
+	console.log("switch to " + buildMode? "build" : "run");
 	pause = false;
 }

@@ -99,24 +99,24 @@ sphere.display = Display.create(
 )
 sphere.updateDisplay
 
-# Trampoline
-trampoline = ObjectProperty.create(
-    name:                   'trampoline',
-    category:               'carrier', 
-    block_num:              1, 
-    blocks:                 [[0,0,0]],
-    mass:                   1.0,
-    elasticity:             1.0,
-    change_in_height:       0,
-    io_map:                 [],
-    compatible_roamers:     'array',
-)
-trampoline.display = Display.create(
-    image_file:             'tramp.png', 
-    obj_file:               'ball.js', 
-    texture_file:           'null', 
-)
-trampoline.updateDisplay
+# # Trampoline
+# trampoline = ObjectProperty.create(
+#     name:                   'trampoline',
+#     category:               'carrier', 
+#     block_num:              1, 
+#     blocks:                 [[0,0,0]],
+#     mass:                   1.0,
+#     elasticity:             1.0,
+#     change_in_height:       0,
+#     io_map:                 [],
+#     compatible_roamers:     'array',
+# )
+# trampoline.display = Display.create(
+#     image_file:             'tramp.png', 
+#     obj_file:               'ball.js', 
+#     texture_file:           'null', 
+# )
+# trampoline.updateDisplay
 
 #Starter Object
 arrow = ObjectProperty.create(
