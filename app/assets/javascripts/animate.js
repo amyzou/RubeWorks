@@ -48,6 +48,7 @@ function switchMode(){
 	$(".button").hide();
 	$('.loading').show();
 	if (buildMode){
+		rollOverMesh.visible = false;
 		camera.position.y = 1000;
 		tempCopy = new Array(currSceneID);
 		for (var i in sceneObjects) {
@@ -66,7 +67,7 @@ function switchMode(){
 		$('.buildmode').fadeIn();
 		$('.runmode').fadeOut();
 		buildMode = true;
-		setCurrentObject(currMeshID);
+		rollOverMesh.visible = true;
 	}
 	$('.loading').hide();
 	console.log("switch to " + buildMode? "build" : "run");

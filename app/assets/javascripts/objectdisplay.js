@@ -54,6 +54,7 @@ function setCurrentObject ( objectID ) {
 	if (currMeshID == objectID) return;
 	currMeshID = objectID;
 	console.log(objectMeshes[objectID].geometry );
+	
 	scene.remove(rollOverMesh);
 
 	rollOverMesh = new THREE.Mesh( objectMeshes[objectID].geometry , rollOverMaterial);
