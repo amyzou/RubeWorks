@@ -16,7 +16,7 @@ function render() {
 		updateBuildScene();
 	} else {
 		console.log("animating...");
-		pause = controller.UpdateAnimation();
+		pause = !controller.UpdateAnimation();
 	}
 	renderer.render( scene, camera );	
 }
