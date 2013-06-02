@@ -15,6 +15,7 @@ function render() {
 	if (buildMode) {
 		updateBuildScene();
 	} else {
+		console.log("animating...");
 		pause = controller.UpdateAnimation();
 	}
 	renderer.render( scene, camera );	
@@ -55,6 +56,8 @@ function switchMode(){
 		$('.buildmode').fadeOut();
 		$('.runmode').fadeIn();
 		buildMode = false;
+		controller.CreateChains();
+		controller.InitiateAnimation();
 	} else {
 		camera.position.y = 500;
 		for (var i in tempCopy) {

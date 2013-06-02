@@ -42,6 +42,13 @@ function RubeJectController(){
 	var startingObjectCounter = 0;
 	var mainGrid;
 	
+	this.ReInitializeAll = function(){
+		objectSceneIDList = new Array();
+		objectSceneIDCounter = 0;
+		startingObjectList = new Array();
+		startingObjectCounter = 0;
+		InitializeGrid();
+	}
 	
 	var PlaceObjectIntoSpace = function(sceneID){
 		var blockList = objectSceneIDList[sceneID].blockList;
@@ -527,6 +534,9 @@ function RubeJectController(){
 				// use objectSceneIDList[carrierID].
 				stateList[i].currentCarrier = startingObjectList[i][1][0]; 
 				stateList[i].currentRoamer = startingObjectList[i][1][1];
+				console.log("Initiate animation+++++++++++++++++++++++++");
+				console.log("Current carrier = " + stateList[i].currentCarrier);
+				console.log("Current roamer = " + stateList[i].currentRoamer);
 
 				//objectSceneIDList[startingObjectList[i][0][0]].momentum
 				//for now, have a random val
@@ -587,6 +597,9 @@ function RubeJectController(){
 				// updating objects in scene requires : ID, delta
 
 				/*+++++ EMILY PSEUDO-FUNCTION ALERT. BEEP BEEP BEEP +++++*/
+				console.log("current roamer = " + stateList[i].currentRoamer);
+				UpdateObjectInScene(stateList[i].currentRoamer, 
+					stateList[i].xInc, stateList[i].yInc, stateList[i].zInc);
 				//UpdateObjectInScene(stateList[i].currentRoamer, 
 				//	stateList[i].xInc, stateList[i].yInc, stateList[i].zInc);
 
@@ -609,6 +622,9 @@ function RubeJectController(){
 				
 				// TODO : update object position to fromblock
 				/*+++++ EMILY PSEUDO-FUNCTION ALERT. BEEP BEEP BEEP +++++*/
+				console.log("current roamer = " + stateList[i].currentRoamer);
+				UpdateObjectInScene(stateList[i].currentRoamer, 
+					fromBlock[0], fromBlock[1], fromBlock[2] );
 				//UpdateObjectInScene(stateList[i].currentRoamer, 
 				//	fromBlock[0], fromBlock[1], fromBlock[2]);
 				
@@ -649,8 +665,15 @@ function RubeJectController(){
 			} else console.log("terminated chain");
 		}
 
-		if (numChainsRunning != 0) return true;
-		else return false;
+		if (numChainsRunning != 0) {
+			console.log("returning true");
+			return true;
+		}
+		else {
+			console.log("returning false");
+			return false;
+
+		}
 	};
 
 

@@ -111,9 +111,9 @@ function addObjectToScene( intersector, intersects ){
 }
 
 function UpdateObjectInScene(id, rel_gx, rel_gy, rel_gz ) {
-	console.log("OLD POSITION: ");
+	console.log("OLD POSITION OF " + id + " : ");
 	console.log(sceneObjects[id].position);
-	var grid_delta = new Vector3(rel_gx, rel_gz, rel_gy)
+	var grid_delta = new THREE.Vector3(rel_gx, rel_gz, rel_gy);
 	console.log("CHANGE BY: ");
 	console.log(grid_delta);
 	grid_delta.multiplyScalar(VOXEL_SIZE);
