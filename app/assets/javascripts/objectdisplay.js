@@ -7,20 +7,19 @@ function loadObjects ( objects ) {
 }
 
 function loadObject( obj ) {
-	var blocks = obj.blocks;
 	objectMeshes[obj.id] = 
    	{ 
     	geometry : cubeGeo,
     	block_num: obj.block_num,
     	blocks: obj.blocks,
 		category: obj.category,
-		scale: 1
+		scale: new THREE.Vector3(1,1,1),
+		dimensions: obj.dimensions
     };
 
-	if (obj.id == 4 ) {
+	if (obj.image_file == 'sphere.png' ) {
 		objectMeshes[obj.id].geometry =  new THREE.SphereGeometry( VOXEL_SIZE/2, 10, 8);
 	} else if (obj.obj_file != "" ){
-		console.log('obj/' + obj.obj_file);
 		JSONLoader.load( "obj/" + obj.obj_file, function(geometry) { 
 			loadJSONGeometry (obj.id, geometry ) ;
 		} );		
@@ -30,8 +29,17 @@ function loadObject( obj ) {
 
 function loadJSONGeometry( id, geometry) {
     objectMeshes[id].geometry = geometry;
-    objectMeshes[id].scale = 25;
-    
+   	geometry.computeBoundingBox();
+
+   objectMeshes[id].scale.set(
+   		objectMeshes[id].dimensions[0]/(geometry.boundingBox.max.x - geometry.boundingBox.min.x),
+   		objectMeshes[id].dimensions[2]/(geometry.boundingBox.max.y - geometry.boundingBox.min.y),
+   		objectMeshes[id].dimensions[1]/(geometry.boundingBox.max.z - geometry.boundingBox.min.z)
+	);
+   objectMeshes[id].scale.multiplyScalar(VOXEL_SIZE);
+
+    console.log(objectMeshes[id].scale);
+
 	if (NObjectsToLoad <= 0) {
 		$(".object").click( function() {
 			setCurrentObject(parseInt($(this).attr("id")),10);
@@ -47,14 +55,16 @@ function setCurrentObject ( objectID ) {
 	currMeshID = objectID;
 	console.log(objectMeshes[objectID].geometry );
 	scene.remove(rollOverMesh);
+
 	rollOverMesh = new THREE.Mesh( objectMeshes[objectID].geometry , rollOverMaterial);
-	rollOverMesh.scale = new THREE.Vector3(1,1,1).multiplyScalar(objectMeshes[objectID].scale);
+	rollOverMesh.scale = objectMeshes[objectID].scale;
 	rollOverMesh.position = objectWorldPosition;
+
+	offset.y = VOXEL_SIZE * objectMeshes[objectID].dimensions[2] * 0.5;
 	scene.add(rollOverMesh);
 }
 
 function updateObjectPosition( intersector ) {
-	var offset = new THREE.Vector3(VOXEL_SIZE/2,VOXEL_SIZE/2,VOXEL_SIZE/2);
 	normalMatrix.getNormalMatrix( intersector.object.matrixWorld );
 	tmpVec.copy( intersector.face.normal );
 	tmpVec.applyMatrix3( normalMatrix ).normalize();
@@ -87,39 +97,26 @@ function addObjectToScene( intersector, intersects ){
 	updateObjectPosition( intersector );
 	var obj = objectMeshes[currMeshID];
 	if (obj == undefined) return;
-	if ( obj.block_num == 1 ) {
-		console.log(objectMeshes[currMeshID]);
-		if (!controller.CanPlaceObject( obj.blocks , gridPosition, obj.category)) {
-			console.log("NICE TRY MUDDERFUCKA");
-			return false;
-		}
-	} else {
-		console.log(obj.blocks[currRotation]);
-		if (!controller.CanPlaceObject( obj.blocks[currRotation], gridPosition, obj.category)) {
-			console.log("NICE TRY MUDDERFUCKA");
-			return false;
-		}	
+
+	var blocks = obj.blocks;
+	if ( obj.block_num > 1 ) blocks = blocks[currRotation];
+	if (!controller.CanPlaceObject( blocks , gridPosition, obj.category)) {
+		console.log("no place");
+		return false;
 	}
+	//create new mesh, add to scene and create Rubeject()
 	var newMesh = new THREE.Mesh(rollOverMesh.geometry.clone(), defaultMaterial);
 	newMesh.scale.copy(rollOverMesh.scale);
 	newMesh.position.copy(objectWorldPosition);
+
 	scene.add( newMesh );
 	sceneObjects[currSceneID] = newMesh;
 	controller.AddObject(new RubeJect ( currMeshID, gridPosition, currRotation));
-	console.log("added new mesh id = " + currSceneID);
 	currSceneID++;
 }
 
 function UpdateObjectInScene(id, rel_gx, rel_gy, rel_gz ) {
-	console.log("OLD POSITION OF " + id + " : ");
-	console.log(sceneObjects[id].position);
-	var grid_delta = new THREE.Vector3(rel_gx, rel_gz, rel_gy);
-	console.log("CHANGE BY: ");
-	console.log(grid_delta);
-	grid_delta.multiplyScalar(VOXEL_SIZE);
-	console.log(grid_delta);
-
-	sceneObjects[id].position.add( grid_delta );
-	console.log("NEW POSITION: ");
-	console.log(sceneObjects[id].position);
+	movement_delta.set(rel_gx, rel_gz, rel_gy);
+	movement_delta.multiplyScalar(VOXEL_SIZE);
+	sceneObjects[id].position.add( movement_delta );
 }

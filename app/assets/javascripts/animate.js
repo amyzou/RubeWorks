@@ -61,7 +61,7 @@ function switchMode(){
 	} else {
 		camera.position.y = 500;
 		for (var i in tempCopy) {
-			sceneObjects[i].position.copy(tempCopy[i]); //reset default position			
+			sceneObjects[i].position.copy( tempCopy[i] ); //reset default position			
 		}
 		$('.buildmode').fadeIn();
 		$('.runmode').fadeOut();
