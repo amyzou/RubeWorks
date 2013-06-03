@@ -554,7 +554,10 @@ function RubeJectController(){
 				//translate prev outface to in face, and retrieve block
 				var fromBlock = InblockForOutface( startingObjectList[i][0][2] );
 				var toBlock = InblockForOutface( startingObjectList[i][1][2] );
-
+				console.log("Starting from: " + fromBlock[0] 
+					+ ", " + fromBlock[1] + ", " + fromBlock[2]);
+				console.log("destination: " + toBlock[0] 
+					+ ", " + toBlock[1] + ", " + toBlock[2]);
 				//calculate distance between in face and next outface's in block
 				var xDiff = toBlock[0] - fromBlock[0];
 				var yDiff = toBlock[1] - fromBlock[1];
@@ -567,17 +570,13 @@ function RubeJectController(){
 						objectSceneIDList[ stateList[i].currentRoamer ].mass/
 						currentHardcodedNumberForRendering;
 
-				console.log("Inc is : "
-					+ stateList[i].momentum
-					+ "/" + objectSceneIDList[ stateList[i].currentRoamer ].mass 
-					+ "/" + currentHardcodedNumberForRendering
-					+ "; = " + inc
-					);
-
 				stateList[i].xInc = inc * xDiff / absDiff;
 				stateList[i].yInc = inc * yDiff / absDiff;
 				stateList[i].zInc = inc * zDiff / absDiff;			
 				
+				console.log("xInc : " + stateList[i].xInc);
+				console.log("yInc : " + stateList[i].yInc);
+				console.log("zInc : " + stateList[i].zInc);
 				stateList[i].stepsLeft = absDiff / inc;
 				stateList[i].currChainPosition = 0;
 				console.log("Steps Left : " + stateList[i].stepsLeft);
@@ -593,48 +592,50 @@ function RubeJectController(){
 		for (var i = 0; i < startingObjectCounter; i ++ ){
 			if (stateList[i] == null) numChainsRunning -- ;
 			else if (stateList[i].stepsLeft > 1 ){
-				// updating objects in scene requires : ID, delta
 
-				/*+++++ EMILY PSEUDO-FUNCTION ALERT. BEEP BEEP BEEP +++++*/
-				console.log("current roamer = " + stateList[i].currentRoamer);
+ 				console.log("current roamer = " + stateList[i].currentRoamer 
+ 					+ "; only updating pos");
 				UpdateObjectInScene(stateList[i].currentRoamer, 
 					stateList[i].xInc, stateList[i].yInc, stateList[i].zInc);
-				//UpdateObjectInScene(stateList[i].currentRoamer, 
-				//	stateList[i].xInc, stateList[i].yInc, stateList[i].zInc);
 
-				console.log("only update pos");
 				stateList[i].stepsLeft -- ;
 
-			} else if (startingObjectList[i][stateList[i].currChainPosition + 1]
+			} else if (startingObjectList[i][stateList[i].currChainPosition + 2]
 																		!= null) {
-
+				console.log("Updating chain position; previously "
+					+ [stateList[i].currChainPosition]);
+				stateList[i].currChainPosition ++ ;
+				console.log("new chain position = " + stateList[i].currChainPosition);
 				stateList[i].currentCarrier = startingObjectList[i]
 												[stateList[i].currChainPosition + 1]
 												[0]; 
 				stateList[i].currentRoamer = startingObjectList[i]
 												[stateList[i].currChainPosition + 1]
 												[1];
-				console.log("current chain position = " 
-					+ [stateList[i].currChainPosition]);
 				var fromBlock = InblockForOutface( startingObjectList[i]
 											[stateList[i].currChainPosition][2] );
 				
-				// TODO : update object position to fromblock
-				/*+++++ EMILY PSEUDO-FUNCTION ALERT. BEEP BEEP BEEP +++++*/
-				console.log("current roamer = " + stateList[i].currentRoamer);
+				console.log("roamer = " + stateList[i].currentRoamer);
+				console.log("carrier = " + stateList[i].currentCarrier);
+
 				UpdateObjectInScene(stateList[i].currentRoamer, 
-					fromBlock[0], fromBlock[1], fromBlock[2] );
-				//UpdateObjectInScene(stateList[i].currentRoamer, 
-				//	fromBlock[0], fromBlock[1], fromBlock[2]);
+				stateList[i].xInc * stateList[i].stepsLeft,
+				stateList[i].yInc * stateList[i].stepsLeft, 
+				stateList[i].zInc * stateList[i].stepsLeft);
 				
 				var toBlock = InblockForOutface( startingObjectList[i]
 												[stateList[i].currChainPosition + 1]
 												[2] );
+				console.log("Starting from: " + fromBlock[0] 
+					+ ", " + fromBlock[1] + ", " + fromBlock[2]);
+				console.log("new destination: " + toBlock[0] 
+					+ ", " + toBlock[1] + ", " + toBlock[2]);
 
 				//calculate distance between in face and next outface's in block
 				var xDiff = toBlock[0] - fromBlock[0];
 				var yDiff = toBlock[1] - fromBlock[1];
 				var zDiff = toBlock[2] - fromBlock[2];
+
 				var absDiff = Math.sqrt( xDiff*xDiff + yDiff*yDiff + zDiff*zDiff);
 
 				//xyz should be calculated seperately but fffffff I'll do it later 
@@ -648,24 +649,23 @@ function RubeJectController(){
 				stateList[i].zInc = inc * zDiff / absDiff;			
 				
 				stateList[i].stepsLeft = absDiff / inc;
-				stateList[i].currChainPosition ++ ;
 
 				console.log("new xInc : " + stateList[i].xInc);
 				console.log("new yInc : " + stateList[i].yInc);
 				console.log("new zInc : " + stateList[i].zInc);
+
 
 			} else {
 				stateList[i] = null;
 				
 			}
 			if (stateList[i]){
-				console.log("Updated state:");
 				console.log("Steps Left : " + stateList[i].stepsLeft);
 			} else console.log("terminated chain");
 		}
 
 		if (numChainsRunning != 0) {
-			console.log("returning true");
+			//console.log("returning true");
 			return true;
 		}
 		else {

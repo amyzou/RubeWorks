@@ -24,7 +24,7 @@ function render() {
 	if (buildMode) {
 		updateBuildScene();
 	} else {
-		console.log("animating...");
+		//console.log("animating...");
 		pause = !controller.UpdateAnimation();
 	}
 	renderer.render( scene, camera );	
