@@ -100,72 +100,15 @@ $(function(){
 		}
 	});
 
-	// CONTROLLER TESTING THINGS -------------------------------------------
-	console.log("CONTROLLER TESTING ------------------------------------------");
-	console.log("Controller construction -------------------------------------");
 	controller = new RubeJectController();
-
-	// Instantiate objects needed.
-	var blocks = new Array();
-	blocks.push(new RubeJect(1,[1,0,5],0)); blocks.push(new RubeJect(1,[2,0,5],0)); 
-	blocks.push(new RubeJect(1,[6,0,0],0)); //blocks.push(new RubeJect(1,[3,0,6],0));
-	var arrow = new RubeJect(5,[0,0,6],0);
-	var sphere = new RubeJect(4,[1,0,6],0);
-	var ramp = new RubeJect(3,[3,0,4],0);
-
-	// Add all objects to controller.
-	var i = 0;
-	for (; i < blocks.length; i++) {
-		controller.AddObject(1, i, blocks[i].position, blocks[i].rotation);
-	}
-	// Add arrow.
-	controller.AddObject(arrow.objectPropertyID,i+1,arrow.position,arrow.rotation); 
-	// Add sphere.
-	controller.AddObject(sphere.objectPropertyID,i+2,sphere.position,sphere.rotation); 
-	// Add ramp.
-	controller.AddObject(ramp.objectPropertyID,i+3,ramp.position,ramp.rotation);
-
-	//controller.PrintAllObjects();
-	//controller.PrintAllStartingObjects();
-	//controller.PrintGrid();
-
-	/*var arrow = new RubeJect(6,[0,0,0],0);
-	var sphere = new RubeJect(4,[1,0,0],0);
-	controller.AddObject(arrow);
-	controller.AddObject(sphere);*/
-
+	// Testing moved to controller_test.js
+	new ControllerTest();
 	
-	var ramp2 = new RubeJect(3,[5,0,4],0);
-	if (controller.CanPlaceObject(ramp2.blockList,ramp2.position,ramp2.category)) 
-		console.log("Intersection test FAILED.");
-	else console.log("Intersection test passed.");
-
-	var sphere2 = new RubeJect(4,[10,0,3],0);
-	if (controller.CanPlaceObject(sphere2.blockList,sphere2.position,sphere2.category)) 
-		console.log("Floating test FAILED.");
-	else console.log("Floating test passed.");
-
-	var block2 = new RubeJect(1,[0,0,31],0);
-	if (controller.CanPlaceObject(block2.blockList,block2.position,block2.blockList)) 
-		console.log("Bounds test FAILED");
-	else console.log("Bounds test passed.");
-	
-	// Test chaining
-	controller.CreateChains();
-	console.log("Animation construction --------------------------------------");
 	controller.InitiateAnimation();
 	var hasNextFrame = true;
 	//while (hasNextFrame) {
 	//	hasNextFrame = controller.UpdateAnimation();
 	//}
-		
-
-	console.log("ENDING TESTING OF CONTROLLER --------------------------------");
-	controller.ReInitializeAll();
-	console.log("RESETTED CONTROLLER -----------------------------------------");
-
-	// Ending testing of controller -----------------------------------------
-
 	$('.loading').hide();
 	animate();
 });

@@ -37,7 +37,7 @@ dominos = ObjectProperty.create(
     mass:                   1.0,
     elasticity:             1.0,
     change_in_height:       0,
-    io_map:                 [[[0,0,0,3],[1,0,0,5]]],
+    io_map:                 [[[0,0,0,3],[1,0,0,1]]],
     compatible_roamers:     'null',
 )
 dominos.display = Display.create(
