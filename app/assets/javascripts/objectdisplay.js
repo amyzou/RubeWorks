@@ -10,6 +10,7 @@ function loadObject( obj ) {
 	objectMeshes[obj.id] = 
    	{ 
     	geometry : cubeGeo,
+    	material : defaultMaterial,
     	block_num: obj.block_num,
     	blocks: obj.blocks,
 		category: obj.category,
@@ -20,16 +21,18 @@ function loadObject( obj ) {
 	if (obj.image_file == 'sphere.png' ) {
 		objectMeshes[obj.id].geometry =  new THREE.SphereGeometry( VOXEL_SIZE/2, 10, 8);
 	} else if (obj.obj_file != "" ){
-		JSONLoader.load( "obj/" + obj.obj_file, function(geometry) { 
-			loadJSONGeometry (obj.id, geometry ) ;
+		JSONLoader.load( "obj/" + obj.obj_file, function(geometry, mat) { 
+			loadJSONGeometry (obj.id, geometry , mat) ;
 		} );		
 	}
 	NObjectsToLoad--;
 }
 
-function loadJSONGeometry( id, geometry) {
+function loadJSONGeometry( id, geometry, material) {
+	THREE.GeometryUtils.center(geometry);
     objectMeshes[id].geometry = geometry;
-   	geometry.computeBoundingBox();
+   	if (material != undefined) 
+   		objectMeshes[id].material = material;
 
    objectMeshes[id].scale.set(
    		objectMeshes[id].dimensions[0]/(geometry.boundingBox.max.x - geometry.boundingBox.min.x),
@@ -61,7 +64,7 @@ function setCurrentObject ( objectID ) {
 	rollOverMesh.scale = objectMeshes[objectID].scale;
 	rollOverMesh.position = objectWorldPosition;
 
-	offset.y = VOXEL_SIZE * objectMeshes[objectID].dimensions[2] * 0.5;
+	offset.y = VOXEL_SIZE/2 * (objectMeshes[objectID].dimensions[2]);
 	scene.add(rollOverMesh);
 }
 
@@ -70,6 +73,7 @@ function updateObjectPosition( intersector ) {
 	tmpVec.copy( intersector.face.normal );
 	tmpVec.applyMatrix3( normalMatrix ).normalize();
 	objectWorldPosition.addVectors( intersector.point, tmpVec );
+
 
 	objectWorldPosition.x = Math.floor( objectWorldPosition.x / VOXEL_SIZE ) * VOXEL_SIZE + offset.x;
 	objectWorldPosition.y = Math.floor( objectWorldPosition.y / VOXEL_SIZE ) * VOXEL_SIZE + offset.y;
@@ -83,6 +87,7 @@ function updateObjectPosition( intersector ) {
 function rotateCurrentObject(){
 	currRotation = (currRotation+1)%4;
 	console.log("ROTATE " + currRotation);
+	rollOverMesh.rotate( 0 , 0 , 0 )
 }
 
 function removeObjectFromScene( object ){
@@ -110,6 +115,7 @@ function addObjectToScene( intersector, intersects ){
 	var newMesh = new THREE.Mesh(rollOverMesh.geometry.clone(), defaultMaterial);
 	newMesh.scale.copy(rollOverMesh.scale);
 	newMesh.position.copy(objectWorldPosition);
+
 
 	scene.add( newMesh );
 	sceneObjects[currSceneID] = newMesh;
