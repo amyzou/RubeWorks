@@ -1,16 +1,18 @@
 function onKeyDown ( event ) {
 	switch( event.keyCode ) {
-		case 16: shiftDown = true; break;
-		case 17: ctrlDown = true; break;
+		case 16: cameraRotateMode = true; break;
+		case 68: deleteMode = true; break;
 	}
+	return false;
 }
 
 function onKeyUp ( event ) {
 	switch ( event.keyCode ) {
-		case 16: shiftDown = false; break;
-		case 17: ctrlDown = false; break;
+		case 16: cameraRotateMode = false; break;
+		case 68: deleteMode = false; break;
 		case 82: rotateCurrentObject(); break;	//rotate
 	}
+	return false;
 }
 
 function onMouseMove ( event ) {
@@ -33,7 +35,7 @@ function onMouseDown ( event ) {
 	var intersects = raycaster.intersectObjects( scene.children );
 	if ( intersects.length > 0 ) {
 		intersector = getRealIntersector( intersects );
-		if ( ctrlDown && intersector.object != plane ) {
+		if ( deleteMode && intersector.object != plane ) {
 			removeObjectFromScene( intersector.object  );
 		} else {
 			addObjectToScene ( intersector, intersects );

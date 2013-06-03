@@ -1,63 +1,69 @@
 <%= stylesheet_link_tag "hoverscroll" %>
 
 <script>
-
 //SHARED GLOBALS
-var pause = false;
-var buildMode = true;
-
-var controller;
-
-var mainGrid = [];
 var GRID_SIZE = 30;
 var GRID_HEIGHT = 8;
 var VOXEL_SIZE = 50;
 
-var objectMeshes = [];
-var NObjectsToLoad;
-
-var sceneObjects = [];
-var saveState = [];
-var currSceneID = 0;
-var movement_delta = new THREE.Vector3(0,0,0);
-
 //inputHandlers
-var keyeventhandler;
-var mouseeventhandler;
-var shiftDown = false, ctrlDown = false;
+var cameraRotateMode = false, deleteMode = false;
 var mouse2D = new THREE.Vector3(0.5, 10000, 0);
 
+//CONTROLLER
+var controller;
+var mainGrid = [];
 
-//RENDERING 
+//RUN MODE and SWITCHING
+var pause = false;
+var buildMode = true;
+var saveState = [];
+var movement_delta = new THREE.Vector3(0,0,0);
+
+//BUILD GLOBALS
+//mesh arrays
+var objectMeshes = [];	//stores each type of obj:
+						//	geometry, material, block_num
+						//	category, scale, dimensions (by voxel),
+						//	offsets, blocks (each array of 4, 1 per rotation)
+var sceneObjects = [];	// handle to scene obj (to move later)
+var currSceneID = 0;	
+
+//initial object loading
+var JSONLoader;
+var NObjectsToLoad;		
+var cubeGeo, defaultMaterial;
+
+//rollover helper
+var rollOverMesh;
+var rollOverErrorMesh;
+var rollOverMaterial, rollOverErrorMaterial;
+
+//handles to currObject
+var currMeshID = 0;
+var currObj;
+var currRotation = 0;
+var currBlockList = [0,0,0];
+var currOffset;
+
+//scene handles
 var container, renderer;
 var canvas_width, canvas_height;
 var scene, camera, plane;
+var theta = 0; //camera rotation
 var projector, raycaster;
 
-var theta = 0;;
+var ROTATION_AXIS = new THREE.Vector3(0,1,0);
 
-var shiftDown = false, ctrlDown = false;
-var rollOveredFace;
-
-var cubeGeo;
-var rollOverMesh, rollOverMaterial;
-var rollOverErrorMaterial;
-var defaultMaterial;
-var currMeshID = 1;
-var currRotation = 0;
-
-var offset = new THREE.Vector3(VOXEL_SIZE/2, VOXEL_SIZE/2, VOXEL_SIZE/2);
+//intersection testing, positioning
+var objectWorldPosition = new THREE.Vector3(-VOXEL_SIZE/2, VOXEL_SIZE/2,-VOXEL_SIZE/2);
+var gridPosition = [0,0,0];
 var tmpVec = new THREE.Vector3();
 var normalMatrix = new THREE.Matrix3();
 var idx, intersector;
 
-var objectWorldPosition = new THREE.Vector3(-VOXEL_SIZE/2, VOXEL_SIZE/2,-VOXEL_SIZE/2);
-var gridPosition = [0,0,0];
-
-var objLoader;	
-var JSONLoader;
-
 $(function(){
+	$('.loading').show();
 	if ( ! Detector.webgl )  {
 		Detector.addGetWebGLMessage();	
 		$("#toolbox").hide();
@@ -76,17 +82,10 @@ $(function(){
 	if ( ! Detector.webgl ) 
 		Detector.addGetWebGLMessage();
 
-	// Currently prints to console, but could potentially be used to load object on click. 
-	$(".object").click(
-		function(){
-			setCurrentObject( $(this).attr('id') );
-		}
-	);
-
-	$(".button").click( switchMode );
 	$(".button").hide();
-	$('.buildmode').fadeIn();
-	$('.runmode').fadeOut();
+	$('.buildmode').show();
+	$('.runmode').hide();
+	$(".button").click( switchMode );
 
 	//DISPLAY
 	initGraphics("grid_container");
@@ -165,9 +164,6 @@ $(function(){
 	console.log("RESETTED CONTROLLER -----------------------------------------");
 
 	// Ending testing of controller -----------------------------------------
-
-	$('.loading').hide();
-	animate();
 });
 
 </script>

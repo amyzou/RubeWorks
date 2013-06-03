@@ -1,3 +1,12 @@
+function startAnimation(){
+	$(".object").click( function() {
+		setCurrentObject(parseInt($(this).attr("id"),10));
+	});
+	setCurrentObject(1);
+	$('.loading').hide();
+	animate();
+}
+
 function animate() {
 	requestAnimationFrame( animate );
 	render();
@@ -5,7 +14,7 @@ function animate() {
 
 function render() {
 	if (pause) return;
-	if ( shiftDown ) {
+	if ( cameraRotateMode ) {
 		theta += mouse2D.x * 1.5;
 	}
 
@@ -22,6 +31,8 @@ function render() {
 }
 
 function updateBuildScene(){
+	if ( deleteMode ) rollOverMesh.visible = false;
+	else rollOverMesh.visible = true;
 	raycaster = projector.pickingRay( mouse2D.clone(), camera );
 	var intersects = raycaster.intersectObjects( scene.children );
 	if ( intersects.length > 0 ) {

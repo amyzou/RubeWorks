@@ -123,13 +123,13 @@ function RubeJectController(){
 			translatedPos[0] += blockList[i][0];
 			translatedPos[1] += blockList[i][1];
 			translatedPos[2] += blockList[i][2];
-			console.log(translatedPos);
+			//console.log(translatedPos);
 			if (!allWithinLimits(translatedPos)) {
-				console.log("Out of limits.");
+				//console.log("Out of limits.");
 				return false;
 			} 
 			if (ContainsObject(translatedPos[0], translatedPos[1], translatedPos[2])) {
-				console.log("Intersection.");
+				//console.log("Intersection.");
 				return false;
 			} 
 		}
@@ -138,7 +138,7 @@ function RubeJectController(){
 			var groundBlocks = GetGroundBlocks(blockList, pos); 
 			for (var i = 0; i < groundBlocks.length; i++) {
 				if (!OnGroundOrInert(groundBlocks[i])) {
-					console.log("Floating/not on inert.");
+					//console.log("Floating/not on inert.");
 					return false;
 				}
 			}

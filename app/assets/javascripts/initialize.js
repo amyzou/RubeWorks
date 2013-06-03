@@ -50,7 +50,6 @@ function initGeometry(){
 	//rollOverGeo = new THREE.CubeGeometry( VOXEL_SIZE, VOXEL_SIZE, VOXEL_SIZE );
 	cubeGeo = new THREE.CubeGeometry( VOXEL_SIZE, VOXEL_SIZE, VOXEL_SIZE );
 	rollOverMaterial = new THREE.MeshLambertMaterial( { color: 0xfcd87f, ambient: 0xfcd87f, opacity: 0.5, transparent: true } );
-	rollOverErrorMaterial = new THREE.MeshBasicMaterial( { color: 0xb93131, wireframe: true, opacity: 0.5, transparent: true } );
 	defaultMaterial = new THREE.MeshLambertMaterial( { color: 0x384463, ambient: 0x384463, shading: THREE.FlatShading });
 	rollOverMesh = new THREE.Mesh(cubeGeo, rollOverMaterial);
 	rollOverMesh.position = objectWorldPosition;
