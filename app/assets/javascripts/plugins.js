@@ -1,4 +1,4 @@
-//= require three.min
+//= require three
 //= require Detector
 //= require OBJLoader
 //= require organictabs
