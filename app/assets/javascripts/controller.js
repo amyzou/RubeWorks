@@ -586,6 +586,32 @@ function RubeJectController(){
 		}
 	};
 
+	//adjust z for gravity
+	//need to do: adjust for when going up or down
+	var addGravity = function(index){
+		console.log("adjusting Z: ");
+					var oldInc = Math.sqrt( stateList[index].xInc*stateList[index].xInc
+					 + stateList[index].yInc*stateList[index].yInc
+					 + stateList[index].zInc*stateList[index].zInc);
+					totInc = Math.abs(gravity * stateList[index].zInc/oldInc);
+					console.log("oldInc = " + oldInc);
+ 					console.log("totInc = " + totInc);
+
+					console.log("OldIncs: " + stateList[index].xInc + ", "
+						+ stateList[index].yInc + ", "
+						+ stateList[index].zInc);
+
+					stateList[index].xInc += totInc * stateList[index].xInc / oldInc;
+					stateList[index].yInc += totInc * stateList[index].yInc / oldInc;
+ 					stateList[index].zInc -= Math.abs(
+ 						totInc * stateList[index].zInc / oldInc);
+ 					console.log("NewIncs: " + stateList[index].xInc + ", "
+						+ stateList[index].yInc + ", "
+						+ stateList[index].zInc);
+ 					stateList[index].stepsLeft 
+ 						= stateList[index].stepsLeft * oldInc / (oldInc + totInc);
+
+	}
 	// returns true while still animating
 	// when done, return false
 	this.UpdateAnimation = function(){
@@ -603,32 +629,7 @@ function RubeJectController(){
 
 				stateList[i].stepsLeft -- ;
 
-				//adjust z for gravity
-				//need to do: adjust for when going up or down
-				if (stateList[i].zInc != 0 ) {
-					console.log("adjusting Z: ");
-					var oldInc = Math.sqrt( stateList[i].xInc*stateList[i].xInc
-					 + stateList[i].yInc*stateList[i].yInc
-					 + stateList[i].zInc*stateList[i].zInc);
-					totInc = Math.abs(gravity * stateList[i].zInc/oldInc);
-					console.log("oldInc = " + oldInc);
- 					console.log("totInc = " + totInc);
-
-					console.log("OldIncs: " + stateList[i].xInc + ", "
-						+ stateList[i].yInc + ", "
-						+ stateList[i].zInc);
-
-					stateList[i].xInc += totInc * stateList[i].xInc / oldInc;
-					stateList[i].yInc += totInc * stateList[i].yInc / oldInc;
- 					stateList[i].zInc -= Math.abs(
- 						totInc * stateList[i].zInc / oldInc);
- 					console.log("NewIncs: " + stateList[i].xInc + ", "
-						+ stateList[i].yInc + ", "
-						+ stateList[i].zInc);
- 					stateList[i].stepsLeft = stateList[i].stepsLeft * oldInc / (oldInc + totInc);
-
-				}
-
+				if (stateList[i].zInc != 0 ) addGravity(i);
 
 			} else if (startingObjectList[i][stateList[i].currChainPosition + 1]
 																		!= null) {
