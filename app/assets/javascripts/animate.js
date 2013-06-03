@@ -71,5 +71,7 @@ function switchMode(){
 	}
 	$('.loading').hide();
 	console.log("switch to " + buildMode? "build" : "run");
+	controller.PrintGrid();
+	controller.PrintAllObjects();
 	pause = false;
 }

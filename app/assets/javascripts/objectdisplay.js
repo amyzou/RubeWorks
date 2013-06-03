@@ -91,11 +91,11 @@ function rotateCurrentObject(){
 }
 
 function removeObjectFromScene( object ){
-	scene.remove(object);
+	scene.remove(object);	
 	for ( var id in sceneObjects ){
 		if (sceneObjects[id] == object ){
 			sceneObjects[id] = undefined;
-			controller.RemoveObjectFromSpace(id);
+			controller.ModifyObject_Delete(id);
 		}
 	}
 }
@@ -119,7 +119,8 @@ function addObjectToScene( intersector, intersects ){
 
 	scene.add( newMesh );
 	sceneObjects[currSceneID] = newMesh;
-	controller.AddObject(new RubeJect ( currMeshID, gridPosition, currRotation));
+	controller.AddObject(currMeshID, currSceneID, gridPosition, currRotation);
+	console.log("added new mesh id = " + currSceneID);
 	currSceneID++;
 }
 

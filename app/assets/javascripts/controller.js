@@ -36,20 +36,32 @@ function RubeJectController(){
 
 	/*-----------------Basic functionality-----------------*/
 
-	var objectSceneIDList = new Array();
-	var objectSceneIDCounter = 0;
+	var objectSceneIDList = new Array();	
 	var startingObjectList = new Array();
 	var startingObjectCounter = 0;
 	var mainGrid;
 	
 	this.ReInitializeAll = function(){
 		objectSceneIDList = new Array();
-		objectSceneIDCounter = 0;
 		startingObjectList = new Array();
 		startingObjectCounter = 0;
 		InitializeGrid();
 	}
 	
+	var InitializeGrid = function() {
+		mainGrid = new Array(GRID_SIZE);
+		for ( var x = 0; x < GRID_SIZE; x++ ) {
+			mainGrid[x] = new Array(GRID_SIZE);
+			for ( var y = 0; y < GRID_SIZE; y++ ) {
+				mainGrid[x][y] = new Array(GRID_HEIGHT);
+				for (var z = 0; z < GRID_SIZE; z++) {
+					mainGrid[x][y][z] = null;
+				}
+			}
+		}
+	};
+	InitializeGrid();
+
 	var PlaceObjectIntoSpace = function(sceneID){
 		var blockList = objectSceneIDList[sceneID].blockList;
 		var position  = objectSceneIDList[sceneID].position;
@@ -63,21 +75,7 @@ function RubeJectController(){
 			// Set sceneID in grid.
 			mainGrid[x][y][z] = sceneID;
 		}
-	}
-
-	var InitializeGrid = function() {
-		mainGrid = new Array(GRID_SIZE);
-		for ( var x = 0; x < GRID_SIZE; x++ ) {
-			mainGrid[x] = new Array(GRID_SIZE);
-			for ( var y = 0; y < GRID_SIZE; y++ ) {
-				mainGrid[x][y] = new Array(GRID_HEIGHT);
-				for (var z = 0; z < GRID_SIZE; z++) {
-					mainGrid[x][y][z] = null;
-				}
-			}
-		}
-	}
-	InitializeGrid();	
+	};
 
 	var RemoveObjectFromSpace = function(sceneID){
 		//delete object from space grid
@@ -88,7 +86,7 @@ function RubeJectController(){
 					[blockList[i][1] + position[1]] 
 					[blockList[i][2] + position[2]] = null;
 		}
-	}
+	};
 
 	var createChainEntry = function(carrierID, roamerID, outface) {
 		var chainEntry = new Array();
@@ -96,28 +94,28 @@ function RubeJectController(){
 		chainEntry[1]  = roamerID;
 		chainEntry[2]  = outface;
 		return chainEntry;
-	}
+	};
 
 	var GetAbsoluteFace = function(face, position) {
 		face[0] += position[0];
 		face[1] += position[1];
 		face[2] += position[2];
 		return face;
-	}
+	};
 
 	var GetRelativeFace = function(face, position) {
 		face[0] -= position[0];
 		face[1] -= position[1];
 		face[2] -= position[2];
 		return face;	
-	}
+	};
 
 	var ContainsObject = function(x,y,z) {
 		if (mainGrid[x][y][z] != null) {
 			return true;
 		}
 		return false;
-	}
+	};
 
 	this.CanPlaceObject = function(blockList, pos, category) {
 		for (var i = 0; i < blockList.length; i++) {
@@ -146,7 +144,7 @@ function RubeJectController(){
 			}
 		} 
 		return true;
-	}
+	};
 
 	var GetGroundBlocks = function (blockList, pos) {
 		var groundBlocks = new Array();
@@ -160,37 +158,34 @@ function RubeJectController(){
 			}
 		}
 		return groundBlocks;
-	}
+	};
 
 
 	//method to add object
-	this.AddObject = function(rubeJect){
-		var isStartingObject = rubeJect.category === "starter";
-		//console.log("Adding: " + rubeJect.position + ";" + rubeJect.blockList);
-		objectSceneIDList[objectSceneIDCounter] = rubeJect;
-		PlaceObjectIntoSpace(objectSceneIDCounter);
-		if (isStartingObject) {
+	this.AddObject = function(objectPropertyID, sceneID, position, rotation){
+		var positionCopy = position.slice(0);
+		var rubeJect = new RubeJect(objectPropertyID, positionCopy, rotation);
+		objectSceneIDList[sceneID] = rubeJect;
+		PlaceObjectIntoSpace(sceneID);
+		if (rubeJect.category === "starter") {
 			startingObjectList[startingObjectCounter] = new Array();
-			var outface = 
-				GetAbsoluteFace(rubeJect.getOutFaceByIndex(0), 
-								rubeJect.position);
+			var outface = GetAbsoluteFace(rubeJect.getOutFaceByIndex(0), positionCopy);
 			startingObjectList[startingObjectCounter][0] = 
-				createChainEntry(-1, objectSceneIDCounter, outface);
-			startingObjectCounter ++;
+				createChainEntry(-1, sceneID, outface);
+			startingObjectCounter++;
 		}
-		objectSceneIDCounter ++;
 	};
 
 	this.ModifyObject_Delete = function(sceneID){
 		RemoveObjectFromSpace(sceneID);
-		objectSceneIDList[sceneId] = null;
-	}
+		objectSceneIDList[sceneID] = null;
+	};
 
 	this.ModifyObject_Move = function(sceneID, newLocation){
 		RemoveObjectFromSpace(sceneID);
 		objectSceneIDList[sceneID].position = newLocation;
 		PlaceObjectIntoSpace(objectSceneIDCounter);
-	}
+	};
 
 	/* legacy/extension?
 	this.ModifyObject_Rotate = function(sceneID, newRotation){
@@ -241,7 +236,7 @@ function RubeJectController(){
 			  	else return false;
 			default: return false;
 		}
-	}
+	};
   
 	// Retrieve next block from pos and direction.
 	var GetNextBlock = function(pos,direction){
@@ -255,24 +250,24 @@ function RubeJectController(){
 			case 5:	nextPos[2] += 1; break;
 		}
 		return nextPos;
-	}
+	};
 
 	var GetOutface = function(pos,direction) {
 		var outface = pos.slice(0);
 		outface[3] = direction;
 		return outface;
-	}
+	};
 
 	var GetPositionFromFace = function(face) {
 		return face.slice(0,3);
-	}
+	};
 
 	var GetObjectFromGrid = function(pos) {
 		if (mainGrid[pos[0]][pos[1]][pos[2]] == null 
 			|| isUndefined(mainGrid[pos[0]][pos[1]][pos[2]])) 
 			return null;
 		else return mainGrid[pos[0]][pos[1]][pos[2]];
-	}
+	};
 
 	var OnGroundOrInert = function(pos) {
 		// Is ground.
@@ -285,7 +280,7 @@ function RubeJectController(){
 			return true;
 		}
 		return false;
-	}
+	};
 
 	var allWithinLimits = function(pos) {
 		for (var i = 0; i < 6; i++) {
@@ -293,7 +288,7 @@ function RubeJectController(){
 				return false;
 		}
 		return true;
-	}
+	};
 
 	var isWithinLimits = function(pos,direction){
 		switch(direction){
@@ -304,13 +299,13 @@ function RubeJectController(){
 			case 4:	return pos[2] >= 0;
 			case 5:	return pos[2] < GRID_SIZE;
 		}
-	}
+	};
 
 	var getInface = function(pos,face) {
 		var inface = pos.slice(0);
 		inface[3] = face;
 		return inface;
-	}
+	};
 
 	var getOppositeDirection = function(direction) {
 		switch(direction){
@@ -321,7 +316,7 @@ function RubeJectController(){
 			case 4:	return 5;
 			case 5:	return 4;
 		}	
-	}
+	};
 
 	var GetOutfaceFromObj = function(obj, inface) {
 		// If outface matches an inface.
@@ -329,7 +324,7 @@ function RubeJectController(){
 		if (outface != null)
 			return GetAbsoluteFace(obj.getOutFace(inface), obj.position);
 		else return null;
-	}
+	};
 
 	var GetFlatPathOutface = function(pos, dir) {
 		var prevPos;
@@ -340,7 +335,7 @@ function RubeJectController(){
 			if (GetObjectFromGrid(pos) != null) break;
 		}
 		return GetOutface(prevPos,dir);
-	}
+	};
 
 	var GetFreefallOutface = function(pos) {
 		var belowNextID = GetObjectFromGrid(pos);
@@ -352,7 +347,7 @@ function RubeJectController(){
 		}
 		if (belowNextID == null) return GetOutface(pos,4);
 		else return GetOutface(prevPos,4);
-	}
+	};
 
 	//method for chaining - used recursively
 	/* object in chain list:
@@ -368,6 +363,7 @@ function RubeJectController(){
 	 * Assumes that roamers are 1 block. (probably needs extending)
 	 */
 	var GetNextEntry = function(chainEntry, roamerID) {
+		if (chainEntry == null) return null;
 		var outface = chainEntry[2];
 		var position = GetPositionFromFace(outface);
 		var thisID = GetObjectFromGrid(position);
@@ -433,16 +429,14 @@ function RubeJectController(){
 			}
 		}	
 		return null;
-	}
+	};
 
 	// Continue to chain. Recursive.
 	var GetNextChainLink = function(listNum,index,roamerID){
 		var nextEntry = GetNextEntry(startingObjectList[listNum][index],roamerID);
+		console.log("Added entry: " + nextEntry);
 		startingObjectList[listNum][index + 1] = nextEntry;
 
-		// TODO: Recurse after GetNextEntry is completed.
-		console.log("ADDED ENTRY: " + startingObjectList[listNum][index+1]);
-		console.log("");
 		if (nextEntry != null) 
 			GetNextChainLink(listNum,startingObjectList[listNum].length-1,
 				startingObjectList[listNum][index+1][1]);
@@ -456,7 +450,6 @@ function RubeJectController(){
 		var position = GetPositionFromFace(outface);
 		var next = GetNextBlock(position,direction);
 		var nextID = GetObjectFromGrid(next);	
-
 		if (!isUndefined(objectSceneIDList[nextID])) {
 			var nextCategory = objectSceneIDList[nextID].category;
 			if (nextCategory === "roamer" || nextCategory === "gadget") {
@@ -467,10 +460,11 @@ function RubeJectController(){
 			console.log("no next roamer/gadget.");
 			return null;
 		}
-	}
+	};
 
 	//method to create chains for run mode
 	this.CreateChains = function(){
+		console.log("CREATING CHAINS");
 		for (var i = 0; i < startingObjectCounter; i++)
 		{
 			var firstID = getFirstRoamer(i);
@@ -482,7 +476,7 @@ function RubeJectController(){
 
 	var isUndefined = function(obj) {
 		return (typeof obj === "undefined")
-	}
+	};
 
 	/*-----------------Animation code-----------------*/
 
@@ -680,19 +674,21 @@ function RubeJectController(){
 
   	/*-----------------For testing purposes-----------------*/
   	this.PrintAllObjects = function(){
-  		for (var i = 0; i <objectSceneIDCounter; i++)
+  		for (var i = 0; i <objectSceneIDList.length; i++)
   		{
-  			console.log("Object " + i + " is a(n) " + objectSceneIDList[i].name );
+  			var sceneObject = objectSceneIDList[i];
+  			if (sceneObject != null)
+  				console.log("Object " + i + " is a(n) " + sceneObject.name 
+  							+ ", at " + sceneObject.position);
   		} 
-  		console.log("Total of " + objectSceneIDCounter + " objects.");
   	};
 
   	this.PrintAllStartingObjects = function(){
-  		for (var i = 0; i <startingObjectCounter; i++)
+  		for (var i = 0; i < startingObjectList.length; i++)
   		{
   			var sceneObject = objectSceneIDList[startingObjectList[i][0][1]];
-  			console.log("Starting Object " + i + " is a(n) " + sceneObject.name 
-  							+ "; position: " + sceneObject.position);
+  			console.log("Starting Object " + i + " is a(n) " 
+  						+ sceneObject.name + "; position: " + sceneObject.position);
   		} 
   	};
 
@@ -700,14 +696,17 @@ function RubeJectController(){
   		for (var x = 0; x < mainGrid.length; x++) {
   			for (var y = 0; y < mainGrid[x].length; y++) {
   				for (var z = 0; z < mainGrid[x][y].length; z++) {
-  					if (mainGrid[x][y][z] != null)
+  					if (mainGrid[x][y][z] != null) {
+  						var sceneID = mainGrid[x][y][z];
+  						var sceneObject = objectSceneIDList[sceneID];
   						console.log("Found object at " + x + "," + y + "," + z 
-  							+ ", is a " 
-  							+ objectSceneIDList[mainGrid[x][y][z]].name);
+  							+ ", is a " + sceneObject.name
+  							+ ", at " + sceneObject.position);
+  					}
   				}
   			}
   		}
-  	}
+  	};
 
   	this.PrintAllChains = function(){
   		for (var i = 0; i <startingObjectCounter; i++)
