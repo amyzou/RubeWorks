@@ -378,10 +378,17 @@ function RubeJectController(){
 		// Check if landed on top of inert.
 		if (direction == 4 && nextObj.category == "inert") return null;
 
+		// If gadget, must contact a roamer or gadget. 
+		if (objectSceneIDList[roamerID].category == "gadget") {
+			if (nextObj == null) return null;
+			if (nextObj.category !== "roamer" || nextObj.category !== "gadget")	return null;
+		}
+
 		// If next block contains object:
 		if (nextObj != null) {
 			// If roamer, outface is as far as it can go on ground 
 			if (nextObj.category === "roamer") {
+				//console.log("found roamer. Pos: " + position);
 				if (OnGroundOrInert(nextPos)) {
 					var outface = GetFlatPathOutface(nextPos,direction);
 					return createChainEntry(-1, nextID, outface);	
@@ -410,8 +417,16 @@ function RubeJectController(){
 		} 
 		// Next position is empty:
 		else {
-			// TODO: Check below for carriers/freefall.
+			
 			//console.log("Position empty.");
+			// Check if on ground
+			if (OnGroundOrInert(nextPos)) {
+				var outface = GetFlatPathOutface(nextPos,direction);
+				//console.log(outface);
+				return createChainEntry(-1, roamerID, outface);	
+			}
+
+			// TODO: Check below for carriers/freefall.
 			var belowPos = GetNextBlock(nextPos,4);
 			if (!isWithinLimits(belowPos,4)) return null;
 			var belowNextID = GetObjectFromGrid(belowPos);
@@ -458,7 +473,7 @@ function RubeJectController(){
 		if (!isUndefined(objectSceneIDList[nextID])) {
 			var nextCategory = objectSceneIDList[nextID].category;
 			if (nextCategory === "roamer" || nextCategory === "gadget") {
-				//console.log("next is a " + nextCategory);
+				//console.log("next is a " + nextCategory + "; number " + nextID);
 				return nextID;
 			}
 		} else {
