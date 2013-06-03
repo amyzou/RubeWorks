@@ -43,7 +43,6 @@ function RubeJectController(){
 	
 	this.ReInitializeAll = function(){
 		objectSceneIDList = new Array();
-		objectSceneIDCounter = 0;
 		startingObjectList = new Array();
 		startingObjectCounter = 0;
 		InitializeGrid();
@@ -98,7 +97,6 @@ function RubeJectController(){
 	};
 
 	var GetAbsoluteFace = function(face, position) {
-		console.log("Absolute position: " + position);
 		face[0] += position[0];
 		face[1] += position[1];
 		face[2] += position[2];
@@ -164,19 +162,17 @@ function RubeJectController(){
 
 
 	//method to add object
-	//controller.AddObject(currMeshID, currSceneID, gridPosition, currRotation);
 	this.AddObject = function(objectPropertyID, sceneID, position, rotation){
 		var positionCopy = position.slice(0);
 		var rubeJect = new RubeJect(objectPropertyID, positionCopy, rotation);
-		var isStartingObject = rubeJect.category === "starter";
 		objectSceneIDList[sceneID] = rubeJect;
-		var id = sceneID;
 		PlaceObjectIntoSpace(sceneID);
-		if (isStartingObject) {
-			startingObjectList[sceneID] = new Array();
+		if (rubeJect.category === "starter") {
+			startingObjectList[startingObjectCounter] = new Array();
 			var outface = GetAbsoluteFace(rubeJect.getOutFaceByIndex(0), positionCopy);
 			startingObjectList[startingObjectCounter][0] = 
 				createChainEntry(-1, sceneID, outface);
+			startingObjectCounter++;
 		}
 	};
 
@@ -367,6 +363,7 @@ function RubeJectController(){
 	 * Assumes that roamers are 1 block. (probably needs extending)
 	 */
 	var GetNextEntry = function(chainEntry, roamerID) {
+		if (chainEntry == null) return null;
 		var outface = chainEntry[2];
 		var position = GetPositionFromFace(outface);
 		var thisID = GetObjectFromGrid(position);
@@ -437,6 +434,7 @@ function RubeJectController(){
 	// Continue to chain. Recursive.
 	var GetNextChainLink = function(listNum,index,roamerID){
 		var nextEntry = GetNextEntry(startingObjectList[listNum][index],roamerID);
+		console.log("Added entry: " + nextEntry);
 		startingObjectList[listNum][index + 1] = nextEntry;
 
 		if (nextEntry != null) 
@@ -452,7 +450,6 @@ function RubeJectController(){
 		var position = GetPositionFromFace(outface);
 		var next = GetNextBlock(position,direction);
 		var nextID = GetObjectFromGrid(next);	
-
 		if (!isUndefined(objectSceneIDList[nextID])) {
 			var nextCategory = objectSceneIDList[nextID].category;
 			if (nextCategory === "roamer" || nextCategory === "gadget") {
@@ -467,6 +464,7 @@ function RubeJectController(){
 
 	//method to create chains for run mode
 	this.CreateChains = function(){
+		console.log("CREATING CHAINS");
 		for (var i = 0; i < startingObjectCounter; i++)
 		{
 			var firstID = getFirstRoamer(i);
@@ -675,7 +673,7 @@ function RubeJectController(){
 
 
   	/*-----------------For testing purposes-----------------*/
-  		this.PrintAllObjects = function(){
+  	this.PrintAllObjects = function(){
   		for (var i = 0; i <objectSceneIDList.length; i++)
   		{
   			var sceneObject = objectSceneIDList[i];
@@ -686,7 +684,7 @@ function RubeJectController(){
   	};
 
   	this.PrintAllStartingObjects = function(){
-  		for (var i = 0; i <objectSceneIDList.length; i++)
+  		for (var i = 0; i < startingObjectList.length; i++)
   		{
   			var sceneObject = objectSceneIDList[startingObjectList[i][0][1]];
   			console.log("Starting Object " + i + " is a(n) " 
