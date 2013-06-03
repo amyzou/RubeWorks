@@ -94,7 +94,7 @@ sphere = ObjectProperty.create(
 )
 sphere.display = Display.create(
     image_file:             'sphere.png', 
-    obj_file:               '', 
+    obj_file:               'ball.js', 
     texture_file:           'null', 
 )
 sphere.updateDisplay

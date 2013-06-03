@@ -36,9 +36,6 @@ function loadObject( obj ) {
 		return;
 	}
 
-	if (obj.image_file == 'sphere.png' ) 
-		objectMeshes[obj.id].geometry =  new THREE.SphereGeometry( VOXEL_SIZE/2, 10, 8);
-		
 	NObjectsToLoad--;
 	if (NObjectsToLoad <= 0) startAnimation();
 }
@@ -98,10 +95,10 @@ function updateObjectPosition( intersector ) {
 }
 
 function rotateCurrentObject(){
-	if (currObj.block_num == 1) return;
 	currRotation = (currRotation+1)%4;
-	currOffset = currObj.offsets[currRotation % 2];
 	rollOverMesh.rotateOnAxis( ROTATION_AXIS, Math.PI / 2);
+	if (currObj.block_num == 1) return;
+	currOffset = currObj.offsets[currRotation % 2];
 }
 
 function removeObjectFromScene( object ){

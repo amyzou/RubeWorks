@@ -3,6 +3,10 @@ function onKeyDown ( event ) {
 		case 16: cameraRotateMode = true; break;
 		case 68: deleteMode = true; break;
 	}
+
+	if (cameraRotateMode) $("#rotate_cam").show();
+	if (deleteMode && buildMode) $("#delete_obj").show();
+
 	return false;
 }
 
@@ -12,6 +16,10 @@ function onKeyUp ( event ) {
 		case 68: deleteMode = false; break;
 		case 82: rotateCurrentObject(); break;	//rotate
 	}
+
+	if (!cameraRotateMode) $("#rotate_cam").hide();
+	if (deleteMode && buildMode) $("#delete_obj").hide();
+
 	return false;
 }
 

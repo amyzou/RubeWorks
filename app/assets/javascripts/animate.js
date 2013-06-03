@@ -63,7 +63,8 @@ function switchMode(){
 		camera.position.y = 1000;
 		tempCopy = new Array(currSceneID);
 		for (var i in sceneObjects) {
-			tempCopy[i] = sceneObjects[i].position.clone(); 
+			if (sceneObjects[i])
+				tempCopy[i] = sceneObjects[i].position.clone(); 
 		}
 		$('.buildmode').fadeOut();
 		$('.runmode').fadeIn();
@@ -71,7 +72,7 @@ function switchMode(){
 		controller.CreateChains();
 		controller.InitiateAnimation();
 	} else {
-		camera.position.y = 500;
+		camera.position.y = 600;
 		for (var i in tempCopy) {
 			sceneObjects[i].position.copy( tempCopy[i] ); //reset default position			
 		}
