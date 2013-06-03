@@ -15,7 +15,6 @@ var OBJECT_FRAME_RATE = 24;
 function RubeJect(objectPropertyID, position, rotation){
 	
 	//objects are stored with object property ID
-
 	this.position = position;
 	this.rotation = rotation;
 	
@@ -29,6 +28,7 @@ function RubeJect(objectPropertyID, position, rotation){
 		data: { objID : objectPropertyID },
 		async: false,
 		success: function( obj ){
+			self.objectPropertyID		= objectPropertyID;
 			self.name 					= obj.name;
 			self.category 				= obj.category;
 			self.blockNum				= obj.block_num;
