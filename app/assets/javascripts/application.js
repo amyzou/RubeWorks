@@ -14,6 +14,7 @@
 //= require plugins.js
 //= require rubeJect
 //= require controller
+//= require controller_test
 //= require rubeJectPropertiesTable
 //= require initialize
 //= require animate

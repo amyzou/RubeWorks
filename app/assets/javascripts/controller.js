@@ -124,6 +124,7 @@ function RubeJectController(){
 			translatedPos[1] += blockList[i][1];
 			translatedPos[2] += blockList[i][2];
 			//console.log(translatedPos);
+
 			if (!allWithinLimits(translatedPos)) {
 				//console.log("Out of limits.");
 				return false;
@@ -172,6 +173,7 @@ function RubeJectController(){
 			var outface = GetAbsoluteFace(rubeJect.getOutFaceByIndex(0), positionCopy);
 			startingObjectList[startingObjectCounter][0] = 
 				createChainEntry(-1, sceneID, outface);
+			//console.log("Added entry: " + createChainEntry(-1, sceneID, outface));
 			startingObjectCounter++;
 		}
 	};
@@ -378,10 +380,8 @@ function RubeJectController(){
 
 		// If next block contains object:
 		if (nextObj != null) {
-			// If next object is roamer/gadget:
+			// If roamer, outface is as far as it can go on ground 
 			if (nextObj.category === "roamer") {
-				// If roamer, outface is as far as it can go on ground 
-				// (up to GRID_WIDTH)
 				if (OnGroundOrInert(nextPos)) {
 					var outface = GetFlatPathOutface(nextPos,direction);
 					return createChainEntry(-1, nextID, outface);	
@@ -389,31 +389,36 @@ function RubeJectController(){
 			} 
 			// If gadget, outface is the one corresponding to inface
 			else if (nextObj.category === "gadget") {
-				// TODO: Get inface, use it to get outface. Send gadget sceneID.
+				//console.log("Found gadget");
+				var inface = getInface(nextPos,getOppositeDirection(direction));
+				var outface = GetOutfaceFromObj(nextObj,inface);
+				if (outface != null)
+					return createChainEntry(-1,nextID,outface);
 			}
-			// If next object is a carrier.
+			// If carrier, travel over carrier. Outface retrieved via inface.
 			else if (nextObj.category === "carrier") {
-				console.log("Found carrier");
+				//console.log("Found carrier");
 				var inface = getInface(nextPos,getOppositeDirection(direction));
 				var outface = GetOutfaceFromObj(nextObj,inface);
 				if (outface != null)
 					return createChainEntry(nextID,roamerID,outface);
 			}
-			// If next object is an inert:
+			// If inert, stop.
 			else if (nextObj.category === "inert") {
-				// TODO: Bounce back.
+				//console.log("Found inert.");
 			}
 		} 
 		// Next position is empty:
 		else {
 			// TODO: Check below for carriers/freefall.
-			console.log("Position empty.");
+			//console.log("Position empty.");
 			var belowPos = GetNextBlock(nextPos,4);
+			if (!isWithinLimits(belowPos,4)) return null;
 			var belowNextID = GetObjectFromGrid(belowPos);
 			nextObj = objectSceneIDList[belowNextID];
 			// If object below
 			if (nextObj != null) {
-				console.log("Found object below: " + nextObj.name);
+				//console.log("Found object below: " + nextObj.name);
 				if (nextObj.category === "carrier") {
 					var inface = getInface(nextPos,getOppositeDirection(direction));
 					var outface = GetOutfaceFromObj(nextObj,inface);
@@ -423,7 +428,7 @@ function RubeJectController(){
 			}
 			// Free fall
 			else {
-				console.log("Nothing below => Free fall.");
+				//console.log("Nothing below => Free fall.");
 				var outface = GetFreefallOutface(belowPos);
 				return createChainEntry(-2,roamerID,outface);
 			}
@@ -434,7 +439,7 @@ function RubeJectController(){
 	// Continue to chain. Recursive.
 	var GetNextChainLink = function(listNum,index,roamerID){
 		var nextEntry = GetNextEntry(startingObjectList[listNum][index],roamerID);
-		console.log("Added entry: " + nextEntry);
+		//console.log("Added entry: " + nextEntry);
 		startingObjectList[listNum][index + 1] = nextEntry;
 
 		if (nextEntry != null) 
@@ -453,18 +458,17 @@ function RubeJectController(){
 		if (!isUndefined(objectSceneIDList[nextID])) {
 			var nextCategory = objectSceneIDList[nextID].category;
 			if (nextCategory === "roamer" || nextCategory === "gadget") {
-				console.log("next is a " + nextCategory);
+				//console.log("next is a " + nextCategory);
 				return nextID;
 			}
 		} else {
-			console.log("no next roamer/gadget.");
+			//console.log("no next roamer/gadget.");
 			return null;
 		}
 	};
 
 	//method to create chains for run mode
 	this.CreateChains = function(){
-		console.log("CREATING CHAINS");
 		for (var i = 0; i < startingObjectCounter; i++)
 		{
 			var firstID = getFirstRoamer(i);
@@ -720,6 +724,10 @@ function RubeJectController(){
   								+ startingObjectList[i][k].name );
   			}
   		} 
+  	};
+
+  	this.GetChains = function() {
+  		return startingObjectList;
   	};
 }
 
