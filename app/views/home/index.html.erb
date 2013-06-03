@@ -19,6 +19,7 @@ var NObjectsToLoad;
 var sceneObjects = [];
 var saveState = [];
 var currSceneID = 0;
+var movement_delta = new THREE.Vector3(0,0,0);
 
 //inputHandlers
 var keyeventhandler;
@@ -45,7 +46,7 @@ var defaultMaterial;
 var currMeshID = 1;
 var currRotation = 0;
 
-var scaleVec = new THREE.Vector3(VOXEL_SIZE/2, VOXEL_SIZE/2, VOXEL_SIZE/2);
+var offset = new THREE.Vector3(VOXEL_SIZE/2, VOXEL_SIZE/2, VOXEL_SIZE/2);
 var tmpVec = new THREE.Vector3();
 var normalMatrix = new THREE.Matrix3();
 var idx, intersector;
@@ -103,7 +104,7 @@ $(function(){
 	console.log("CONTROLLER TESTING ------------------------------------------");
 	console.log("Controller construction -------------------------------------");
 	controller = new RubeJectController();
-
+/*
 	// Instantiate objects needed.
 	var blocks = new Array();
 	blocks.push(new RubeJect(1,[1,0,5],0)); blocks.push(new RubeJect(1,[2,0,5],0)); 
@@ -124,6 +125,7 @@ $(function(){
 	controller.AddObject(arrow);
 	controller.AddObject(sphere);*/
 
+
 	var ramp2 = new RubeJect(4,[5,0,4],0);
 	if (controller.CanPlaceObject(ramp2.blockList,ramp2.position,ramp2.category)) 
 		console.log("Intersection test FAILED.");
@@ -139,24 +141,20 @@ $(function(){
 		console.log("Bounds test FAILED");
 	else console.log("Bounds test passed.");
 	
-	console.log("");
-
 	// Test chaining
 	/*controller.CreateChains();
 	console.log("Animation construction --------------------------------------");
 	controller.InitiateAnimation();
-
-	for (var i = 0; i < 80; i ++)
-		controller.UpdateAnimation();
-
 	var hasNextFrame = true;*/
 	//while (hasNextFrame) {
 	//	hasNextFrame = controller.UpdateAnimation();
 	//}
 		
 
-
 	console.log("ENDING TESTING OF CONTROLLER --------------------------------");
+	controller.ReInitializeAll();
+	console.log("RESETTED CONTROLLER -----------------------------------------");
+
 	// Ending testing of controller -----------------------------------------
 
 	$('.loading').hide();
