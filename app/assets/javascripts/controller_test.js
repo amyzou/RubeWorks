@@ -10,7 +10,9 @@ function ControllerTest(){
 	// Add blocks.
 	controller.AddObject(blockID, 0, [1,0,5], 0);
 	controller.AddObject(blockID, 1, [2,0,5], 0);
-	controller.AddObject(blockID, 2, [6,0,0], 0);
+	controller.AddObject(blockID, 2, [6,0,3], 0);
+	controller.AddObject(blockID, 6, [7,0,3], 0);
+	controller.AddObject(blockID, 7, [8,0,3], 0);
 	// Add arrow.
 	controller.AddObject(arrowID,3,[0,0,6],0); 
 	// Add sphere.
@@ -22,8 +24,9 @@ function ControllerTest(){
 	if (JSON.stringify(chains[0]) === JSON.stringify([-1,3,[0,0,6,1]])
 		&& JSON.stringify(chains[1]) === JSON.stringify([-1,4,[2,0,6,1]])
 		&& JSON.stringify(chains[2]) === JSON.stringify([5,4,[5,0,4,1]])
-		&& JSON.stringify(chains[3]) === JSON.stringify([-2,4,[6,0,1,4]])
-		&& chains[4] == null)
+		&& JSON.stringify(chains[3]) === JSON.stringify([-1,4,[8,0,4,1]])
+		&& JSON.stringify(chains[4]) === JSON.stringify([-2,4,[9,0,0,4]])
+		&& chains[5] == null)
 			console.log("Chaining test 1: passed.");
 	else console.log("Chaining test 1: failed.");
 	
