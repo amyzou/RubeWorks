@@ -484,7 +484,9 @@ function RubeJectController(){
 
 	/*-----------------Animation code-----------------*/
 
-	var currentHardcodedNumberForRendering = 60;
+	var currentHardcodedNumberForRendering = 100;
+	var gravityDamper = 1;
+	var gravity = 9.8 / currentHardcodedNumberForRendering * gravityDamper;
 	var stateList = new Array();
 
 	 /* start: midpoint of inblock
@@ -578,8 +580,9 @@ function RubeJectController(){
 				console.log("yInc : " + stateList[i].yInc);
 				console.log("zInc : " + stateList[i].zInc);
 				stateList[i].stepsLeft = absDiff / inc;
-				stateList[i].currChainPosition = 0;
+				stateList[i].currChainPosition = 1;
 				console.log("Steps Left : " + stateList[i].stepsLeft);
+				console.log("Done initiating animation++++++++++++++++++");
 		}
 	};
 
@@ -600,20 +603,47 @@ function RubeJectController(){
 
 				stateList[i].stepsLeft -- ;
 
-			} else if (startingObjectList[i][stateList[i].currChainPosition + 2]
+				//adjust z for gravity
+				//need to do: adjust for when going up or down
+				if (stateList[i].zInc != 0 ) {
+					console.log("adjusting Z: ");
+					var oldInc = Math.sqrt( stateList[i].xInc*stateList[i].xInc
+					 + stateList[i].yInc*stateList[i].yInc
+					 + stateList[i].zInc*stateList[i].zInc);
+					totInc = Math.abs(gravity * stateList[i].zInc/oldInc);
+					console.log("oldInc = " + oldInc);
+ 					console.log("totInc = " + totInc);
+
+					console.log("OldIncs: " + stateList[i].xInc + ", "
+						+ stateList[i].yInc + ", "
+						+ stateList[i].zInc);
+
+					stateList[i].xInc += totInc * stateList[i].xInc / oldInc;
+					stateList[i].yInc += totInc * stateList[i].yInc / oldInc;
+ 					stateList[i].zInc -= Math.abs(
+ 						totInc * stateList[i].zInc / oldInc);
+ 					console.log("NewIncs: " + stateList[i].xInc + ", "
+						+ stateList[i].yInc + ", "
+						+ stateList[i].zInc);
+ 					stateList[i].stepsLeft = stateList[i].stepsLeft * oldInc / (oldInc + totInc);
+
+				}
+
+
+			} else if (startingObjectList[i][stateList[i].currChainPosition + 1]
 																		!= null) {
 				console.log("Updating chain position; previously "
 					+ [stateList[i].currChainPosition]);
 				stateList[i].currChainPosition ++ ;
 				console.log("new chain position = " + stateList[i].currChainPosition);
 				stateList[i].currentCarrier = startingObjectList[i]
-												[stateList[i].currChainPosition + 1]
+												[stateList[i].currChainPosition]
 												[0]; 
 				stateList[i].currentRoamer = startingObjectList[i]
-												[stateList[i].currChainPosition + 1]
+												[stateList[i].currChainPosition]
 												[1];
 				var fromBlock = InblockForOutface( startingObjectList[i]
-											[stateList[i].currChainPosition][2] );
+											[stateList[i].currChainPosition - 1][2] );
 				
 				console.log("roamer = " + stateList[i].currentRoamer);
 				console.log("carrier = " + stateList[i].currentCarrier);
@@ -624,7 +654,7 @@ function RubeJectController(){
 				stateList[i].zInc * stateList[i].stepsLeft);
 				
 				var toBlock = InblockForOutface( startingObjectList[i]
-												[stateList[i].currChainPosition + 1]
+												[stateList[i].currChainPosition]
 												[2] );
 				console.log("Starting from: " + fromBlock[0] 
 					+ ", " + fromBlock[1] + ", " + fromBlock[2]);
