@@ -127,6 +127,30 @@ function ControllerTest(){
 	// TODO: Write test.
 	console.log ("Chaining test 9: Needs to be written and verified.");
 
+	// Chaining test 10. Sphere rolls across blocks, down ramp, across ground.
+	// Add blocks.
+	controller.AddObject(blockID, 0, [1,0,0], 0);
+	controller.AddObject(blockID, 1, [2,0,0], 0);
+	controller.AddObject(blockID, 2, [1,0,1], 0);
+	controller.AddObject(blockID, 6, [2,0,1], 0);
+	// Add arrow.
+	controller.AddObject(arrowID,3,[0,0,2],0); 
+	// Add sphere.
+	controller.AddObject(sphereID,4,[1,0,2],0); 
+	// Add ramp.
+	controller.AddObject(rampID,5,[3,0,0],0);
+	controller.CreateChains();
+	var chains = controller.GetChains()[0];
+	if (JSON.stringify(chains[0]) === JSON.stringify([-1,3,[0,0,2,1]])
+		&& JSON.stringify(chains[1]) === JSON.stringify([-1,4,[2,0,2,1]])
+		&& JSON.stringify(chains[2]) === JSON.stringify([5,4,[5,0,0,1]])
+		&& JSON.stringify(chains[3]) === JSON.stringify([-1,4,[29,0,0,1]])
+		&& chains[4] == null)
+			console.log("Chaining test 10: passed.");
+	else console.log("Chaining test 10: failed.");
+	
+	controller.ReInitializeAll();
+
 	console.log("");
 	// Grid placement tests --------------------------------------------------
 	controller.AddObject(rampID,0,[5,0,3],0);
