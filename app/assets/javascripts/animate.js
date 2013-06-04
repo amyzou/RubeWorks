@@ -69,6 +69,7 @@ function switchMode(){
 		$('.buildmode').fadeOut();
 		$('.runmode').fadeIn();
 		buildMode = false;
+		controller.PrintGrid();
 		controller.CreateChains();
 		controller.InitiateAnimation();
 	} else {

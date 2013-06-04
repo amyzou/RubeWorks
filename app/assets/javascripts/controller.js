@@ -66,12 +66,11 @@ function RubeJectController(){
 		var blockList = objectSceneIDList[sceneID].blockList;
 		var position  = objectSceneIDList[sceneID].position;
 		// Iterate through blockList to add all blocks
-		for (var i = 0; i < blockList.length; i++ ){
+		for (var i = 0; i < objectSceneIDList[sceneID].blockNum; i++ ){
 			// Absolute positions of blocks
 			var x = blockList[i][0] + position[0],
 			    y = blockList[i][1] + position[1],
 			    z = blockList[i][2] + position[2];
-
 			// Set sceneID in grid.
 			mainGrid[x][y][z] = sceneID;
 		}
@@ -97,10 +96,11 @@ function RubeJectController(){
 	};
 
 	var GetAbsoluteFace = function(face, position) {
-		face[0] += position[0];
-		face[1] += position[1];
-		face[2] += position[2];
-		return face;
+		absFace = face.slice(0);
+		absFace[0] += position[0];
+		absFace[1] += position[1];
+		absFace[2] += position[2];
+		return absFace;
 	};
 
 	var GetRelativeFace = function(face, position) {
@@ -323,8 +323,9 @@ function RubeJectController(){
 	var GetOutfaceFromObj = function(obj, inface) {
 		// If outface matches an inface.
 		var outface = obj.getOutFace(GetRelativeFace(inface, obj.position));
-		if (outface != null)
+		if (outface != null) {
 			return GetAbsoluteFace(obj.getOutFace(inface), obj.position);
+		}
 		else return null;
 	};
 
@@ -644,7 +645,7 @@ function RubeJectController(){
 					 + stateList[index].zInc*stateList[index].zInc);
 					totInc = Math.abs(gravity * stateList[index].zInc/oldInc);
 					console.log("oldInc = " + oldInc);
- 					console.log("totInc = " + totInc);
+					console.log("totInc = " + totInc);
 
 					console.log("OldIncs: " + stateList[index].xInc + ", "
 						+ stateList[index].yInc + ", "
@@ -674,7 +675,7 @@ function RubeJectController(){
 			else if (stateList[i].stepsLeft > 1 ){
 
  				console.log("current roamer = " + stateList[i].currentRoamer 
- 					+ "; only updating pos");
+					+ "; only updating pos");
 				UpdateObjectInScene(stateList[i].currentRoamer, 
 					stateList[i].xInc, stateList[i].yInc, stateList[i].zInc);
 
@@ -735,6 +736,7 @@ function RubeJectController(){
   			for (var y = 0; y < mainGrid[x].length; y++) {
   				for (var z = 0; z < mainGrid[x][y].length; z++) {
   					if (mainGrid[x][y][z] != null) {
+  						//console.log(mainGrid[x][y]);
   						var sceneID = mainGrid[x][y][z];
   						var sceneObject = objectSceneIDList[sceneID];
   						console.log("Found object at " + x + "," + y + "," + z 
