@@ -565,11 +565,19 @@ function RubeJectController(){
 				
 				console.log("roamer = " + stateList[index].currentRoamer);
 				console.log("carrier = " + stateList[index].currentCarrier);
+				var toBlock;
 
-				
-				var toBlock = InblockForOutface( startingObjectList[index]
+				if (startingObjectList[index][stateList[index].currChainPosition + 1]
+																		== null
+				|| startingObjectList[index][stateList[index].currChainPosition + 1]
+												[1] != stateList[index].currentRoamer) {
+					//don't go!
+				toBlock = startingObjectList[index][stateList[index].currChainPosition][2];
+				} else {
+				toBlock = InblockForOutface( startingObjectList[index]
 												[stateList[index].currChainPosition]
 												[2] );
+				}
 				console.log("Starting from: " + fromBlock[0] 
 					+ ", " + fromBlock[1] + ", " + fromBlock[2]);
 				console.log("new destination: " + toBlock[0] 
@@ -609,6 +617,7 @@ function RubeJectController(){
 				console.log("new xInc : " + stateList[index].xInc);
 				console.log("new yInc : " + stateList[index].yInc);
 				console.log("new zInc : " + stateList[index].zInc);
+				console.log("steps left : " + stateList[index].stepsLeft);
 	}
 
 	//initiate states for all starting points. Chains have to be created already.
@@ -617,12 +626,10 @@ function RubeJectController(){
 				stateList[i] = new Object();
 
 				//objectSceneIDList[startingObjectList[i][0][0]].momentum
-				stateList[i].momentum = 12;
-
 				//for now, have a random val
 				stateList[i].momentum = 12;
 				stateList[i].currChainPosition = 0;
-				InitiateNextLink(0);
+				InitiateNextLink(i);
 				console.log("Done initiating animation++++++++++++++++++");
 		}
 	};
@@ -672,15 +679,15 @@ function RubeJectController(){
 
 				stateList[i].stepsLeft -- ;
 
-				if (stateList[i].zInc != 0 ) addGravity(i);
+				//if (stateList[i].zInc != 0 ) addGravity(i);
 
 			} else if (startingObjectList[i][stateList[i].currChainPosition + 1]
-																		!= null) {
-				InitiateNextLink(i);
+																		) {
 				UpdateObjectInScene(stateList[i].currentRoamer, 
-				stateList[i].xInc * stateList[i].stepsLeft,
-				stateList[i].yInc * stateList[i].stepsLeft, 
-				stateList[i].zInc * stateList[i].stepsLeft);
+				stateList[i].xInc,
+				stateList[i].yInc, 
+				stateList[i].zInc);
+				InitiateNextLink(i);
 			} else {
 				stateList[i] = null;
 				
