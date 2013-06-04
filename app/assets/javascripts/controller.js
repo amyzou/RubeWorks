@@ -66,12 +66,11 @@ function RubeJectController(){
 		var blockList = objectSceneIDList[sceneID].blockList;
 		var position  = objectSceneIDList[sceneID].position;
 		// Iterate through blockList to add all blocks
-		for (var i = 0; i < blockList.length; i++ ){
+		for (var i = 0; i < objectSceneIDList[sceneID].blockNum; i++ ){
 			// Absolute positions of blocks
 			var x = blockList[i][0] + position[0],
 			    y = blockList[i][1] + position[1],
 			    z = blockList[i][2] + position[2];
-
 			// Set sceneID in grid.
 			mainGrid[x][y][z] = sceneID;
 		}
@@ -404,7 +403,7 @@ function RubeJectController(){
 			}
 			// If carrier, travel over carrier. Outface retrieved via inface.
 			else if (nextObj.category === "carrier") {
-				//console.log("Found carrier");
+				console.log("Found carrier");
 				var inface = getInface(nextPos,getOppositeDirection(direction));
 				var outface = GetOutfaceFromObj(nextObj,inface);
 				if (outface != null)
@@ -454,7 +453,7 @@ function RubeJectController(){
 	// Continue to chain. Recursive.
 	var GetNextChainLink = function(listNum,index,roamerID){
 		var nextEntry = GetNextEntry(startingObjectList[listNum][index],roamerID);
-		//console.log("Added entry: " + nextEntry);
+		console.log("Added entry: " + nextEntry);
 		startingObjectList[listNum][index + 1] = nextEntry;
 
 		if (nextEntry != null) 
@@ -748,6 +747,7 @@ function RubeJectController(){
   			for (var y = 0; y < mainGrid[x].length; y++) {
   				for (var z = 0; z < mainGrid[x][y].length; z++) {
   					if (mainGrid[x][y][z] != null) {
+  						//console.log(mainGrid[x][y]);
   						var sceneID = mainGrid[x][y][z];
   						var sceneObject = objectSceneIDList[sceneID];
   						console.log("Found object at " + x + "," + y + "," + z 

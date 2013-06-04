@@ -148,7 +148,7 @@ straightRail = ObjectProperty.create(
     elasticity:             1.0, 
     change_in_height:       0,
     #Relative Animation Information
-    io_map:                 [[[0,0,1,3],[0,0,1,1]], [[0,0,1,1],[0,0,1,3]]],
+    io_map:                 [[[0,0,2,3],[0,0,2,1]], [[0,0,2,1],[0,0,2,3]]],
     compatible_roamers:     [5],
 )
 straightRail.display = Display.create(
@@ -168,7 +168,7 @@ lstraightRail = ObjectProperty.create(
     elasticity:             1.0, 
     change_in_height:       0,
     #Relative Animation Information
-    io_map:                 [[[0,0,1,3],[2,0,1,1]], [[2,0,1,1],[0,0,1,3]]],
+    io_map:                 [[[0,0,2,3],[2,0,2,1]], [[2,0,2,1],[0,0,2,3]]],
     compatible_roamers:     [5],
 )
 lstraightRail.display = Display.create(

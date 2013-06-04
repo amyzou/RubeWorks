@@ -4,7 +4,8 @@ function ControllerTest(){
 	// CONTROLLER TESTING THINGS -------------------------------------------
 	console.log("CONTROLLER TESTING ------------------------------------------");	
 
-	var sphereID = 4; var arrowID = 5; var blockID = 1; var dominoID = 2; var rampID = 3;
+	var blockID = 1; var dominoID = 2; var rampID = 3; var sphereID = 4; var arrowID = 5; 
+	var sRailID = 6; var lRailID = 7; var columnID = 8; 
 
 	// Chaining test 1. Sphere rolls across blocks, down ramp, falls down.
 	// Add blocks.
@@ -151,7 +152,34 @@ function ControllerTest(){
 		&& chains[4] == null)
 			console.log("Chaining test 10: passed.");
 	else console.log("Chaining test 10: failed.");
-	
+	controller.ReInitializeAll();	
+
+	// Chaining test 11. Sphere rolls across column, then over rails.
+	// Add columns.
+	controller.AddObject(columnID, 0, [0,0,0], 0);
+	controller.AddObject(columnID, 1, [1,0,0], 0);
+	// Add arrow.
+	controller.AddObject(arrowID,2,[0,0,2],0); 
+	// Add sphere.
+	controller.AddObject(sphereID,3,[1,0,2],0); 
+	// Add rails.
+	controller.AddObject(sRailID,4,[2,0,0],0);
+	controller.AddObject(lRailID,5,[3,0,0],0);
+	// Add ramp.
+	controller.AddObject(rampID,6,[6,0,0],0);
+	controller.CreateChains();
+	var chains = controller.GetChains()[0];
+	if (JSON.stringify(chains[0]) === JSON.stringify([-1,2,[0,0,2,1]])
+		&& JSON.stringify(chains[1]) === JSON.stringify([-1,3,[1,0,2,1]])
+		&& JSON.stringify(chains[2]) === JSON.stringify([4,3,[2,0,2,1]])
+		&& JSON.stringify(chains[3]) === JSON.stringify([5,3,[5,0,2,1]])
+		&& JSON.stringify(chains[4]) === JSON.stringify([6,3,[8,0,0,1]])
+		&& JSON.stringify(chains[5]) === JSON.stringify([-1,3,[29,0,0,1]])
+		&& chains[6] == null)
+			console.log("Chaining test 11: passed.");
+	else console.log("Chaining test 11: failed.");
+
+
 	controller.ReInitializeAll();
 
 	console.log("");
