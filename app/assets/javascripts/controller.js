@@ -535,6 +535,59 @@ function RubeJectController(){
 		}
 	};
 
+
+//because the code is ugly hence it should be reused
+	
+	var InitiateNextLink = function(index){
+		console.log("Updating chain position; previously "
+					+ [stateList[index].currChainPosition]);
+				stateList[index].currChainPosition ++ ;
+				console.log("new chain position = " + stateList[index].currChainPosition);
+				stateList[index].currentCarrier = startingObjectList[index]
+												[stateList[index].currChainPosition]
+												[0]; 
+				stateList[index].currentRoamer = startingObjectList[index]
+												[stateList[index].currChainPosition]
+												[1];
+				var fromBlock = InblockForOutface( startingObjectList[index]
+											[stateList[index].currChainPosition - 1][2] );
+				
+				console.log("roamer = " + stateList[index].currentRoamer);
+				console.log("carrier = " + stateList[index].currentCarrier);
+
+				
+				var toBlock = InblockForOutface( startingObjectList[index]
+												[stateList[index].currChainPosition]
+												[2] );
+				console.log("Starting from: " + fromBlock[0] 
+					+ ", " + fromBlock[1] + ", " + fromBlock[2]);
+				console.log("new destination: " + toBlock[0] 
+					+ ", " + toBlock[1] + ", " + toBlock[2]);
+
+				//calculate distance between in face and next outface's in block
+				var xDiff = toBlock[0] - fromBlock[0];
+				var yDiff = toBlock[1] - fromBlock[1];
+				var zDiff = toBlock[2] - fromBlock[2];
+
+				var absDiff = Math.sqrt( xDiff*xDiff + yDiff*yDiff + zDiff*zDiff);
+
+				//xyz should be calculated seperately but fffffff I'll do it later 
+
+				var inc = stateList[index].momentum/ 
+						objectSceneIDList[ stateList[index].currentRoamer ].mass/
+						currentHardcodedNumberForRendering;
+
+				stateList[index].xInc = inc * xDiff / absDiff;
+				stateList[index].yInc = inc * yDiff / absDiff;
+				stateList[index].zInc = inc * zDiff / absDiff;			
+				
+				stateList[index].stepsLeft = absDiff / inc;
+
+				console.log("new xInc : " + stateList[index].xInc);
+				console.log("new yInc : " + stateList[index].yInc);
+				console.log("new zInc : " + stateList[index].zInc);
+	}
+
 	//initiate states for all starting points. Chains have to be created already.
 	this.InitiateAnimation = function(){
 		for (var i = 0; i < startingObjectCounter; i++){
@@ -548,7 +601,8 @@ function RubeJectController(){
 				// which is [carrierID,roamerID,face]
 				// IDs used are scene IDs. To get the objectID, 
 				// use objectSceneIDList[carrierID].
-				stateList[i].currentCarrier = startingObjectList[i][1][0]; 
+				
+				/*stateList[i].currentCarrier = startingObjectList[i][1][0]; 
 				stateList[i].currentRoamer = startingObjectList[i][1][1];
 				console.log("Initiate animation+++++++++++++++++++++++++");
 				console.log("Current carrier = " + stateList[i].currentCarrier);
@@ -596,7 +650,10 @@ function RubeJectController(){
 				console.log("zInc : " + stateList[i].zInc);
 				stateList[i].stepsLeft = absDiff / inc;
 				stateList[i].currChainPosition = 1;
-				console.log("Steps Left : " + stateList[i].stepsLeft);
+				console.log("Steps Left : " + stateList[i].stepsLeft);*/
+				stateList[i].momentum = 12;
+				stateList[i].currChainPosition = 0;
+				InitiateNextLink(0);
 				console.log("Done initiating animation++++++++++++++++++");
 		}
 	};
@@ -627,6 +684,8 @@ function RubeJectController(){
  						= stateList[index].stepsLeft * oldInc / (oldInc + totInc);
 
 	}
+
+
 	// returns true while still animating
 	// when done, return false
 	this.UpdateAnimation = function(){
@@ -648,59 +707,11 @@ function RubeJectController(){
 
 			} else if (startingObjectList[i][stateList[i].currChainPosition + 1]
 																		!= null) {
-				console.log("Updating chain position; previously "
-					+ [stateList[i].currChainPosition]);
-				stateList[i].currChainPosition ++ ;
-				console.log("new chain position = " + stateList[i].currChainPosition);
-				stateList[i].currentCarrier = startingObjectList[i]
-												[stateList[i].currChainPosition]
-												[0]; 
-				stateList[i].currentRoamer = startingObjectList[i]
-												[stateList[i].currChainPosition]
-												[1];
-				var fromBlock = InblockForOutface( startingObjectList[i]
-											[stateList[i].currChainPosition - 1][2] );
-				
-				console.log("roamer = " + stateList[i].currentRoamer);
-				console.log("carrier = " + stateList[i].currentCarrier);
-
+				InitiateNextLink(i);
 				UpdateObjectInScene(stateList[i].currentRoamer, 
 				stateList[i].xInc * stateList[i].stepsLeft,
 				stateList[i].yInc * stateList[i].stepsLeft, 
 				stateList[i].zInc * stateList[i].stepsLeft);
-				
-				var toBlock = InblockForOutface( startingObjectList[i]
-												[stateList[i].currChainPosition]
-												[2] );
-				console.log("Starting from: " + fromBlock[0] 
-					+ ", " + fromBlock[1] + ", " + fromBlock[2]);
-				console.log("new destination: " + toBlock[0] 
-					+ ", " + toBlock[1] + ", " + toBlock[2]);
-
-				//calculate distance between in face and next outface's in block
-				var xDiff = toBlock[0] - fromBlock[0];
-				var yDiff = toBlock[1] - fromBlock[1];
-				var zDiff = toBlock[2] - fromBlock[2];
-
-				var absDiff = Math.sqrt( xDiff*xDiff + yDiff*yDiff + zDiff*zDiff);
-
-				//xyz should be calculated seperately but fffffff I'll do it later 
-
-				var inc = stateList[i].momentum/ 
-						objectSceneIDList[ stateList[i].currentRoamer ].mass/
-						currentHardcodedNumberForRendering;
-
-				stateList[i].xInc = inc * xDiff / absDiff;
-				stateList[i].yInc = inc * yDiff / absDiff;
-				stateList[i].zInc = inc * zDiff / absDiff;			
-				
-				stateList[i].stepsLeft = absDiff / inc;
-
-				console.log("new xInc : " + stateList[i].xInc);
-				console.log("new yInc : " + stateList[i].yInc);
-				console.log("new zInc : " + stateList[i].zInc);
-
-
 			} else {
 				stateList[i] = null;
 				
