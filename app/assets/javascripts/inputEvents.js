@@ -5,7 +5,10 @@ function onKeyDown ( event ) {
 	}
 
 	if (cameraRotateMode) $("#rotate_cam").show();
+	else $("#rotate_cam").hide();
+
 	if (deleteMode && buildMode) $("#delete_obj").show();
+	else  $("#delete_obj").hide();
 
 	return false;
 }
@@ -17,8 +20,11 @@ function onKeyUp ( event ) {
 		case 82: rotateCurrentObject(); break;	//rotate
 	}
 
-	if (!cameraRotateMode) $("#rotate_cam").hide();
-	if (deleteMode && buildMode) $("#delete_obj").hide();
+	if (cameraRotateMode) $("#rotate_cam").show();
+	else $("#rotate_cam").hide();
+
+	if (deleteMode && buildMode) $("#delete_obj").show();
+	else  $("#delete_obj").hide();
 
 	return false;
 }
