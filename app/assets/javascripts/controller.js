@@ -379,10 +379,12 @@ function RubeJectController(){
 		// Check if landed on top of inert.
 		if (direction == 4 && nextObj.category == "inert") return null;
 
-		// If gadget, must contact a roamer or gadget. 
+		//console.log("nextPos: " + nextPos + "; nextID: " + nextID );
+
+		// If current gadget, must contact a roamer or gadget. 
 		if (objectSceneIDList[roamerID].category == "gadget") {
 			if (nextObj == null) return null;
-			if (nextObj.category !== "roamer" || nextObj.category !== "gadget")	return null;
+			if (nextObj.category != "roamer" && nextObj.category != "gadget")	return null;
 		}
 
 		// If next block contains object:
@@ -455,17 +457,19 @@ function RubeJectController(){
 	// Continue to chain. Recursive.
 	var GetNextChainLink = function(listNum,index,roamerID){
 		var nextEntry = GetNextEntry(startingObjectList[listNum][index],roamerID);
-		//console.log("Added entry: " + nextEntry);
+		// console.log("Added entry: " + nextEntry);
 		startingObjectList[listNum][index + 1] = nextEntry;
 
-		if (nextEntry != null) 
+		if (nextEntry != null) {
 			GetNextChainLink(listNum,startingObjectList[listNum].length-1,
 				startingObjectList[listNum][index+1][1]);
+		}
 	};
 
 	// Position after starter must contain a roamer or gadget.
 	var getFirstRoamer = function(listNum) {
 		var chainEntry = startingObjectList[listNum][0];
+		//console.log("first chain entry " + chainEntry);
 		var outface = chainEntry[2];
 		var direction = outface[3];
 		var position = GetPositionFromFace(outface);
@@ -473,9 +477,22 @@ function RubeJectController(){
 		var nextID = GetObjectFromGrid(next);	
 		if (!isUndefined(objectSceneIDList[nextID])) {
 			var nextCategory = objectSceneIDList[nextID].category;
-			if (nextCategory === "roamer" || nextCategory === "gadget") {
-				//console.log("next is a " + nextCategory + "; number " + nextID);
+			if (nextCategory === "roamer") {
 				return nextID;
+			}
+			if (nextCategory === "gadget") {
+				//console.log("starting gadget");
+				var inface = getInface(next,getOppositeDirection(direction));
+				var outface = GetOutfaceFromObj(objectSceneIDList[nextID],inface);
+				//console.log("GADGET inface: " + inface + "; outface: " + outface + "; chain entry: " + createChainEntry(-1,nextID,outface));
+				if (outface != null) {
+					startingObjectList[listNum][1] = createChainEntry(-1,nextID,outface);
+					return nextID;
+				}
+				else {
+					startingObjectList[listNum][1] = null;
+					return null;
+				}
 			}
 		} else {
 			//console.log("no next roamer/gadget.");
@@ -489,8 +506,12 @@ function RubeJectController(){
 		{
 			startingObjectList[i].length = 1;
 			var firstID = getFirstRoamer(i);
-			if (firstID != null) 
-				GetNextChainLink(i,0,firstID);
+			if (firstID != null) { 
+				if (objectSceneIDList[firstID].category === "roamer")
+					GetNextChainLink(i,0,firstID);
+				if (objectSceneIDList[firstID].category === "gadget")
+					GetNextChainLink(i,1,firstID);
+			}
 			else startingObjectList[i][1] = null;
 		}
 	};
