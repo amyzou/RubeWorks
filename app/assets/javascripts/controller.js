@@ -679,7 +679,7 @@ function RubeJectController(){
 
 				stateList[i].stepsLeft -- ;
 
-				//if (stateList[i].zInc != 0 ) addGravity(i);
+				if (stateList[i].zInc != 0 ) addGravity(i);
 
 			} else if (startingObjectList[i][stateList[i].currChainPosition + 1]
 																		) {
