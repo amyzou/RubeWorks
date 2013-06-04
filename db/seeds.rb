@@ -11,7 +11,7 @@
 # Block
 block = ObjectProperty.create(
     name:                   'block',
-    category:               'inert', 
+    category:               'inert',
     block_num:              1, 
     blocks:                 [[0,0,0]],
     mass:                   1.0,
@@ -24,6 +24,7 @@ block.display = Display.create(
     image_file:             'block.png', 
     obj_file:               '', 
     texture_file:           'null', 
+    description:            'Text here.',
 )
 block.updateDisplay
 
@@ -63,13 +64,13 @@ ramp = ObjectProperty.create(
     #This key, value represents rolling down the ramp.
     io_map:                 [
                                 [[0,0,2,3],[2,0,0,1],"linear",[0,0,2],[3,0,0]],
-                                #[[2,0,0,1],[0,0,2,3],"linear",[3,0,0],[0,0,2]],
-                                #[[0,0,2,5],[2,0,0,1],"linear",[0,0,2],[3,0,0]],
-                                #[[0,0,2,5],[2,0,0,1],"linear",[0,0,2],[3,0,0]],
-                                #[[0,0,1,5],[2,0,0,1],"linear",[0.5,0,1.5],[3,0,0]],
-                                #[[1,0,1,5],[2,0,0,1],"linear",[1.5,0,1],[3,0,0]],
-                                #[[1,0,0,5],[2,0,0,1],"linear",[1.5,0,1],[3,0,0]],
-                                #[[2,0,0,5],[2,0,0,1],"linear",[2.5,0,0.5],[3,0,0]]
+                                [[2,0,0,1],[0,0,2,3],"linear",[3,0,0],[0,0,2]],
+                                [[0,0,2,5],[2,0,0,1],"linear",[0,0,2],[3,0,0]],
+                                [[0,0,2,5],[2,0,0,1],"linear",[0,0,2],[3,0,0]],
+                                [[0,0,1,5],[2,0,0,1],"linear",[0.5,0,1.5],[3,0,0]],
+                                [[1,0,1,5],[2,0,0,1],"linear",[1.5,0,1],[3,0,0]],
+                                [[1,0,0,5],[2,0,0,1],"linear",[1.5,0,1],[3,0,0]],
+                                [[2,0,0,5],[2,0,0,1],"linear",[2.5,0,0.5],[3,0,0]]
                             ],
     compatible_roamers:     [5],
 )
@@ -196,33 +197,3 @@ shortColumn.display = Display.create(
     texture_file:           'null', 
 )
 shortColumn.updateDisplay
-
-# Semi Circle Rail
-semiCircleRail = ObjectProperty.create(
-    name:                   'Semi Circle Rail',
-    category:               'carrier', 
-    block_num:              10,
-                            #Base rail ..... ..
-    blocks:                 [[1,1,0],[1,2,0],
-                            #Rail
-                            [0,0,1],[1,0,1],[0,1,1],[1,1,1],[0,2,1],[1,2,1],[0,3,1],[1,3,1]],
-    mass:                   5.0,
-    elasticity:             0.25,
-    change_in_height:       0,
-                            #In face = x,y,z, face
-                             #Out face = x,y,z, face, radius (in blocks), degrees
-                             #In this example, if the center of the rail is at the origin,
-                             # then then at 90 degrees, the block will be [1,0,0] (two blocks out), ignoring 
-                             # the z-axis arrangement for now.
-    io_map:                 [[[0,0,2,3],
-                             [0,3,2,3,2,180]],
-                             [[0,3,2,3],
-                             [0,0,2,3,2,180]]],
-    compatible_roamers:     [5],
-)
-semiCircleRail.display = Display.create(
-    image_file:             'scRail.png', 
-    obj_file:               'SemiCircleRail.js', 
-    texture_file:           'null', 
-)
-semiCircleRail.updateDisplay

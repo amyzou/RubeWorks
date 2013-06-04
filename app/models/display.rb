@@ -3,7 +3,7 @@ class Display < ActiveRecord::Base
 	belongs_to :object_property
 	serialize :blocks
 	serialize :dimensions
-	attr_accessible :obj_file, :texture_file, :image_file, :blocks, :category, :block_num, :dimensions
+	attr_accessible :obj_file, :texture_file, :image_file, :blocks, :category, :block_num, :dimensions, :description
 
 	
 	# If extra time, add validation:
