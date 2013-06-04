@@ -70,8 +70,6 @@ function switchMode(){
 		$('.runmode').fadeIn();
 		buildMode = false;
 		controller.CreateChains();
-		controller.PrintGrid();
-		controller.PrintAllObjects();
 		controller.InitiateAnimation();
 	} else {
 		camera.position.y = 600;
