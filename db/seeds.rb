@@ -196,3 +196,38 @@ shortColumn.display = Display.create(
     texture_file:           'null', 
 )
 shortColumn.updateDisplay
+
+# Semi Circle Rail
+semiCircleRail = ObjectProperty.create(
+    name:                   'Semi Circle Rail',
+    category:               'carrier', 
+    block_num:              10, 
+    blocks:                 [#Base First, First includes first part of rali...
+                             [1,1,0], [1,2,0],
+                             #Rail...
+                             [0,0,1],[1,0,1],[0,1,1],[1,1,1],[0,2,1],[1,2,1],[0,3,1],[1,3,1]
+                            ],
+    mass:                   5.0,
+    elasticity:             0.25,
+    change_in_height:       0,
+                            #In face = x,y,z, face
+    io_map:                 [[0,0,1,3],
+                             #Out face = x,y,z, face, radius (in blocks), degrees
+                             #In this example, if the center of the rail is at the origin,
+                             # then then at 90 degrees, the block will be [1,0,0], ignoring 
+                             # the z-axis arrangement for now.
+                             [0,3,1,3,1,180],
+                             # in-face
+                             [0,3,1,3],
+                             #outFace
+                             [0,0,1,3,1,180]
+                             ],
+
+    compatible_roamers:     [5],
+)
+semiCircleRail.display = Display.create(
+    image_file:             'scRail.png', 
+    obj_file:               'SemiCircleRail.js', 
+    texture_file:           'null', 
+)
+semiCircleRail.updateDisplay
