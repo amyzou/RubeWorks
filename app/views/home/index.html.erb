@@ -6,6 +6,8 @@ var GRID_SIZE = 30;
 var GRID_HEIGHT = 8;
 var VOXEL_SIZE = 50;
 
+var FRAMES_PER_SEC = 20;
+
 //inputHandlers
 var cameraRotateMode = false, deleteMode = false;
 var mouse2D = new THREE.Vector3(0.5, 10000, 0);
@@ -26,7 +28,9 @@ var objectMeshes = [];	//stores each type of obj:
 						//	geometry, material, block_num
 						//	category, scale, dimensions (by voxel),
 						//	offsets, blocks (each array of 4, 1 per rotation)
-var sceneObjects = [];	// handle to scene obj (to move later)
+var sceneObjects = [];	// handle to scene obj
+var gadgets = [];		// handle to gadgets (to reset animations)
+
 var currSceneID = 0;	
 
 //initial object loading

@@ -59,30 +59,58 @@ function switchMode(){
 	$(".button").hide();
 	$('.loading').show();
 	if (buildMode){
-		rollOverMesh.visible = false;
-		camera.position.y = 1000;
-		tempCopy = new Array(currSceneID);
-		for (var i in sceneObjects) {
-			if (sceneObjects[i])
-				tempCopy[i] = sceneObjects[i].position.clone(); 
-		}
-		$('.buildmode').fadeOut();
-		$('.runmode').fadeIn();
 		buildMode = false;
-		controller.PrintGrid();
-		controller.CreateChains();
-		controller.InitiateAnimation();
+		switchToRunMode();
 	} else {
-		camera.position.y = 600;
-		for (var i in tempCopy) {
-			sceneObjects[i].position.copy( tempCopy[i] ); //reset default position			
-		}
-		$('.buildmode').fadeIn();
-		$('.runmode').fadeOut();
-		buildMode = true;
-		rollOverMesh.visible = true;
+		switchToBuildMode();
 	}
 	$('.loading').hide();
 	console.log("switch to " + buildMode? "build" : "run");
 	pause = false;
+}
+
+
+function switchToRunMode(){
+	rollOverMesh.visible = false;
+	camera.position.y = 1000;
+	
+	saveState = new Array(currSceneID);
+	for (var i in sceneObjects) {
+		if (sceneObjects[i])
+			saveState[i] = sceneObjects[i].position.clone(); 
+	}
+
+	$('.buildmode').fadeOut();
+	$('.runmode').fadeIn();
+		
+	controller.PrintGrid();
+	controller.CreateChains();
+	controller.InitiateAnimation();
+}
+
+function switchToBuildMode(){
+	camera.position.y = 600;
+	
+	for (var i in saveState) {
+		sceneObjects[i].position.copy( saveState[i] ); //reset default position			
+	}
+
+	resetGadgets();
+	
+	$('.buildmode').fadeIn();
+	$('.runmode').fadeOut();
+	buildMode = true;
+	rollOverMesh.visible = true;
+}
+
+function resetGadgets(){
+	var delta;
+	for (var i in gadgets){
+		var g = gadgets[i];
+		g.morphTargetInfluences[ g.lastKeyframe ] = 0;
+		g.morphTargetInfluences[ g.currentKeyframe ] = 0;
+		g.morphTargetInfluences[ 0 ] = 1;
+		g.lastKeyframe = 0;
+		g.currentKeyframe = 0;
+	}
 }

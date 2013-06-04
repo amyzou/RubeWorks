@@ -28,8 +28,8 @@ function loadObject( obj ) {
 	}
 
 	if (obj.obj_file != "" ){
-		JSONLoader.load( "obj/" + obj.obj_file, function(geometry, mat) {
-			loadJSONGeometry (obj.id, geometry , mat) ;
+		JSONLoader.load( "obj/" + obj.obj_file, function(geometry, material) {
+			loadJSONGeometry (obj.id, geometry,material) ;
 			NObjectsToLoad--;
 			if (NObjectsToLoad <= 0) startAnimation();
 		} );		
@@ -40,20 +40,28 @@ function loadObject( obj ) {
 	if (NObjectsToLoad <= 0) startAnimation();
 }
 
-function loadJSONGeometry( id, geometry, material) {
-	THREE.GeometryUtils.center(geometry);
-    objectMeshes[id].geometry = geometry;
-   	if (material != undefined) 
-   		objectMeshes[id].material = new THREE.MeshFaceMaterial( material );
-   	if (objectMeshes[id].category == 'gadget') 
-   		objectMeshes[id].material.morphTargets = true;
+function loadJSONGeometry( id, geo, mat) {
+	THREE.GeometryUtils.center(geo);
+    objectMeshes[id].geometry = geo;
 
-	objectMeshes[id].scale.set(
-			objectMeshes[id].dimensions[0]/(geometry.boundingBox.max.x - geometry.boundingBox.min.x),
-			objectMeshes[id].dimensions[2]/(geometry.boundingBox.max.y - geometry.boundingBox.min.y),
-			objectMeshes[id].dimensions[1]/(geometry.boundingBox.max.z - geometry.boundingBox.min.z)
-	);
-	objectMeshes[id].scale.multiplyScalar(VOXEL_SIZE);
+    if (objectMeshes[id].category == 'gadget')   
+    	objectMeshes[id].scale.set(VOXEL_SIZE, VOXEL_SIZE, VOXEL_SIZE)
+    else {
+    	objectMeshes[id].scale.set(
+			objectMeshes[id].dimensions[0]/(geo.boundingBox.max.x - geo.boundingBox.min.x),
+			objectMeshes[id].dimensions[2]/(geo.boundingBox.max.y - geo.boundingBox.min.y),
+			objectMeshes[id].dimensions[1]/(geo.boundingBox.max.z - geo.boundingBox.min.z)
+		);
+		objectMeshes[id].scale.multiplyScalar(VOXEL_SIZE);
+	}
+    
+
+    if ( mat == undefined) return;
+    
+	if (objectMeshes[id].category != 'gadget') {
+		objectMeshes[id].material = mat[0];
+	} else 
+		objectMeshes[id].material = new THREE.MeshLambertMaterial ({ color: mat[0].color , morphTargets:true, shading : THREE.FlatShading});
 }
 
 // on select object in toolbox
@@ -127,19 +135,21 @@ function addObjectToScene( intersector, intersects ){
 		return;
 
 	//create new mesh, add to scene and create Rubeject()
+
 	var newMesh;
-	if (currObj.category != 'gadget') 
-		newMesh = new THREE.Mesh(rollOverMesh.geometry.clone(), currObj.material );
-	else 
-		newMesh = new THREE.MorphAnimMesh(rollOverMesh.geometry.clone(), currObj.material );
+
+	if (currObj.category == 'gadget'){
+		newMesh = new THREE.MorphAnimMesh( currObj.geometry , currObj.material );
+		newMesh.updateMorphTargets();
+		newMesh.setAnimationLabel("full", 0, newMesh.geometry.morphTargets.length - 1);
+		newMesh.playAnimation("full", FRAMES_PER_SEC);
+		gadgets.push(newMesh);
+	} else newMesh = new THREE.Mesh( currObj.geometry , currObj.material );
+		
 	newMesh.scale.copy(rollOverMesh.scale);
 	newMesh.rotation.copy(rollOverMesh.rotation);
 	newMesh.position.copy(rollOverMesh.position);
 
-	if (newMesh.material.morphTargets) {
-		newMesh.updateMorphTargets();
-		newMesh.currframe = 0;
-	}
 	scene.add( newMesh );
 	sceneObjects[currSceneID] = newMesh;
 	controller.AddObject(currMeshID, currSceneID, gridPosition, currRotation);
@@ -148,7 +158,21 @@ function addObjectToScene( intersector, intersects ){
 }
 
 function UpdateObjectInScene(id, rel_gx, rel_gy, rel_gz ) {
+	if (sceneObjects[id] == null) return false;
 	movement_delta.set(rel_gx, rel_gz, rel_gy);
 	movement_delta.multiplyScalar(VOXEL_SIZE);
 	sceneObjects[id].position.add( movement_delta );
+}
+
+function UpdateGadget(id, nFrames ){
+	var gadget = sceneObjects[id];
+	if (gadget == null) return true;
+
+	var delta = nFrames * FRAMES_PER_SEC;
+	if (delta > gadget.duration - gadget.time ) {
+		sceneObjects[id].updateAnimation(gadget.duration - gadget.time);
+		return true;		
+	}
+	sceneObjects[id].updateAnimation( delta );
+	return false;
 }
