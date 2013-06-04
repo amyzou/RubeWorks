@@ -539,6 +539,17 @@ function RubeJectController(){
 //because the code is ugly hence it should be reused
 	
 	var InitiateNextLink = function(index){
+			// Chain entry: [carrier, roamer, outface]
+			// startingObjectList entry = array of chain entries
+			// To get the sceneID in the chain entry, 
+			// you need startingObjectList[i][0][0] (carrier)
+			// or startingObjectList[i][0][1] (roamer)
+			// startingObjectList[i][0] refers to a chain entry, 
+			// which is [carrierID,roamerID,face]
+			// IDs used are scene IDs. To get the objectID, 
+			// use objectSceneIDList[carrierID].
+
+			//todo: adjust for change in momentum after gravity
 		console.log("Updating chain position; previously "
 					+ [stateList[index].currChainPosition]);
 				stateList[index].currChainPosition ++ ;
@@ -571,6 +582,18 @@ function RubeJectController(){
 
 				var absDiff = Math.sqrt( xDiff*xDiff + yDiff*yDiff + zDiff*zDiff);
 
+
+				// in momentum = mv = mass * v; thus v = momentum/mass
+				// d = new.outface's block - prev.outface's block 
+				// increment = d/total time
+				// v * tt = inc * refreshes made
+				// assume refreshes mad/tt = framerate 
+				//				= currentHardcodedNumberForRendering = v/inc
+				// we can get get inc = v/currentHardcodedNumberForRendering 
+				//		= (momentum/mass)/currentHardcodedNumberForRendering
+				// numIncs = d/inc 
+
+				//translate prev outface to in face, and retrieve block
 				//xyz should be calculated seperately but fffffff I'll do it later 
 
 				var inc = stateList[index].momentum/ 
@@ -592,65 +615,11 @@ function RubeJectController(){
 	this.InitiateAnimation = function(){
 		for (var i = 0; i < startingObjectCounter; i++){
 				stateList[i] = new Object();
-				// Chain entry: [carrier, roamer, outface]
-				// startingObjectList entry = array of chain entries
-				// To get the sceneID in the chain entry, 
-				// you need startingObjectList[i][0][0] (carrier)
-				// or startingObjectList[i][0][1] (roamer)
-				// startingObjectList[i][0] refers to a chain entry, 
-				// which is [carrierID,roamerID,face]
-				// IDs used are scene IDs. To get the objectID, 
-				// use objectSceneIDList[carrierID].
-				
-				/*stateList[i].currentCarrier = startingObjectList[i][1][0]; 
-				stateList[i].currentRoamer = startingObjectList[i][1][1];
-				console.log("Initiate animation+++++++++++++++++++++++++");
-				console.log("Current carrier = " + stateList[i].currentCarrier);
-				console.log("Current roamer = " + stateList[i].currentRoamer);
 
 				//objectSceneIDList[startingObjectList[i][0][0]].momentum
-				//for now, have a random val
 				stateList[i].momentum = 12;
-				
-				// in momentum = mv = mass * v; thus v = momentum/mass
-				// d = new.outface's block - prev.outface's block 
-				// increment = d/total time
-				// v * tt = inc * refreshes made
-				// assume refreshes mad/tt = framerate 
-				//				= currentHardcodedNumberForRendering = v/inc
-				// we can get get inc = v/currentHardcodedNumberForRendering 
-				//		= (momentum/mass)/currentHardcodedNumberForRendering
-				// numIncs = d/inc 
 
-				//translate prev outface to in face, and retrieve block
-				var fromBlock = InblockForOutface( startingObjectList[i][0][2] );
-				var toBlock = InblockForOutface( startingObjectList[i][1][2] );
-				console.log("Starting from: " + fromBlock[0] 
-					+ ", " + fromBlock[1] + ", " + fromBlock[2]);
-				console.log("destination: " + toBlock[0] 
-					+ ", " + toBlock[1] + ", " + toBlock[2]);
-				//calculate distance between in face and next outface's in block
-				var xDiff = toBlock[0] - fromBlock[0];
-				var yDiff = toBlock[1] - fromBlock[1];
-				var zDiff = toBlock[2] - fromBlock[2];
-				var absDiff = Math.sqrt( xDiff*xDiff + yDiff*yDiff + zDiff*zDiff);
-
-				//xyz should be calculated seperately but fffffff I'll do it later 
-
-				var inc = stateList[i].momentum/ 
-						objectSceneIDList[ stateList[i].currentRoamer ].mass/
-						currentHardcodedNumberForRendering;
-
-				stateList[i].xInc = inc * xDiff / absDiff;
-				stateList[i].yInc = inc * yDiff / absDiff;
-				stateList[i].zInc = inc * zDiff / absDiff;			
-				
-				console.log("xInc : " + stateList[i].xInc);
-				console.log("yInc : " + stateList[i].yInc);
-				console.log("zInc : " + stateList[i].zInc);
-				stateList[i].stepsLeft = absDiff / inc;
-				stateList[i].currChainPosition = 1;
-				console.log("Steps Left : " + stateList[i].stepsLeft);*/
+				//for now, have a random val
 				stateList[i].momentum = 12;
 				stateList[i].currChainPosition = 0;
 				InitiateNextLink(0);
