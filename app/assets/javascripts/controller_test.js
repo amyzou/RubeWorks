@@ -178,9 +178,8 @@ function ControllerTest(){
 		&& chains[6] == null)
 			console.log("Chaining test 11: passed.");
 	else console.log("Chaining test 11: failed.");
-
-
 	controller.ReInitializeAll();
+	
 
 	console.log("");
 	// Grid placement tests --------------------------------------------------

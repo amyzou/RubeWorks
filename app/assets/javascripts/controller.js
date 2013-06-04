@@ -96,10 +96,11 @@ function RubeJectController(){
 	};
 
 	var GetAbsoluteFace = function(face, position) {
-		face[0] += position[0];
-		face[1] += position[1];
-		face[2] += position[2];
-		return face;
+		absFace = face.slice(0);
+		absFace[0] += position[0];
+		absFace[1] += position[1];
+		absFace[2] += position[2];
+		return absFace;
 	};
 
 	var GetRelativeFace = function(face, position) {
@@ -322,8 +323,9 @@ function RubeJectController(){
 	var GetOutfaceFromObj = function(obj, inface) {
 		// If outface matches an inface.
 		var outface = obj.getOutFace(GetRelativeFace(inface, obj.position));
-		if (outface != null)
+		if (outface != null) {
 			return GetAbsoluteFace(obj.getOutFace(inface), obj.position);
+		}
 		else return null;
 	};
 
@@ -403,7 +405,7 @@ function RubeJectController(){
 			}
 			// If carrier, travel over carrier. Outface retrieved via inface.
 			else if (nextObj.category === "carrier") {
-				console.log("Found carrier");
+				//console.log("Found carrier");
 				var inface = getInface(nextPos,getOppositeDirection(direction));
 				var outface = GetOutfaceFromObj(nextObj,inface);
 				if (outface != null)
@@ -453,7 +455,7 @@ function RubeJectController(){
 	// Continue to chain. Recursive.
 	var GetNextChainLink = function(listNum,index,roamerID){
 		var nextEntry = GetNextEntry(startingObjectList[listNum][index],roamerID);
-		console.log("Added entry: " + nextEntry);
+		//console.log("Added entry: " + nextEntry);
 		startingObjectList[listNum][index + 1] = nextEntry;
 
 		if (nextEntry != null) 
@@ -610,7 +612,7 @@ function RubeJectController(){
 					 + stateList[index].zInc*stateList[index].zInc);
 					totInc = Math.abs(gravity * stateList[index].zInc/oldInc);
 					console.log("oldInc = " + oldInc);
- 					console.log("totInc = " + totInc);
+					console.log("totInc = " + totInc);
 
 					console.log("OldIncs: " + stateList[index].xInc + ", "
 						+ stateList[index].yInc + ", "
@@ -638,7 +640,7 @@ function RubeJectController(){
 			else if (stateList[i].stepsLeft > 1 ){
 
  				console.log("current roamer = " + stateList[i].currentRoamer 
- 					+ "; only updating pos");
+					+ "; only updating pos");
 				UpdateObjectInScene(stateList[i].currentRoamer, 
 					stateList[i].xInc, stateList[i].yInc, stateList[i].zInc);
 
