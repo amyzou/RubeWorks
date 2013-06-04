@@ -365,7 +365,7 @@ function RubeJectController(){
 	 * Assumes that roamers are 1 block. (probably needs extending)
 	 */
 	var GetNextEntry = function(chainEntry, roamerID) {
-		if (chainEntry == null) return null;
+		//if (chainEntry == null) return null;
 		var outface = chainEntry[2];
 		var position = GetPositionFromFace(outface);
 		var thisID = GetObjectFromGrid(position);
@@ -486,6 +486,7 @@ function RubeJectController(){
 	this.CreateChains = function(){
 		for (var i = 0; i < startingObjectCounter; i++)
 		{
+			startingObjectList[i].length = 1;
 			var firstID = getFirstRoamer(i);
 			if (firstID != null) 
 				GetNextChainLink(i,0,firstID);
@@ -653,7 +654,7 @@ function RubeJectController(){
 					stateList[index].yInc += totInc * stateList[index].yInc / oldInc;
  					stateList[index].zInc -= Math.abs(
  						totInc * stateList[index].zInc / oldInc);
- 					console.log("NewIncs: " + stateList[index].xInc + ", "
+					console.log("NewIncs: " + stateList[index].xInc + ", "
 						+ stateList[index].yInc + ", "
 						+ stateList[index].zInc);
  					stateList[index].stepsLeft 
@@ -698,7 +699,7 @@ function RubeJectController(){
 		}
 
 		if (numChainsRunning != 0) {
-			//console.log("returning true");
+			console.log("returning true");
 			return true;
 		}
 		else {
