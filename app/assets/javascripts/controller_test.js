@@ -179,6 +179,43 @@ function ControllerTest(){
 			console.log("Chaining test 11: passed.");
 	else console.log("Chaining test 11: failed.");
 	controller.ReInitializeAll();
+
+	// Chaining test 12. Arrow next to not-a-roamer/gadget
+	controller.AddObject(arrowID,0,[0,0,0],0);
+	controller.AddObject(blockID,1,[1,0,0],0);
+	controller.CreateChains();
+	chains = controller.GetChains()[0];
+	if (JSON.stringify(chains[0]) === JSON.stringify([-1,0,[0,0,0,1]])
+		&& chains[1] == null)
+			console.log("Chaining test 12: passed.");
+	else console.log("Chaining test 2: failed.");
+	controller.ReInitializeAll();
+
+	// Chaining test 13. Arrow to gadget
+	controller.AddObject(arrowID,0,[0,0,0],0);
+	controller.AddObject(dominoID,1,[1,0,0],0);
+	controller.CreateChains();
+	chains = controller.GetChains()[0];
+	if (JSON.stringify(chains[0]) === JSON.stringify([-1,0,[0,0,0,1]])
+		&& JSON.stringify(chains[1]) === JSON.stringify([-1,1,[2,0,0,1]])
+		&& chains[2] == null)
+			console.log("Chaining test 13: passed.");
+	else console.log("Chaining test 13: failed.");
+	controller.ReInitializeAll();
+
+	// Chaining test 14. Arrow to gadget to ball.
+	controller.AddObject(arrowID,0,[0,0,0],0);
+	controller.AddObject(dominoID,1,[1,0,0],0);
+	controller.AddObject(sphereID,2,[3,0,0],0);
+	controller.CreateChains();
+	chains = controller.GetChains()[0];
+	if (JSON.stringify(chains[0]) === JSON.stringify([-1,0,[0,0,0,1]])
+		&& JSON.stringify(chains[1]) === JSON.stringify([-1,1,[2,0,0,1]])
+		&& JSON.stringify(chains[2]) === JSON.stringify([-1,2,[29,0,0,1]])
+		&& chains[3] == null)
+			console.log("Chaining test 14: passed.");
+	else console.log("Chaining test 14: failed.");
+	controller.ReInitializeAll();
 	
 
 	console.log("");
