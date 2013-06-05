@@ -583,8 +583,7 @@ function RubeJectController(){
 				stateList[index].currentRoamer = startingObjectList[index]
 												[stateList[index].currChainPosition]
 												[1];
-				var fromBlock = InblockForOutface( startingObjectList[index]
-											[stateList[index].currChainPosition - 1][2] );
+				
 				
 				console.log("roamer = " + stateList[index].currentRoamer);
 				console.log("carrier = " + stateList[index].currentCarrier);
@@ -593,23 +592,27 @@ function RubeJectController(){
 				if (startingObjectList[index][stateList[index].currChainPosition + 1]
 																		== null
 				|| startingObjectList[index][stateList[index].currChainPosition + 1]
-												[1] != stateList[index].currentRoamer) {
+												[1] != stateList[index].currentRoamer
+												|| (stateList[index].fromBlock[2]
+												< startingObjectList[index]
+												[stateList[index].currChainPosition + 1][2][2])) {
 					//don't go!
+				console.log("preoutface block")
 				toBlock = startingObjectList[index][stateList[index].currChainPosition][2];
 				} else {
 				toBlock = InblockForOutface( startingObjectList[index]
 												[stateList[index].currChainPosition]
 												[2] );
 				}
-				console.log("Starting from: " + fromBlock[0] 
-					+ ", " + fromBlock[1] + ", " + fromBlock[2]);
+				console.log("Starting from: " + stateList[index].fromBlock[0] 
+					+ ", " + stateList[index].fromBlock[1] + ", " + stateList[index].fromBlock[2]);
 				console.log("new destination: " + toBlock[0] 
 					+ ", " + toBlock[1] + ", " + toBlock[2]);
 
 				//calculate distance between in face and next outface's in block
-				var xDiff = toBlock[0] - fromBlock[0];
-				var yDiff = toBlock[1] - fromBlock[1];
-				var zDiff = toBlock[2] - fromBlock[2];
+				var xDiff = toBlock[0] - stateList[index].fromBlock[0];
+				var yDiff = toBlock[1] - stateList[index].fromBlock[1];
+				var zDiff = toBlock[2] - stateList[index].fromBlock[2];
 
 				var absDiff = Math.sqrt( xDiff*xDiff + yDiff*yDiff + zDiff*zDiff);
 
@@ -641,6 +644,7 @@ function RubeJectController(){
 				console.log("new yInc : " + stateList[index].yInc);
 				console.log("new zInc : " + stateList[index].zInc);
 				console.log("steps left : " + stateList[index].stepsLeft);
+				stateList[index].fromBlock = toBlock;
 	}
 
 	//initiate states for all starting points. Chains have to be created already.
@@ -652,6 +656,8 @@ function RubeJectController(){
 				//for now, have a random val
 				stateList[i].momentum = 30;
 				stateList[i].currChainPosition = 0;
+				stateList[i].fromBlock = InblockForOutface( startingObjectList[i]
+											[0][2] );
 				InitiateNextLink(i);
 				console.log("Done initiating animation++++++++++++++++++");
 		}
