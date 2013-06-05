@@ -110,22 +110,20 @@ function ControllerTest(){
 
 	// Chaining test 8. Sphere rolls up ramp and drops off side.
 	// TODO: Fix iomap rotation so that it is correct. 
-	/*controller.AddObject(arrowID,0,[0,0,0],0);
+	controller.AddObject(arrowID,0,[0,0,0],0);
 	controller.AddObject(sphereID,1,[1,0,0],0);
 	controller.AddObject(rampID,2,[5,0,0],2);
 	controller.CreateChains();
 	chains = controller.GetChains()[0];
-	console.log(chains);
-	controller.PrintGrid();
 	if (JSON.stringify(chains[0]) === JSON.stringify([-1,0,[0,0,0,1]])
 		&& JSON.stringify(chains[1]) === JSON.stringify([-1,1,[4,0,0,1]])
 		&& JSON.stringify(chains[2]) === JSON.stringify([2,1,[7,0,2,1]])
 		&& JSON.stringify(chains[3]) === JSON.stringify([-2,1,[8,0,0,4]])
 		&& chains[4] == null)
-			console.log("Passed chaining test 8.");
-	else console.log("Failed chaining test 8.");
-	controller.ReInitializeAll();*/
-	console.log ("Chaining test 8: Needs rotation of iomap fixed first.");
+			console.log ("Chaining test 8: passed.");
+	else console.log ("Chaining test 8: failed.");
+	controller.ReInitializeAll();
+	
 
 	// Chaining test 9. Sphere drops onto top side of ramp.
 	// TODO: Write test.

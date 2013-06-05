@@ -75,11 +75,13 @@ class ObjectProperty < ActiveRecord::Base
 				io_map_array = Array.new
 				rotations[i-1].each do |iomap|
 					new_io_map = iomap.clone
-					new_io_map[0] = rotatePoint(iomap[0],i)
-					new_io_map[1] = rotatePoint(iomap[1],i)
+					new_io_map[0] = rotatePoint(iomap[0])
+					new_io_map[0] = rotateFace(new_io_map[0],iomap[0][3])
+					new_io_map[1] = rotatePoint(iomap[1])
+					new_io_map[1] = rotateFace(new_io_map[1],iomap[1][3])
 					if new_io_map.size > 2
-						new_io_map[3] = rotatePoint(iomap[3],i)
-						new_io_map[4] = rotatePoint(iomap[4],i)
+						new_io_map[3] = rotatePoint(iomap[3])
+						new_io_map[4] = rotatePoint(iomap[4])
 					end
 					io_map_array.push(new_io_map)
 				end
@@ -97,7 +99,7 @@ class ObjectProperty < ActiveRecord::Base
 			for i in 1..3
 				new_blocks = Array.new
 				rotations[i-1].each do |point|
-					new_blocks.push(rotatePoint(point,i))
+					new_blocks.push(rotatePoint(point))
 				end
 				rotations.push(new_blocks)
 			end
@@ -106,8 +108,13 @@ class ObjectProperty < ActiveRecord::Base
 		end
 	end
 
+	def rotateFace(point, direction)
+		new_point = point.clone
+		new_point[3] = nextFace(direction)
+		return new_point
+	end
 
-	def rotatePoint(point,direction)
+	def rotatePoint(point)
 		new_point = point.clone
 		tempx = point[0]
 		new_point[0] = new_point[1]
