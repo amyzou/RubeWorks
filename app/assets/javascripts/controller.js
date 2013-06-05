@@ -630,7 +630,7 @@ function RubeJectController(){
 				var inc = stateList[index].momentum/ 
 						objectSceneIDList[ stateList[index].currentRoamer ].mass/
 						currentHardcodedNumberForRendering;
-
+				console.log("inc =  " + inc);
 				stateList[index].xInc = inc * xDiff / absDiff;
 				stateList[index].yInc = inc * yDiff / absDiff;
 				stateList[index].zInc = inc * zDiff / absDiff;			
@@ -661,27 +661,34 @@ function RubeJectController(){
 	//need to do: adjust for when going up or down
 	var addGravity = function(index){
 		console.log("adjusting Z: ");
-					var oldInc = Math.sqrt( stateList[index].xInc*stateList[index].xInc
-					 + stateList[index].yInc*stateList[index].yInc
-					 + stateList[index].zInc*stateList[index].zInc);
-					totInc = Math.abs(gravity * stateList[index].zInc/oldInc);
-					console.log("oldInc = " + oldInc);
-					console.log("totInc = " + totInc);
+		var oldInc = Math.sqrt( stateList[index].xInc*stateList[index].xInc
+			 + stateList[index].yInc*stateList[index].yInc
+			 + stateList[index].zInc*stateList[index].zInc);
+		totInc = Math.abs(gravity * stateList[index].zInc/oldInc);
+		console.log("oldInc = " + oldInc);
+		console.log("totInc = " + totInc);
 
-					console.log("OldIncs: " + stateList[index].xInc + ", "
-						+ stateList[index].yInc + ", "
-						+ stateList[index].zInc);
+		console.log("OldIncs: " + stateList[index].xInc + ", "
+				+ stateList[index].yInc + ", "
+				+ stateList[index].zInc);
 
-					stateList[index].xInc += totInc * stateList[index].xInc / oldInc;
-					stateList[index].yInc += totInc * stateList[index].yInc / oldInc;
- 					stateList[index].zInc -= Math.abs(
- 						totInc * stateList[index].zInc / oldInc);
-					console.log("NewIncs: " + stateList[index].xInc + ", "
-						+ stateList[index].yInc + ", "
-						+ stateList[index].zInc);
- 					stateList[index].stepsLeft 
- 						= stateList[index].stepsLeft * oldInc / (oldInc + totInc);
-
+		//when z < 0, + for x n y; if z > 0, - x and y
+		if (stateList[index].zInc < 0) {
+			stateList[index].xInc += totInc * stateList[index].xInc / oldInc;
+			stateList[index].yInc += totInc * stateList[index].yInc / oldInc;
+ 			stateList[index].zInc -= Math.abs(
+ 				totInc * stateList[index].zInc / oldInc);
+ 		} else {
+ 			stateList[index].xInc -= totInc * stateList[index].xInc / oldInc;
+			stateList[index].yInc -= totInc * stateList[index].yInc / oldInc;
+ 			stateList[index].zInc += Math.abs(
+ 				totInc * stateList[index].zInc / oldInc);
+ 		}
+		console.log("NewIncs: " + stateList[index].xInc + ", "
+			+ stateList[index].yInc + ", "
+			+ stateList[index].zInc);
+ 		stateList[index].stepsLeft 
+ 			= stateList[index].stepsLeft * oldInc / (oldInc + totInc);
 	}
 
 
@@ -695,14 +702,17 @@ function RubeJectController(){
 			if (stateList[i] == null) numChainsRunning -- ;
 			else if (stateList[i].stepsLeft > 1 ){
 
- 				console.log("current roamer = " + stateList[i].currentRoamer 
-					+ "; only updating pos");
-				UpdateObjectInScene(stateList[i].currentRoamer, 
-					stateList[i].xInc, stateList[i].yInc, stateList[i].zInc);
-
-				stateList[i].stepsLeft -- ;
-
-				if (stateList[i].zInc != 0 ) addGravity(i);
+				if (objectSceneIDList[stateList[i].currentRoamer].category 
+					== 'roamer') {
+ 				//console.log("current roamer = " + stateList[i].currentRoamer 
+				//	+ "; only updating pos");
+					UpdateObjectInScene(stateList[i].currentRoamer, 
+						stateList[i].xInc, stateList[i].yInc, stateList[i].zInc);
+					stateList[i].stepsLeft -- ;
+					if (stateList[i].zInc != 0 ) addGravity(i);
+				} else 
+					if (UpdateGadget(stateList[i].currentRoamer, 1)) 
+						stateList[i].stepsLeft = 0;
 
 			} else if (startingObjectList[i][stateList[i].currChainPosition + 1]
 																		) {
