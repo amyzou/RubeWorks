@@ -72,8 +72,11 @@ function switchMode(){
 
 function switchToRunMode(){
 	rollOverMesh.visible = false;
-	camera.position.y = 1000;
+	camera.position.y = 630;
 	
+	canvas_height = 550;
+	resizeViewport();
+
 	saveState = new Array(currSceneID);
 	for (var i in sceneObjects) {
 		if (sceneObjects[i])
@@ -89,8 +92,11 @@ function switchToRunMode(){
 }
 
 function switchToBuildMode(){
-	camera.position.y = 600;
-	
+	camera.position.y = 500;
+
+	canvas_height = 450;
+	resizeViewport();
+
 	for (var i in saveState) {
 		sceneObjects[i].position.copy( saveState[i] ); //reset default position			
 	}

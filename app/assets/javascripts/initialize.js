@@ -5,7 +5,7 @@ function initGraphics( container_id ) {
 	canvas_width = $(window).width();
 	canvas_height = $('#'+ container_id).height();
 
-	camera = new THREE.PerspectiveCamera( 45, canvas_width/canvas_height, 1, 10000 );
+	camera = new THREE.PerspectiveCamera( 40, canvas_width/canvas_height, 1, 10000 );
 	camera.position.y = 500;
 
 	renderer = new THREE.WebGLRenderer( { antialias: true, preserveDrawingBuffer: true } );
@@ -62,6 +62,63 @@ function initLighting(){
 	var directionalLight = new THREE.DirectionalLight( 0xddddff );
 	directionalLight.position.set( 1, 0.75, 0.5 ).normalize();
 	scene.add( directionalLight );
+}
+
+function loadObjects ( objects ) {
+	NObjectsToLoad = objects.length;
+	for (var i in objects) {
+		var obj = objects[i];
+		loadObject(obj);
+	}
+}
+
+function loadObject( obj ) {
+	objectMeshes[obj.id] = 
+   	{ 
+    	geometry : cubeGeo,
+    	block_num: obj.block_num,
+    	blocks: obj.blocks,
+		category: obj.category,
+		scale: new THREE.Vector3(1,1,1),
+		dimensions: obj.dimensions,
+		offsets: []
+    };
+
+    var offset =  new THREE.Vector3( obj.dimensions[0] - 1,  obj.dimensions[2] - 1, obj.dimensions[1] - 1);
+	offset.multiplyScalar(VOXEL_SIZE * 0.5);
+
+	objectMeshes[obj.id].offsets[0] = offset.clone();
+	if (obj.block_num > 1) {
+		objectMeshes[obj.id].offsets[1] = new THREE.Vector3( -offset.z, offset.y, offset.x );
+	}
+
+	if (obj.obj_file != "" ){
+		JSONLoader.load( "obj/" + obj.obj_file, function(geometry, material) {
+			loadJSONGeometry (obj.id, geometry,material) ;
+			NObjectsToLoad--;
+			if (NObjectsToLoad <= 0) startAnimation();
+		} );		
+		return;
+	}
+
+	NObjectsToLoad--;
+	if (NObjectsToLoad <= 0) startAnimation();
+}
+
+function loadJSONGeometry( id, geo, mat) {
+	THREE.GeometryUtils.center(geo);
+    objectMeshes[id].geometry = geo;
+
+    if (objectMeshes[id].category == 'gadget')   
+    	objectMeshes[id].scale.set(VOXEL_SIZE, VOXEL_SIZE, VOXEL_SIZE)
+    else {
+    	objectMeshes[id].scale.set(
+			objectMeshes[id].dimensions[0]/(geo.boundingBox.max.x - geo.boundingBox.min.x),
+			objectMeshes[id].dimensions[2]/(geo.boundingBox.max.y - geo.boundingBox.min.y),
+			objectMeshes[id].dimensions[1]/(geo.boundingBox.max.z - geo.boundingBox.min.z)
+		);
+		objectMeshes[id].scale.multiplyScalar(VOXEL_SIZE);
+	}
 }
 
 

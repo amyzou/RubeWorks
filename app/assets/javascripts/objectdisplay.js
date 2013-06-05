@@ -1,69 +1,3 @@
-function loadObjects ( objects ) {
-	NObjectsToLoad = objects.length;
-	for (var i in objects) {
-		var obj = objects[i];
-		loadObject(obj);
-	}
-}
-
-function loadObject( obj ) {
-	objectMeshes[obj.id] = 
-   	{ 
-    	geometry : cubeGeo,
-    	material : defaultMaterial,
-    	block_num: obj.block_num,
-    	blocks: obj.blocks,
-		category: obj.category,
-		scale: new THREE.Vector3(1,1,1),
-		dimensions: obj.dimensions,
-		offsets: []
-    };
-
-    var offset =  new THREE.Vector3( obj.dimensions[0] - 1,  obj.dimensions[2] - 1, obj.dimensions[1] - 1);
-	offset.multiplyScalar(VOXEL_SIZE * 0.5);
-
-	objectMeshes[obj.id].offsets[0] = offset.clone();
-	if (obj.block_num > 1) {
-		objectMeshes[obj.id].offsets[1] = new THREE.Vector3( -offset.z, offset.y, offset.x );
-	}
-
-	if (obj.obj_file != "" ){
-		JSONLoader.load( "obj/" + obj.obj_file, function(geometry, material) {
-			loadJSONGeometry (obj.id, geometry,material) ;
-			NObjectsToLoad--;
-			if (NObjectsToLoad <= 0) startAnimation();
-		} );		
-		return;
-	}
-
-	NObjectsToLoad--;
-	if (NObjectsToLoad <= 0) startAnimation();
-}
-
-function loadJSONGeometry( id, geo, mat) {
-	THREE.GeometryUtils.center(geo);
-    objectMeshes[id].geometry = geo;
-
-    if (objectMeshes[id].category == 'gadget')   
-    	objectMeshes[id].scale.set(VOXEL_SIZE, VOXEL_SIZE, VOXEL_SIZE)
-    else {
-    	objectMeshes[id].scale.set(
-			objectMeshes[id].dimensions[0]/(geo.boundingBox.max.x - geo.boundingBox.min.x),
-			objectMeshes[id].dimensions[2]/(geo.boundingBox.max.y - geo.boundingBox.min.y),
-			objectMeshes[id].dimensions[1]/(geo.boundingBox.max.z - geo.boundingBox.min.z)
-		);
-		objectMeshes[id].scale.multiplyScalar(VOXEL_SIZE);
-	}
-    
-
-    if ( mat == undefined) return;
-    
-	if (objectMeshes[id].category != 'gadget') {
-		objectMeshes[id].material = mat[0];
-	} else 
-		objectMeshes[id].material = new THREE.MeshLambertMaterial ({ color: mat[0].color , morphTargets:true, shading : THREE.FlatShading});
-}
-
 // on select object in toolbox
 function setCurrentObject ( id) {
 	if (currMeshID == id) return;
@@ -96,9 +30,9 @@ function updateObjectPosition( intersector ) {
 	gridPosition[1] = Math.round(objectWorldPosition.z/VOXEL_SIZE + (GRID_SIZE - 1)/2);
 	gridPosition[2] = Math.round(objectWorldPosition.y/VOXEL_SIZE - 0.5);
 
-	var color = (canPlaceObject()) ? 0xfcd87f : 0xb93131;
-	rollOverMesh.material.color.setHex( color );
-	rollOverMesh.material.ambient.setHex( color );
+	var color = (canPlaceObject()) ? currColor : "ff0000";
+	rollOverMesh.material.color.set( color );
+	rollOverMesh.material.ambient.set( color );
 	objectWorldPosition.add(currOffset);
 }
 
@@ -113,6 +47,7 @@ function removeObjectFromScene( object ){
 	scene.remove(object);	
 	for ( var id in sceneObjects ){
 		if (sceneObjects[id] == object ){
+			sceneObjects[id].material.dispose();
 			sceneObjects[id] = undefined;
 			controller.ModifyObject_Delete(id);
 		}
@@ -139,12 +74,16 @@ function addObjectToScene( intersector, intersects ){
 	var newMesh;
 
 	if (currObj.category == 'gadget'){
-		newMesh = new THREE.MorphAnimMesh( currObj.geometry , currObj.material );
+		newMesh = new THREE.MorphAnimMesh( currObj.geometry , new THREE.MeshLambertMaterial( { color: currColor, ambient: currColor, shading: THREE.FlatShading, morphTargets: true } ));
 		newMesh.updateMorphTargets();
 		newMesh.setAnimationLabel("full", 0, newMesh.geometry.morphTargets.length - 1);
 		newMesh.playAnimation("full", FRAMES_PER_SEC);
 		gadgets.push(newMesh);
-	} else newMesh = new THREE.Mesh( currObj.geometry , currObj.material );
+	} else if (currObj.category == 'starter'){
+		newMesh = new THREE.Mesh( currObj.geometry , new THREE.MeshLambertMaterial( { color: "#00ff00" , ambient: "#00ff00", shading: THREE.FlatShading } )); 
+	} else 
+		newMesh = new THREE.Mesh( currObj.geometry , new THREE.MeshLambertMaterial( { color: currColor , ambient: currColor, shading: THREE.FlatShading } )); 
+
 		
 	newMesh.scale.copy(rollOverMesh.scale);
 	newMesh.rotation.copy(rollOverMesh.rotation);
@@ -153,7 +92,6 @@ function addObjectToScene( intersector, intersects ){
 	scene.add( newMesh );
 	sceneObjects[currSceneID] = newMesh;
 	controller.AddObject(currMeshID, currSceneID, gridPosition, currRotation);
-	//console.log("added new mesh id = " + currSceneID);
 	currSceneID++;
 }
 
@@ -175,4 +113,14 @@ function UpdateGadget(id, nFrames ){
 	}
 	sceneObjects[id].updateAnimation( delta );
 	return false;
+}
+
+function clearScene(){
+	for ( var id in sceneObjects ){
+		if (sceneObjects[id] != null ){
+			scene.remove(sceneObjects[id]);
+			sceneObjects[id].material.dispose();
+			controller.ModifyObject_Delete(id);
+		}
+	}
 }

@@ -50,6 +50,10 @@ var currRotation = 0;
 var currBlockList = [0,0,0];
 var currOffset;
 
+var currColor = "#dedada";
+
+var colors = ["#dedada","#fcd87f", "#b93131", "#384463", "#202b46"];
+
 //scene handles
 var container, renderer;
 var canvas_width, canvas_height;
@@ -70,13 +74,22 @@ $(function(){
 	$('.loading').show();
 	if ( ! Detector.webgl )  {
 		Detector.addGetWebGLMessage();	
+		$('.loading').hide();
 		$("#toolbox").hide();
 		return;	
 	}
 
+	$(".title").hover( function(){ $(this).next().fadeIn(); } , function(){ $(this).next().fadeOut(); } );
+
+
+	for (var c in colors){
+		$("#colorpicker").append($("<div class='color' data='" + colors[c] + "'/>").css("background-color", colors[c]));
+	}
+	$(".color").click( function(){ currColor = $(this).attr('data'); });
+
 	//TOOLBOX: tabs, hover-scroll
 	$("#toolbox").organicTabs({ });
-	$('.scroll-div').hoverscroll({fixedArrows: true, width: 800, height: 112});
+	$('.scroll-div').hoverscroll({fixedArrows: true, width: 600, height: 100});
 	// Starting the movement automatically at loading
 	// @param direction: right/bottom = 1, left/top = -1
 	// @param speed: Speed of the animation (scrollPosition += direction * speed)
@@ -89,7 +102,8 @@ $(function(){
 	$(".button").hide();
 	$('.buildmode').show();
 	$('.runmode').hide();
-	$(".button").click( switchMode );
+	$(".button.mode").click( switchMode );
+	$(".button.clear").click( clearScene );
 
 	//DISPLAY
 	initGraphics("grid_container");
@@ -115,48 +129,77 @@ $(function(){
 });
 
 </script>
+
+<div id='description' class='buildmode'>
+	<div>
+		<div class='title'>
+			<span style='font-size:40px;margin-right:5px'>Rubeworks</span> by Amy Zou, Austin Hulse, Emily Ye, Sonya Juang
+		</div>
+
+		<div style="margin: 10px 0;display:none">
+			An interactive WebGL experiment for CS194: Senior Project<br/>
+			Uses <a href="http://threejs.org/">three.js</a> to create unusual machines from basic components</br>
+		</div>
+	</div>
+</div>
+<div id="button_container">
+	<div class='button mode buildmode'>Run</div>
+	<div class='button clear buildmode'>Clear</div>
+	<div class='button mode runmode'>Stop</div>
+</div>
 <div class='loading'>Loading...</div>
-<div id='delete_obj' class='instructions'>Click on a object to remove</div>
-<div id='rotate_cam' class='instructions'>Move mouse to rotate camera.</div>
+<div id='delete_obj' class='instructions'>Keep holding D and click on an object to remove.</div>
+<div id='rotate_cam' class='instructions'>Move mouse to change direction/speed of rotation.</div>
 <div id='grid_container'>
 </div>
 
-<div id="toolbox" class='buildmode'>
-					
-	<ul class="nav">
-		<li class="nav-one"><a href="#cat1" class="current">Inerts</a></li>
-		<li class="nav-two"><a href="#cat2">Roamers</a></li>
-		<li class="nav-three"><a href="#cat3">Carriers</a></li>
-		<li class="nav-four"><a href="#cat4">Gadgets</a></li>
-		<li class="nav-five"><a href="#cat5">Initial Forces</a></li>
-	</ul>
-    		
-    <div class="list-wrap">
-    	<div id="cat1">    		
-    		<%= render :partial => "tabs", :locals => {:tabset => @inerts}  %>
-    	</div>
-        		 
-       	<div id="cat2" class="hide">
-    		<%= render :partial => "tabs", :locals => {:tabset => @roamers}  %>
-    	</div>
+<div id="tools" class='buildmode'>
+	<table>
+		<tr>
+			<td class='col_color'>
+				Choose color for object:
+				<div id="colorpicker"></div>
+				<h2>CONTROLS:</h2>
+				<b>SHIFT</b> - Hold to rotate canvas<br/>
+				<b>D</b> - Hold, click to delete object<br/>
+				<b>R</b> - Press to rotate object<br/>
+			<td>
+			<td class='col_objects'>
+				<div id="toolbox">
+					<ul class="nav">
+						<li class="nav-one"><a href="#cat1" class="current">Inerts</a></li>
+						<li class="nav-two"><a href="#cat2">Roamers</a></li>
+						<li class="nav-three"><a href="#cat3">Carriers</a></li>
+						<li class="nav-four"><a href="#cat4">Gadgets</a></li>
+						<li class="nav-five"><a href="#cat5">Initial Forces</a></li>
+					</ul>
+				 
+				    <div class="list-wrap">
+				    	<div id="cat1">    		
+				    		<%= render :partial => "tabs", :locals => {:tabset => @inerts}  %>
+				    	</div>
+				        		 
+				       	<div id="cat2" class="hide">
+				    		<%= render :partial => "tabs", :locals => {:tabset => @roamers}  %>
+				    	</div>
 
-		<div id="cat3" class="hide">
-	    	<%= render :partial => "tabs", :locals => {:tabset => @carriers}  %>
-		</div>
+						<div id="cat3" class="hide">
+					    	<%= render :partial => "tabs", :locals => {:tabset => @carriers}  %>
+						</div>
 
-		<div id="cat4" class="hide">
-	   		<%= render :partial => "tabs", :locals => {:tabset => @gadgets}  %>
-		</div>
+						<div id="cat4" class="hide">
+					   		<%= render :partial => "tabs", :locals => {:tabset => @gadgets}  %>
+						</div>
 
-		<div id="cat5" class="hide">
-	   		<%= render :partial => "tabs", :locals => {:tabset => @starters}  %>
-		</div>
-
-	</div> <!-- END List Wrap -->
+						<div id="cat5" class="hide">
+					   		<%= render :partial => "tabs", :locals => {:tabset => @starters}  %>
+						</div>
+					</div>
+				</div>
+			</td>
+		</tr>
+	</table>
 </div> 	
 
-<div id="button_container">
-	<div class='button buildmode'>Run</div>
-	<div class='button runmode'>Stop</div>
-</div>
+
 
