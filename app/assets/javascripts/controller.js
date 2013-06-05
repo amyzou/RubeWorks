@@ -658,7 +658,8 @@ function RubeJectController(){
 				stateList[i].currChainPosition = 0;
 				stateList[i].fromBlock = InblockForOutface( startingObjectList[i]
 											[0][2] );
-				InitiateNextLink(i);
+				if (startingObjectList[i][1] !== null)
+					InitiateNextLink(i);
 				console.log("Done initiating animation++++++++++++++++++");
 		}
 	};
