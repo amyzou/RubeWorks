@@ -523,7 +523,7 @@ function RubeJectController(){
 	/*-----------------Animation code-----------------*/
 
 	var currentHardcodedNumberForRendering = 100;
-	var gravityDamper = 1;
+	var gravityDamper = 0.1;
 	var gravity = 9.8 / currentHardcodedNumberForRendering * gravityDamper;
 	var stateList = new Array();
 
@@ -650,7 +650,7 @@ function RubeJectController(){
 
 				//objectSceneIDList[startingObjectList[i][0][0]].momentum
 				//for now, have a random val
-				stateList[i].momentum = 12;
+				stateList[i].momentum = 30;
 				stateList[i].currChainPosition = 0;
 				InitiateNextLink(i);
 				console.log("Done initiating animation++++++++++++++++++");
@@ -678,17 +678,20 @@ function RubeJectController(){
 			stateList[index].yInc += totInc * stateList[index].yInc / oldInc;
  			stateList[index].zInc -= Math.abs(
  				totInc * stateList[index].zInc / oldInc);
+ 			stateList[index].stepsLeft 
+ 			= stateList[index].stepsLeft * oldInc / (oldInc + totInc);
  		} else {
  			stateList[index].xInc -= totInc * stateList[index].xInc / oldInc;
 			stateList[index].yInc -= totInc * stateList[index].yInc / oldInc;
- 			stateList[index].zInc += Math.abs(
+ 			stateList[index].zInc -= Math.abs(
  				totInc * stateList[index].zInc / oldInc);
+ 			stateList[index].stepsLeft 
+ 			= stateList[index].stepsLeft * oldInc / (oldInc - totInc);
  		}
 		console.log("NewIncs: " + stateList[index].xInc + ", "
 			+ stateList[index].yInc + ", "
 			+ stateList[index].zInc);
- 		stateList[index].stepsLeft 
- 			= stateList[index].stepsLeft * oldInc / (oldInc + totInc);
+ 		
 	}
 
 
