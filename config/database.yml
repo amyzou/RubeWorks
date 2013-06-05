@@ -21,7 +21,7 @@ test:
 production:
   adapter: postgresql
   encoding: utf8
-  database: RubeWorks_production
+  database: rubeworks_production
   pool: 5
   username: 
   password:
