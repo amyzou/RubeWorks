@@ -656,7 +656,8 @@ function RubeJectController(){
 				//for now, have a random val
 				stateList[i].momentum = 30;
 				stateList[i].currChainPosition = 0;
-				InitiateNextLink(i);
+				if (startingObjectList[i][1] !== null)
+					InitiateNextLink(i);
 				console.log("Done initiating animation++++++++++++++++++");
 		}
 	};
