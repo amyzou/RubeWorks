@@ -168,14 +168,6 @@ function RubeJectController(){
 		var rubeJect = new RubeJect(objectPropertyID, positionCopy, rotation);
 		objectSceneIDList[sceneID] = rubeJect;
 		PlaceObjectIntoSpace(sceneID);
-		if (rubeJect.category === "starter") {
-			startingObjectList[startingObjectCounter] = new Array();
-			var outface = GetAbsoluteFace(rubeJect.getOutFaceByIndex(0), positionCopy);
-			startingObjectList[startingObjectCounter][0] = 
-				createChainEntry(-1, sceneID, outface);
-			//console.log("Added entry: " + createChainEntry(-1, sceneID, outface));
-			startingObjectCounter++;
-		}
 	};
 
 	this.ModifyObject_Delete = function(sceneID){
@@ -502,9 +494,21 @@ function RubeJectController(){
 
 	//method to create chains for run mode
 	this.CreateChains = function(){
+		startingObjectList = new Array();
+		startingObjectCounter = 0;
+		for (var i = 0; i < objectSceneIDList.length; i++) {
+			var rubeJect = objectSceneIDList[i];
+			if (rubeJect != null && rubeJect.category === "starter") {
+				startingObjectList[startingObjectCounter] = new Array();
+				var outface = GetAbsoluteFace(rubeJect.getOutFaceByIndex(0), rubeJect.position);
+				startingObjectList[startingObjectCounter][0] = 
+					createChainEntry(-1, i, outface);
+				//console.log("Added entry: " + createChainEntry(-1, sceneID, outface));
+				startingObjectCounter++;
+			}
+		}
 		for (var i = 0; i < startingObjectCounter; i++)
 		{
-			startingObjectList[i].length = 1;
 			var firstID = getFirstRoamer(i);
 			if (firstID != null) { 
 				if (objectSceneIDList[firstID].category === "roamer")
@@ -512,8 +516,8 @@ function RubeJectController(){
 				if (objectSceneIDList[firstID].category === "gadget")
 					GetNextChainLink(i,1,firstID);
 			}
-			else startingObjectList[i][1] = null;
-		}
+			else startingObjectList[i][1] = null;		
+		} 
 	};
 
 	var isUndefined = function(obj) {
