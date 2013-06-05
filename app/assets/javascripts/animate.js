@@ -88,6 +88,7 @@ function switchToRunMode(){
 		
 	controller.PrintGrid();
 	controller.CreateChains();
+	console.log(controller.GetChains());
 	controller.InitiateAnimation();
 }
 
