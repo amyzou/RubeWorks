@@ -109,7 +109,6 @@ function ControllerTest(){
 	controller.ReInitializeAll();
 
 	// Chaining test 8. Sphere rolls up ramp and drops off side.
-	// TODO: Fix iomap rotation so that it is correct. 
 	controller.AddObject(arrowID,0,[0,0,0],0);
 	controller.AddObject(sphereID,1,[1,0,0],0);
 	controller.AddObject(rampID,2,[5,0,0],2);
@@ -127,7 +126,24 @@ function ControllerTest(){
 
 	// Chaining test 9. Sphere drops onto top side of ramp.
 	// TODO: Write test.
-	console.log ("Chaining test 9: Needs to be written and verified.");
+	controller.AddObject(blockID,0,[0,0,0],0);
+	controller.AddObject(blockID,1,[1,0,0],0);
+	controller.AddObject(columnID,2,[0,0,1],0);
+	controller.AddObject(columnID,3,[1,0,1],0);
+	controller.AddObject(arrowID,4,[0,0,3],0);
+	controller.AddObject(sphereID,5,[1,0,3],0);
+	controller.AddObject(rampID,6,[2,0,0],0);
+	controller.CreateChains();
+	chains = controller.GetChains()[0];
+	if (JSON.stringify(chains[0]) === JSON.stringify([-1,4,[0,0,3,1]])
+		&& JSON.stringify(chains[1]) === JSON.stringify([-1,5,[1,0,3,1]])
+		&& JSON.stringify(chains[2]) === JSON.stringify([-2,5,[2,0,2,4]])
+		&& JSON.stringify(chains[3]) === JSON.stringify([6,5,[4,0,0,1]])
+		&& JSON.stringify(chains[4]) === JSON.stringify([-1,5,[29,0,0,1]])
+		&& chains[5] == null)
+			console.log ("Chaining test 9: passed.");
+	else console.log ("Chaining test 9: failed.");
+	controller.ReInitializeAll();
 
 	// Chaining test 10. Sphere rolls across blocks, down ramp, across ground.
 	// Add blocks.
