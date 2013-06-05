@@ -379,7 +379,7 @@ function RubeJectController(){
 		// Check if landed on top of inert.
 		if (direction == 4 && nextObj.category == "inert") return null;
 
-		console.log("nextPos: " + nextPos + "; nextID: " + nextID );
+		//console.log("nextPos: " + nextPos + "; nextID: " + nextID );
 
 		// If current gadget, must contact a roamer or gadget. 
 		if (objectSceneIDList[roamerID].category == "gadget") {
@@ -391,7 +391,7 @@ function RubeJectController(){
 		if (nextObj != null) {
 			// If roamer, outface is as far as it can go on ground 
 			if (nextObj.category === "roamer") {
-				console.log("found roamer. Pos: " + position);
+				//console.log("found roamer. Pos: " + position);
 				if (OnGroundOrInert(nextPos)) {
 					var outface = GetFlatPathOutface(nextPos,direction);
 					return createChainEntry(-1, nextID, outface);	
@@ -399,7 +399,7 @@ function RubeJectController(){
 			} 
 			// If gadget, outface is the one corresponding to inface
 			else if (nextObj.category === "gadget") {
-				console.log("Found gadget");
+				//console.log("Found gadget");
 				var inface = getInface(nextPos,getOppositeDirection(direction));
 				var outface = GetOutfaceFromObj(nextObj,inface);
 				if (outface != null)
@@ -407,7 +407,7 @@ function RubeJectController(){
 			}
 			// If carrier, travel over carrier. Outface retrieved via inface.
 			else if (nextObj.category === "carrier") {
-				console.log("Found carrier");
+				//console.log("Found carrier");
 				var inface = getInface(nextPos,getOppositeDirection(direction));
 				var outface = GetOutfaceFromObj(nextObj,inface);
 				if (outface != null)
@@ -415,13 +415,13 @@ function RubeJectController(){
 			}
 			// If inert, stop.
 			else if (nextObj.category === "inert") {
-				console.log("Found inert.");
+				//console.log("Found inert.");
 			}
 		} 
 		// Next position is empty:
 		else {
 			
-			console.log("Position empty.");
+			//console.log("Position empty.");
 			// Check if on ground
 			if (OnGroundOrInert(nextPos)) {
 				var outface = GetFlatPathOutface(nextPos,direction);
@@ -436,7 +436,7 @@ function RubeJectController(){
 			nextObj = objectSceneIDList[belowNextID];
 			// If object below
 			if (nextObj != null) {
-				console.log("Found object below: " + nextObj.name);
+				//console.log("Found object below: " + nextObj.name);
 				if (nextObj.category === "carrier") {
 					var inface = getInface(nextPos,getOppositeDirection(direction));
 					var outface = GetOutfaceFromObj(nextObj,inface);
@@ -457,7 +457,7 @@ function RubeJectController(){
 	// Continue to chain. Recursive.
 	var GetNextChainLink = function(listNum,index,roamerID){
 		var nextEntry = GetNextEntry(startingObjectList[listNum][index],roamerID);
-		console.log("Added entry: " + nextEntry);
+		//console.log("Added entry: " + nextEntry);
 		startingObjectList[listNum][index + 1] = nextEntry;
 
 		if (nextEntry != null) {
