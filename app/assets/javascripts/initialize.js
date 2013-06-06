@@ -109,16 +109,12 @@ function loadJSONGeometry( id, geo, mat) {
 	THREE.GeometryUtils.center(geo);
     objectMeshes[id].geometry = geo;
 
-    if (objectMeshes[id].category == 'gadget')   
-    	objectMeshes[id].scale.set(VOXEL_SIZE, VOXEL_SIZE, VOXEL_SIZE)
-    else {
-    	objectMeshes[id].scale.set(
-			objectMeshes[id].dimensions[0]/(geo.boundingBox.max.x - geo.boundingBox.min.x),
-			objectMeshes[id].dimensions[2]/(geo.boundingBox.max.y - geo.boundingBox.min.y),
-			objectMeshes[id].dimensions[1]/(geo.boundingBox.max.z - geo.boundingBox.min.z)
-		);
-		objectMeshes[id].scale.multiplyScalar(VOXEL_SIZE);
-	}
+	objectMeshes[id].scale.set(
+		objectMeshes[id].dimensions[0]/(geo.boundingBox.max.x - geo.boundingBox.min.x),
+		objectMeshes[id].dimensions[2]/(geo.boundingBox.max.y - geo.boundingBox.min.y),
+		objectMeshes[id].dimensions[1]/(geo.boundingBox.max.z - geo.boundingBox.min.z)
+	);
+	objectMeshes[id].scale.multiplyScalar(VOXEL_SIZE);
 }
 
 
