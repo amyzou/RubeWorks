@@ -69,7 +69,6 @@ function switchMode(){
 	pause = false;
 }
 
-
 function switchToRunMode(){
 	rollOverMesh.visible = false;
 	camera.position.y = 630;
