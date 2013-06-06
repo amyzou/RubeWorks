@@ -38,7 +38,7 @@ function updateObjectPosition( intersector ) {
 
 function rotateCurrentObject(){
 	currRotation = (currRotation+1)%4;
-	rollOverMesh.rotateOnAxis( ROTATION_AXIS, -Math.PI / 2);
+	rollOverMesh.rotateOnAxis( ROTATION_AXIS, Math.PI / 2);
 	if (currObj.block_num == 1) return;
 	currOffset = currObj.offsets[currRotation % 2];
 }
