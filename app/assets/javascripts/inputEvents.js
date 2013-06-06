@@ -30,7 +30,6 @@ function onKeyUp ( event ) {
 }
 
 function onMouseMove ( event ) {
-	if (!buildMode) return true;
 	var container_x = event.pageX - $('#grid_container').offset().left;
 	var container_y = event.pageY - $('#grid_container').offset().top;
 	if (container_x >= 0 && container_x <= canvas_width && 

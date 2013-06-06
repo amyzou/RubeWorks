@@ -120,7 +120,7 @@ function clearScene(){
 		if (sceneObjects[id] != null ){
 			scene.remove(sceneObjects[id]);
 			sceneObjects[id].material.dispose();
-			controller.ModifyObject_Delete(id);
+			controller.ReInitializeAll();
 		}
 	}
 }
