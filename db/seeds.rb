@@ -134,7 +134,7 @@ straightRail = ObjectProperty.create(
     compatible_roamers:     [5],
 )
 straightRail.display = Display.create(
-    image_file:             'straightrail.png',
+    image_file:             'straightRail.PNG',
     obj_file:               'StraightRail.js',
     texture_file:           'null',
 )
@@ -176,7 +176,7 @@ shortColumn = ObjectProperty.create(
     compatible_roamers:     'array',
 )
 shortColumn.display = Display.create(
-    image_file:             'shortcolumn.png', 
+    image_file:             'shortColumn.png', 
     obj_file:               'ShortColumn.js', 
     texture_file:           'null', 
 )
