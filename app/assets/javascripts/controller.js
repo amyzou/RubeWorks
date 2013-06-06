@@ -168,14 +168,6 @@ function RubeJectController(){
 		var rubeJect = new RubeJect(objectPropertyID, positionCopy, rotation);
 		objectSceneIDList[sceneID] = rubeJect;
 		PlaceObjectIntoSpace(sceneID);
-		if (rubeJect.category === "starter") {
-			startingObjectList[startingObjectCounter] = new Array();
-			var outface = GetAbsoluteFace(rubeJect.getOutFaceByIndex(0), positionCopy);
-			startingObjectList[startingObjectCounter][0] = 
-				createChainEntry(-1, sceneID, outface);
-			//console.log("Added entry: " + createChainEntry(-1, sceneID, outface));
-			startingObjectCounter++;
-		}
 	};
 
 	this.ModifyObject_Delete = function(sceneID){
@@ -502,9 +494,21 @@ function RubeJectController(){
 
 	//method to create chains for run mode
 	this.CreateChains = function(){
+		startingObjectList = new Array();
+		startingObjectCounter = 0;
+		for (var i = 0; i < objectSceneIDList.length; i++) {
+			var rubeJect = objectSceneIDList[i];
+			if (rubeJect != null && rubeJect.category === "starter") {
+				startingObjectList[startingObjectCounter] = new Array();
+				var outface = GetAbsoluteFace(rubeJect.getOutFaceByIndex(0), rubeJect.position);
+				startingObjectList[startingObjectCounter][0] = 
+					createChainEntry(-1, i, outface);
+				//console.log("Added entry: " + createChainEntry(-1, sceneID, outface));
+				startingObjectCounter++;
+			}
+		}
 		for (var i = 0; i < startingObjectCounter; i++)
 		{
-			startingObjectList[i].length = 1;
 			var firstID = getFirstRoamer(i);
 			if (firstID != null) { 
 				if (objectSceneIDList[firstID].category === "roamer")
@@ -512,8 +516,8 @@ function RubeJectController(){
 				if (objectSceneIDList[firstID].category === "gadget")
 					GetNextChainLink(i,1,firstID);
 			}
-			else startingObjectList[i][1] = null;
-		}
+			else startingObjectList[i][1] = null;		
+		} 
 	};
 
 	var isUndefined = function(obj) {
@@ -523,7 +527,7 @@ function RubeJectController(){
 	/*-----------------Animation code-----------------*/
 
 	var currentHardcodedNumberForRendering = 100;
-	var gravityDamper = 1;
+	var gravityDamper = 0.1;
 	var gravity = 9.8 / currentHardcodedNumberForRendering * gravityDamper;
 	var stateList = new Array();
 
@@ -583,8 +587,7 @@ function RubeJectController(){
 				stateList[index].currentRoamer = startingObjectList[index]
 												[stateList[index].currChainPosition]
 												[1];
-				var fromBlock = InblockForOutface( startingObjectList[index]
-											[stateList[index].currChainPosition - 1][2] );
+				
 				
 				console.log("roamer = " + stateList[index].currentRoamer);
 				console.log("carrier = " + stateList[index].currentCarrier);
@@ -593,23 +596,27 @@ function RubeJectController(){
 				if (startingObjectList[index][stateList[index].currChainPosition + 1]
 																		== null
 				|| startingObjectList[index][stateList[index].currChainPosition + 1]
-												[1] != stateList[index].currentRoamer) {
+												[1] != stateList[index].currentRoamer
+												|| (stateList[index].fromBlock[2]
+												< startingObjectList[index]
+												[stateList[index].currChainPosition + 1][2][2])) {
 					//don't go!
+				console.log("preoutface block")
 				toBlock = startingObjectList[index][stateList[index].currChainPosition][2];
 				} else {
 				toBlock = InblockForOutface( startingObjectList[index]
 												[stateList[index].currChainPosition]
 												[2] );
 				}
-				console.log("Starting from: " + fromBlock[0] 
-					+ ", " + fromBlock[1] + ", " + fromBlock[2]);
+				console.log("Starting from: " + stateList[index].fromBlock[0] 
+					+ ", " + stateList[index].fromBlock[1] + ", " + stateList[index].fromBlock[2]);
 				console.log("new destination: " + toBlock[0] 
 					+ ", " + toBlock[1] + ", " + toBlock[2]);
 
 				//calculate distance between in face and next outface's in block
-				var xDiff = toBlock[0] - fromBlock[0];
-				var yDiff = toBlock[1] - fromBlock[1];
-				var zDiff = toBlock[2] - fromBlock[2];
+				var xDiff = toBlock[0] - stateList[index].fromBlock[0];
+				var yDiff = toBlock[1] - stateList[index].fromBlock[1];
+				var zDiff = toBlock[2] - stateList[index].fromBlock[2];
 
 				var absDiff = Math.sqrt( xDiff*xDiff + yDiff*yDiff + zDiff*zDiff);
 
@@ -641,6 +648,7 @@ function RubeJectController(){
 				console.log("new yInc : " + stateList[index].yInc);
 				console.log("new zInc : " + stateList[index].zInc);
 				console.log("steps left : " + stateList[index].stepsLeft);
+				stateList[index].fromBlock = toBlock;
 	}
 
 	//initiate states for all starting points. Chains have to be created already.
@@ -650,9 +658,12 @@ function RubeJectController(){
 
 				//objectSceneIDList[startingObjectList[i][0][0]].momentum
 				//for now, have a random val
-				stateList[i].momentum = 12;
+				stateList[i].momentum = 30;
 				stateList[i].currChainPosition = 0;
-				InitiateNextLink(i);
+				stateList[i].fromBlock = InblockForOutface( startingObjectList[i]
+											[0][2] );
+				if (startingObjectList[i][1] !== null)
+					InitiateNextLink(i);
 				console.log("Done initiating animation++++++++++++++++++");
 		}
 	};
@@ -678,17 +689,20 @@ function RubeJectController(){
 			stateList[index].yInc += totInc * stateList[index].yInc / oldInc;
  			stateList[index].zInc -= Math.abs(
  				totInc * stateList[index].zInc / oldInc);
+ 			stateList[index].stepsLeft 
+ 			= stateList[index].stepsLeft * oldInc / (oldInc + totInc);
  		} else {
  			stateList[index].xInc -= totInc * stateList[index].xInc / oldInc;
 			stateList[index].yInc -= totInc * stateList[index].yInc / oldInc;
- 			stateList[index].zInc += Math.abs(
+ 			stateList[index].zInc -= Math.abs(
  				totInc * stateList[index].zInc / oldInc);
+ 			stateList[index].stepsLeft 
+ 			= stateList[index].stepsLeft * oldInc / (oldInc - totInc);
  		}
 		console.log("NewIncs: " + stateList[index].xInc + ", "
 			+ stateList[index].yInc + ", "
 			+ stateList[index].zInc);
- 		stateList[index].stepsLeft 
- 			= stateList[index].stepsLeft * oldInc / (oldInc + totInc);
+ 		
 	}
 
 

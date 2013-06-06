@@ -99,25 +99,6 @@ sphere.display = Display.create(
 )
 sphere.updateDisplay
 
-# # Trampoline
-# trampoline = ObjectProperty.create(
-#     name:                   'trampoline',
-#     category:               'carrier', 
-#     block_num:              1, 
-#     blocks:                 [[0,0,0]],
-#     mass:                   1.0,
-#     elasticity:             1.0,
-#     change_in_height:       0,
-#     io_map:                 [],
-#     compatible_roamers:     'array',
-# )
-# trampoline.display = Display.create(
-#     image_file:             'tramp.png', 
-#     obj_file:               'ball.js', 
-#     texture_file:           'null', 
-# )
-# trampoline.updateDisplay
-
 #Starter Object
 arrow = ObjectProperty.create(
     name:                   'arrow',
@@ -143,12 +124,12 @@ straightRail = ObjectProperty.create(
     name:                   'straight rail',
     category:               'carrier',
     block_num:              2,
-    blocks:                 [[0,0,0],[0,0,1]],
+    blocks:                 [[0,0,0]],
     mass:                   6.0,
     elasticity:             1.0, 
     change_in_height:       0,
     #Relative Animation Information
-    io_map:                 [[[0,0,2,3],[0,0,2,1]], [[0,0,2,1],[0,0,2,3]]],
+    io_map:                 [[[0,0,1,3],[0,0,1,1]], [[0,0,1,1],[0,0,1,3]]],
     compatible_roamers:     [5],
 )
 straightRail.display = Display.create(
@@ -163,12 +144,12 @@ lstraightRail = ObjectProperty.create(
     name:                   'Long straight rail',
     category:               'carrier',
     block_num:              4,
-    blocks:                 [[1,0,0],[0,0,1],[1,0,1],[2,0,1]],
+    blocks:                 [[0,0,0],[1,0,0],[2,0,0]],
     mass:                   12.0,
     elasticity:             1.0, 
     change_in_height:       0,
     #Relative Animation Information
-    io_map:                 [[[0,0,2,3],[2,0,2,1]], [[2,0,2,1],[0,0,2,3]]],
+    io_map:                 [[[0,0,1,3],[2,0,1,1]], [[2,0,1,1],[0,0,1,3]]],
     compatible_roamers:     [5],
 )
 lstraightRail.display = Display.create(
@@ -196,3 +177,24 @@ shortColumn.display = Display.create(
     texture_file:           'null', 
 )
 shortColumn.updateDisplay
+
+# Rail Ramp
+railRamp = ObjectProperty.create(
+    name:                   'Rail Ramp',
+    category:               'carrier',
+    block_num:              2,
+    blocks:                 [[0,0,0],[0,0,1]],
+    mass:                   5.0,
+    elasticity:             1.0, 
+    change_in_height:       1,
+    #Relative Animation Information
+    io_map:                 [[[0,0,2,3],[0,0,1,1],"linear",[0,0,2],[1,0,1]],
+                             [[0,0,1,1],[0,0,2,3],"linear",[1,0,1],[0,0,2]]],
+    compatible_roamers:     [5],
+)
+railRamp.display = Display.create(
+    image_file:             'sphere.png',
+    obj_file:               'RailRamp.js',
+    texture_file:           'null',
+)
+railRamp.updateDisplay
