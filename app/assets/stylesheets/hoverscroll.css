@@ -45,9 +45,13 @@ div.hoverscroll div.arrow {
     display: block;
     float: left;
     width:60px;
-    background-position: center;
+    background-position: 0px center;
     background-repeat: no-repeat;
     cursor:pointer;
+}
+
+div.hoverscroll div.arrow:hover {
+    background-position: -60px center;
 }
 
 div.hoverscroll div.arrow.left,
@@ -58,10 +62,10 @@ div.hoverscroll div.arrow.right {
 
 div.hoverscroll div.arrow.left {
 	left:0px;
-	background-image:url('buttons/arrow-left.png');
+	background-image:url('buttons/arrowleft.png');
 }
 
 div.hoverscroll div.arrow.right {
 	right:0px;
-	background-image:url('buttons/arrow-right.png');
+	background-image:url('buttons/arrowright.png');
 }

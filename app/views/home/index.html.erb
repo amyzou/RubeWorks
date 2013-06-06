@@ -71,6 +71,10 @@ var normalMatrix = new THREE.Matrix3();
 var idx, intersector;
 
 $(function(){
+	$("#intro .close").click(function(){
+		$("#intro").fadeOut( 100, function(){ $("#controls").fadeIn(); });
+	});
+
 	$('.loading').show();
 	if ( ! Detector.webgl )  {
 		Detector.addGetWebGLMessage();	
@@ -79,8 +83,7 @@ $(function(){
 		return;	
 	}
 
-	$(".title").hover( function(){ $(this).next().fadeIn(); } , function(){ $(this).next().fadeOut(); } );
-
+	$(".title").click( function(){ $(this).next().s(); } , function(){ $(this).next().fadeOut(); } );
 
 	for (var c in colors){
 		$("#colorpicker").append($("<div class='color' data='" + colors[c] + "'/>").css("background-color", colors[c]));
@@ -130,18 +133,32 @@ $(function(){
 
 </script>
 
-<div id='description' class='buildmode'>
-	<div>
-		<div class='title'>
-			<span style='font-size:40px;margin-right:5px'>Rubeworks</span> by Amy Zou, Austin Hulse, Emily Ye, Sonya Juang
+<div class='sidebar-container' class='buildmode'>
+	<div id="intro" class='sidebar'>
+		<a href='javascript:;' class='close'>[X]</a>
+		<h1>Rubeworks</h1> 
+		<div style="margin: 10px 0;">
+			An interactive WebGL experiment using <a href="http://threejs.org/">three.js</a> to create unusual machines from basic components<br/><br/>
+			CS194 Project by Amy Zou, Austin Hulse, Emily Ye, and Sonya Juang
 		</div>
+		<h2>Controls</h2>
+		<div>
+			<b>SHIFT</b> - Hold to rotate canvas<br/>
+			<b>D</b> - Hold, click to delete object<br/>
+			<b>R</b> - Press to rotate object<br/>
+		</div>
+	</div>
 
-		<div style="margin: 10px 0;display:none">
-			An interactive WebGL experiment for CS194: Senior Project<br/>
-			Uses <a href="http://threejs.org/">three.js</a> to create unusual machines from basic components</br>
+	<div id="controls" style="display:none">
+		<h2>Controls</h2>
+		<div>
+			<b>SHIFT</b> - Hold to rotate canvas<br/>
+			<b>D</b> - Hold, click to delete object<br/>
+			<b>R</b> - Press to rotate object<br/>
 		</div>
 	</div>
 </div>
+
 <div id="button_container">
 	<div class='button mode buildmode'>Run</div>
 	<div class='button clear buildmode'>Clear</div>
@@ -159,10 +176,6 @@ $(function(){
 			<td class='col_color'>
 				Choose color for object:
 				<div id="colorpicker"></div>
-				<h2>CONTROLS:</h2>
-				<b>SHIFT</b> - Hold to rotate canvas<br/>
-				<b>D</b> - Hold, click to delete object<br/>
-				<b>R</b> - Press to rotate object<br/>
 			<td>
 			<td class='col_objects'>
 				<div id="toolbox">
