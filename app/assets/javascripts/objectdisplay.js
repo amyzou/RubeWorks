@@ -38,7 +38,7 @@ function updateObjectPosition( intersector ) {
 
 function rotateCurrentObject(){
 	currRotation = (currRotation+1)%4;
-	rollOverMesh.rotateOnAxis( ROTATION_AXIS, -Math.PI / 2);
+	rollOverMesh.rotateOnAxis( ROTATION_AXIS, Math.PI / 2);
 	if (currObj.block_num == 1) return;
 	currOffset = currObj.offsets[currRotation % 2];
 }
@@ -120,7 +120,7 @@ function clearScene(){
 		if (sceneObjects[id] != null ){
 			scene.remove(sceneObjects[id]);
 			sceneObjects[id].material.dispose();
-			controller.ReInitializeAll();
 		}
 	}
+	controller.ReInitializeAll();
 }
