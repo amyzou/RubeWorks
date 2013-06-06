@@ -399,9 +399,10 @@ function RubeJectController(){
 			}
 			// If carrier, travel over carrier. Outface retrieved via inface.
 			else if (nextObj.category === "carrier") {
-				console.log("Found carrier");
+				//console.log("Found carrier");
 				var inface = getInface(nextPos,getOppositeDirection(direction));
 				var outface = GetOutfaceFromObj(nextObj,inface);
+				//console.log("inface: " + inface + "; outface: " + outface + "; direction: " + direction);
 				if (outface != null)
 					return createChainEntry(nextID,roamerID,outface);
 			}
@@ -503,7 +504,7 @@ function RubeJectController(){
 				var outface = GetAbsoluteFace(rubeJect.getOutFaceByIndex(0), rubeJect.position);
 				startingObjectList[startingObjectCounter][0] = 
 					createChainEntry(-1, i, outface);
-				//console.log("Added entry: " + createChainEntry(-1, sceneID, outface));
+				//console.log("Added entry: " + createChainEntry(-1, i, outface));
 				startingObjectCounter++;
 			}
 		}
