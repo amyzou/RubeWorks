@@ -93,7 +93,7 @@ sphere = ObjectProperty.create(
     compatible_roamers:     'array',
 )
 sphere.display = Display.create(
-    image_file:             'sphere.png', 
+    image_file:             'ball.png', 
     obj_file:               'ball.js', 
     texture_file:           'null', 
 )
@@ -113,7 +113,7 @@ arrow = ObjectProperty.create(
     compatible_roamers:     'array',
 )
 arrow.display = Display.create(
-    image_file:             'arrow-png.png',
+    image_file:             'starterarrow.png',
     obj_file:               'StarterArrow.js',
     texture_file:           'null',
 )
@@ -134,7 +134,7 @@ straightRail = ObjectProperty.create(
     compatible_roamers:     [5],
 )
 straightRail.display = Display.create(
-    image_file:             'straightRail.PNG',
+    image_file:             'straightrail.png',
     obj_file:               'StraightRail.js',
     texture_file:           'null',
 )
@@ -157,7 +157,7 @@ lstraightRail = ObjectProperty.create(
     compatible_roamers:     [5],
 )
 lstraightRail.display = Display.create(
-    image_file:             'lstraightrail.png',
+    image_file:             'longstraightrail.png',
     obj_file:               'LongStraightRail.js',
     texture_file:           'null',
 )
@@ -176,7 +176,7 @@ shortColumn = ObjectProperty.create(
     compatible_roamers:     'array',
 )
 shortColumn.display = Display.create(
-    image_file:             'shortColumn.png', 
+    image_file:             'shortcolumn.png', 
     obj_file:               'ShortColumn.js', 
     texture_file:           'null', 
 )
@@ -197,7 +197,7 @@ railRamp = ObjectProperty.create(
     compatible_roamers:     [5],
 )
 railRamp.display = Display.create(
-    image_file:             'shortColumn.png',
+    image_file:             'railramp.png',
     obj_file:               'RailRamp.js',
     texture_file:           'null',
 )
@@ -218,7 +218,7 @@ turnRail = ObjectProperty.create(
     compatible_roamers:     [5],
 )
 turnRail.display = Display.create(
-    image_file:             'shortColumn.png',
+    image_file:             'turnrail.png',
     obj_file:               'TurnRail.js',
     texture_file:           'null',
 )
@@ -244,7 +244,7 @@ warperBlock = ObjectProperty.create(
     compatible_roamers:     [5],
 )
 warperBlock.display = Display.create(
-    image_file:             'shortColumn.png',
+    image_file:             'TransporterBlock.png',
     obj_file:               'TransporterBlock.js',
     texture_file:           'warperBlockTex.jpg',
 )
@@ -264,7 +264,7 @@ bdominos = ObjectProperty.create(
     compatible_roamers:     'null',
 )
 bdominos.display = Display.create(
-    image_file:             'dominoes.png', 
+    image_file:             'BendDominos.png', 
     obj_file:               'BendDominos.js', 
     texture_file:           'dominosTex.jpg', 
 )
@@ -285,7 +285,7 @@ railColumn = ObjectProperty.create(
     compatible_roamers:     'null',
 )
 railColumn.display = Display.create(
-    image_file:             'shortColumn.png', 
+    image_file:             'railcolumn.png', 
     obj_file:               'RailColumn.js', 
     texture_file:           'none', 
 )

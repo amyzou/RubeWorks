@@ -22,4 +22,7 @@ class HomeController < ApplicationController
     @display    = Display.find(params['objID'])
     render :text => @object.to_json
   end
+
+  def createimages
+  end
 end

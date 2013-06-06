@@ -1,0 +1,134 @@
+<script>
+var JSONImgLoader;
+var container, renderer;
+var canvas_width, canvas_height;
+var scene, camera, plane;
+var theta = 45; //camera rotation
+var projector, raycaster;
+
+var objects = [];
+var counter = 0;
+
+var material = new THREE.MeshLambertMaterial( { color : 0x384463, ambient: 0x384463, shading: THREE.FlatShading } );
+
+var id = 0;
+var done = false;
+var nObjects;
+
+function thisanimate() {
+	requestAnimationFrame( thisanimate );
+	renderScene();
+}
+
+function renderScene() {
+	counter++;
+	camera.position.x = 5 * Math.sin( THREE.Math.degToRad( theta ) );
+	camera.position.z = 5 * Math.cos( THREE.Math.degToRad( theta ) );
+	camera.lookAt( scene.position );
+
+	if (counter % 2 == 0){
+		if (!done) {
+			var dataUrl = renderer.domElement.toDataURL();
+			window.open( dataUrl , '_blank', "width=200, height=200");
+		}
+		scene.remove(objects[id].mesh);
+		id = (id + 1) % objects.length;
+		scene.add(objects[id].mesh);
+		if (id == 0 && !done) done = true;
+		counter = 0;
+	}
+	renderer.render( scene, camera );	
+}
+
+$(function(){
+
+	scene = new THREE.Scene();
+	projector = new THREE.Projector();
+
+	canvas_width = 200;
+	canvas_height = 200;
+
+	camera = new THREE.PerspectiveCamera( 45, canvas_width/canvas_height, 1, 10000 );
+	camera.position.y = 4;
+
+	renderer = new THREE.WebGLRenderer( { antialias: true, preserveDrawingBuffer: true } );
+	renderer.setSize( canvas_width, canvas_height);
+
+	JSONImgLoader = new THREE.JSONLoader();
+
+	var ambientLight = new THREE.AmbientLight( 0x606060 );
+	scene.add( ambientLight );
+	var directionalLight = new THREE.DirectionalLight( 0xddddff );
+	directionalLight.position.set( 1, 0.75, 0.5 ).normalize();
+	scene.add( directionalLight );
+
+	//APPEND CANVAS
+	container = document.getElementById( "canvas_container" );
+	container.appendChild( renderer.domElement );
+	
+	$.ajax({
+		url: '/home/get_all_objects',
+		dataType: 'json',
+		data: { },
+		success: function( displays ){
+				nObjects = displays.length;
+				for (var i in displays) {
+					var obj = displays[i];
+					createFile(obj);
+				}
+			}
+	});
+});
+
+function createFile( obj ){
+	if (obj.obj_file != "" ){
+		JSONImgLoader.load( "/obj/" + obj.obj_file, function(geometry) {
+			addMesh (obj, geometry,material) ;
+			if (objects.length == nObjects) { console.log(objects); thisanimate(); }
+
+		} );		
+		return;
+	} else {
+		var cube = new THREE.Mesh(new THREE.CubeGeometry(2,2,2), material);
+		objects.push( 
+		   	{ 
+		    	mesh : cube,
+				file : "cube.png"
+		    });
+		scene.add( cube );
+	}
+	if (objects.length == nObjects) thisanimate();
+}
+
+function addMesh( obj, geo ) {
+	THREE.GeometryUtils.center(geo);
+	if (obj.category == 'starter'){
+    	var mesh = new THREE.Mesh(geo, new THREE.MeshLambertMaterial({ color : 0x00ff00, ambient: 0x00ff00, shading: THREE.FlatShading }));
+    	mesh.scale.set(
+			obj.dimensions[0]/(geo.boundingBox.max.x - geo.boundingBox.min.x),
+			obj.dimensions[2]/(geo.boundingBox.max.y - geo.boundingBox.min.y),
+			obj.dimensions[1]/(geo.boundingBox.max.z - geo.boundingBox.min.z)
+		);
+    	objects.push( { mesh: mesh, file: (obj.obj_file.split(","))[0] + ".png" });
+    	return;
+	} 
+
+    var mesh = new THREE.Mesh(geo, material.clone());
+    if (obj.category == 'gadget')   
+    	mesh.scale.set(2, 2, 2);
+    else {
+    	mesh.scale.set(
+			obj.dimensions[0]/(geo.boundingBox.max.x - geo.boundingBox.min.x),
+			obj.dimensions[2]/(geo.boundingBox.max.y - geo.boundingBox.min.y),
+			obj.dimensions[1]/(geo.boundingBox.max.z - geo.boundingBox.min.z)
+		);
+	}
+    objects.push( { mesh: mesh, file: (obj.obj_file.split(","))[0] + ".png" });
+}
+
+</script>
+<div id='canvas_container' style='width:200px;height:200px;border:2px solid black'>
+</div> 	
+
+
+
