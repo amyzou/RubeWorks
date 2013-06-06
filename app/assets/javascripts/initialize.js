@@ -110,7 +110,7 @@ function loadJSONGeometry( id, geo, mat) {
     objectMeshes[id].geometry = geo;
 
 	if (objectMeshes[id].category == 'gadget')   
-	 	objectMeshes[id].scale.set( VOXEL_SIZE,  objectMeshes[id].dimensions[2]/(geo.boundingBox.max.y - geo.boundingBox.min.y), VOXEL_SIZE);
+	 	objectMeshes[id].scale.set( VOXEL_SIZE, VOXEL_SIZE * objectMeshes[id].dimensions[2]/(geo.boundingBox.max.y - geo.boundingBox.min.y), VOXEL_SIZE);
 	else {
 		objectMeshes[id].scale.set(
 			objectMeshes[id].dimensions[0]/(geo.boundingBox.max.x - geo.boundingBox.min.x),
