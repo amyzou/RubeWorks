@@ -123,13 +123,14 @@ arrow.updateDisplay
 straightRail = ObjectProperty.create(
     name:                   'straight rail',
     category:               'carrier',
-    block_num:              2,
+    block_num:              1,
     blocks:                 [[0,0,0]],
     mass:                   6.0,
     elasticity:             1.0, 
     change_in_height:       0,
     #Relative Animation Information
-    io_map:                 [[[0,0,1,3],[0,0,1,1]], [[0,0,1,1],[0,0,1,3]]],
+    io_map:                 [[[0,0,1,3],[0,0,1,1], "linear", [0,0,1],[1,0,1]],
+                             [[0,0,1,1],[0,0,1,3], "linear", [1,0,1],[0,0,0]]],
     compatible_roamers:     [5],
 )
 straightRail.display = Display.create(
@@ -143,13 +144,16 @@ straightRail.updateDisplay
 lstraightRail = ObjectProperty.create(
     name:                   'Long straight rail',
     category:               'carrier',
-    block_num:              4,
+    block_num:              3,
     blocks:                 [[0,0,0],[1,0,0],[2,0,0]],
     mass:                   12.0,
     elasticity:             1.0, 
     change_in_height:       0,
     #Relative Animation Information
-    io_map:                 [[[0,0,1,3],[2,0,1,1]], [[2,0,1,1],[0,0,1,3]]],
+    io_map:                 [
+                            [[0,0,1,3],[2,0,1,1], "linear", [0,0,0],[2,0,1]],
+                            [[2,0,1,1],[0,0,1,3], "linear", [2,0,1],[0,0,0]]
+                            ],
     compatible_roamers:     [5],
 )
 lstraightRail.display = Display.create(
@@ -193,8 +197,55 @@ railRamp = ObjectProperty.create(
     compatible_roamers:     [5],
 )
 railRamp.display = Display.create(
-    image_file:             'sphere.png',
+    image_file:             'shortColumn.png',
     obj_file:               'RailRamp.js',
     texture_file:           'null',
 )
 railRamp.updateDisplay
+
+# Turn Rail
+turnRail = ObjectProperty.create(
+    name:                   'Turn Rail',
+    category:               'carrier',
+    block_num:              1,
+    blocks:                 [[0,0,0]],
+    mass:                   5.0,
+    elasticity:             1.0, 
+    change_in_height:       0,
+    #Relative Animation Information
+    io_map:                 [[[0,0,1,3],[0,0,1,2], "linear", [0,0,1],[1,0,1]],
+                             [[0,0,1,2],[0,0,1,3], "linear", [1,0,1],[0,0,0]]],
+    compatible_roamers:     [5],
+)
+turnRail.display = Display.create(
+    image_file:             'shortColumn.png',
+    obj_file:               'TurnRail.js',
+    texture_file:           'null',
+)
+turnRail.updateDisplay
+
+#Warper Block
+
+# Turn Rail
+warperBlock = ObjectProperty.create(
+    name:                   'Warper Block',
+    category:               'carrier',
+    block_num:              1,
+    blocks:                 [[0,0,0]],
+    mass:                   5.0,
+    elasticity:             1.0, 
+    change_in_height:       0,
+    #Relative Animation Information
+    io_map:                 [[[0,0,0,3],[0,0,0,2], "linear", [0,0,0],[0,0,1]],
+                             [[0,0,0,2],[0,0,0,2], "linear", [0,0,1],[0,0,1]],
+                             [[0,0,0,1],[0,0,0,2], "linear", [1,0,0],[0,0,1]],
+                             [[0,0,0,0],[0,0,0,2], "linear", [0,1,0],[0,1,0]]
+                             ],
+    compatible_roamers:     [5],
+)
+warperBlock.display = Display.create(
+    image_file:             'shortColumn.png',
+    obj_file:               'TransporterBlock.js',
+    texture_file:           'warperBlockTex.jpg',
+)
+warperBlock.updateDisplay
