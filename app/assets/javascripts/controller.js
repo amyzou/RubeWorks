@@ -580,101 +580,102 @@ function RubeJectController(){
 			//todo: adjust for change in momentum after gravity
 		console.log("Updating chain position; previously "
 					+ [stateList[index].currChainPosition]);
-				stateList[index].currChainPosition ++ ;
-				console.log("new chain position = " + stateList[index].currChainPosition);
-				stateList[index].currentCarrier = startingObjectList[index]
-												[stateList[index].currChainPosition]
-												[0]; 
-				stateList[index].currentRoamer = startingObjectList[index]
-												[stateList[index].currChainPosition]
-												[1];
+		stateList[index].currChainPosition ++ ;
+		console.log("new chain position = " + stateList[index].currChainPosition);
+		stateList[index].currentCarrier = startingObjectList[index]
+										[stateList[index].currChainPosition]
+										[0]; 
+		stateList[index].currentRoamer = startingObjectList[index]
+										[stateList[index].currChainPosition]
+										[1];			
 				
-				
-				console.log("roamer = " + stateList[index].currentRoamer);
-				console.log("carrier = " + stateList[index].currentCarrier);
-				var toBlock;
-
-				if (startingObjectList[index][stateList[index].currChainPosition + 1]
-																		== null
-				|| startingObjectList[index][stateList[index].currChainPosition + 1]
-												[1] != stateList[index].currentRoamer
-												|| (stateList[index].fromBlock[2]
-												< startingObjectList[index]
-												[stateList[index].currChainPosition + 1][2][2])) {
-					//don't go!
-				console.log("preoutface block")
-				toBlock = startingObjectList[index][stateList[index].currChainPosition][2];
-				} else {
+		console.log("roamer = " + stateList[index].currentRoamer);
+		console.log("carrier = " + stateList[index].currentCarrier);
+		var toBlock;
+		//check where toblock goes
+		if (startingObjectList[index]
+			[stateList[index].currChainPosition + 1]
+										== null
+			|| startingObjectList[index]
+				[stateList[index].currChainPosition + 1][1] 
+										!= stateList[index].currentRoamer
+			|| (stateList[index].fromBlock[2]
+					< startingObjectList[index]
+							[stateList[index].currChainPosition + 1][2][2])) {
+				//don't go!
+			console.log("preoutface block")
+			toBlock = startingObjectList[index][stateList[index].currChainPosition][2];
+		} else {
 				toBlock = InblockForOutface( startingObjectList[index]
-												[stateList[index].currChainPosition]
-												[2] );
-				}
-				console.log("Starting from: " + stateList[index].fromBlock[0] 
-					+ ", " + stateList[index].fromBlock[1] + ", " + stateList[index].fromBlock[2]);
-				console.log("new destination: " + toBlock[0] 
-					+ ", " + toBlock[1] + ", " + toBlock[2]);
-				if (stateList[index].fromBlock[0] == toBlock[0]
-					&& stateList[index].fromBlock[1] == toBlock[1]
-					&& stateList[index].fromBlock[2] == toBlock[2]){
-					console.log("sameBlock; skipping");
-					if (startingObjectList[index][stateList[index].currChainPosition + 1]) 
-						InitiateNextLink(index);
-					else 
-						stateList[index] = null;
-				} else {
-				//calculate distance between in face and next outface's in block
-				var xDiff = toBlock[0] - stateList[index].fromBlock[0];
-				var yDiff = toBlock[1] - stateList[index].fromBlock[1];
-				var zDiff = toBlock[2] - stateList[index].fromBlock[2];
+											[stateList[index].currChainPosition]
+											[2] );
+		}
 
-				var absDiff = Math.sqrt( xDiff*xDiff + yDiff*yDiff + zDiff*zDiff);
+		console.log("Starting from: " + stateList[index].fromBlock[0] 
+			+ ", " + stateList[index].fromBlock[1] + ", " + stateList[index].fromBlock[2]);
+		console.log("new destination: " + toBlock[0] 
+			+ ", " + toBlock[1] + ", " + toBlock[2]);
+		if (stateList[index].fromBlock[0] == toBlock[0]
+				&& stateList[index].fromBlock[1] == toBlock[1]
+				&& stateList[index].fromBlock[2] == toBlock[2]){
+			console.log("sameBlock; skipping");
+			if (startingObjectList[index][stateList[index].currChainPosition + 1]) 
+				InitiateNextLink(index);
+			else 
+				stateList[index] = null;
+		} else {
+			//calculate distance between in face and next outface's in block
+			var xDiff = toBlock[0] - stateList[index].fromBlock[0];
+			var yDiff = toBlock[1] - stateList[index].fromBlock[1];
+			var zDiff = toBlock[2] - stateList[index].fromBlock[2];
 
+			var absDiff = Math.sqrt( xDiff*xDiff + yDiff*yDiff + zDiff*zDiff);
 
-				// in momentum = mv = mass * v; thus v = momentum/mass
-				// d = new.outface's block - prev.outface's block 
-				// increment = d/total time
-				// v * tt = inc * refreshes made
-				// assume refreshes mad/tt = framerate 
-				//				= currentHardcodedNumberForRendering = v/inc
-				// we can get get inc = v/currentHardcodedNumberForRendering 
-				//		= (momentum/mass)/currentHardcodedNumberForRendering
-				// numIncs = d/inc 
+			// in momentum = mv = mass * v; thus v = momentum/mass
+			// d = new.outface's block - prev.outface's block 
+			// increment = d/total time
+			// v * tt = inc * refreshes made
+			// assume refreshes mad/tt = framerate 
+			//				= currentHardcodedNumberForRendering = v/inc
+			// we can get get inc = v/currentHardcodedNumberForRendering 
+			//		= (momentum/mass)/currentHardcodedNumberForRendering
+			// numIncs = d/inc 
 
-				//translate prev outface to in face, and retrieve block
-				//xyz should be calculated seperately but fffffff I'll do it later 
+			//translate prev outface to in face, and retrieve block
+			//xyz should be calculated seperately but fffffff I'll do it later 
 
-				var inc = stateList[index].momentum/ 
-						objectSceneIDList[ stateList[index].currentRoamer ].mass/
-						currentHardcodedNumberForRendering;
-				console.log("inc =  " + inc);
-				stateList[index].xInc = inc * xDiff / absDiff;
-				stateList[index].yInc = inc * yDiff / absDiff;
-				stateList[index].zInc = inc * zDiff / absDiff;			
+			var inc = stateList[index].momentum/ 
+					objectSceneIDList[ stateList[index].currentRoamer ].mass/
+					currentHardcodedNumberForRendering;
+			console.log("inc =  " + inc);
+			stateList[index].xInc = inc * xDiff / absDiff;
+			stateList[index].yInc = inc * yDiff / absDiff;
+			stateList[index].zInc = inc * zDiff / absDiff;			
 				
-				stateList[index].stepsLeft = absDiff / inc;
+			stateList[index].stepsLeft = absDiff / inc;
 
-				console.log("new xInc : " + stateList[index].xInc);
-				console.log("new yInc : " + stateList[index].yInc);
-				console.log("new zInc : " + stateList[index].zInc);
-				console.log("steps left : " + stateList[index].stepsLeft);
-				stateList[index].fromBlock = toBlock;
-			}
+			console.log("new xInc : " + stateList[index].xInc);
+			console.log("new yInc : " + stateList[index].yInc);
+			console.log("new zInc : " + stateList[index].zInc);
+			console.log("steps left : " + stateList[index].stepsLeft);
+			stateList[index].fromBlock = toBlock;
+		}
 	}
 
 	//initiate states for all starting points. Chains have to be created already.
 	this.InitiateAnimation = function(){
 		for (var i = 0; i < startingObjectCounter; i++){
-				stateList[i] = new Object();
+			stateList[i] = new Object();
 
-				//objectSceneIDList[startingObjectList[i][0][0]].momentum
-				//for now, have a random val
-				stateList[i].momentum = 30;
-				stateList[i].currChainPosition = 0;
-				stateList[i].fromBlock = InblockForOutface( startingObjectList[i]
-											[0][2] );
-				if (startingObjectList[i][1] !== null)
-					InitiateNextLink(i);
-				console.log("Done initiating animation++++++++++++++++++");
+			//objectSceneIDList[startingObjectList[i][0][0]].momentum
+			//for now, have a random val
+			stateList[i].momentum = 30;
+			stateList[i].currChainPosition = 0;
+			stateList[i].fromBlock = InblockForOutface( startingObjectList[i]
+										[0][2] );
+			if (startingObjectList[i][1] !== null)
+				InitiateNextLink(i);
+			console.log("Done initiating animation++++++++++++++++++");
 		}
 	};
 
