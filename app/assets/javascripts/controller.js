@@ -399,7 +399,7 @@ function RubeJectController(){
 			}
 			// If carrier, travel over carrier. Outface retrieved via inface.
 			else if (nextObj.category === "carrier") {
-				//console.log("Found carrier");
+				console.log("Found carrier");
 				var inface = getInface(nextPos,getOppositeDirection(direction));
 				var outface = GetOutfaceFromObj(nextObj,inface);
 				if (outface != null)

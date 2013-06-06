@@ -80,6 +80,50 @@ function RubeJect(objectPropertyID, position, rotation){
 			return this.ioMap[index][1];
 		return null;
 	}
+
+	this.getInNode = function(inFace) {
+		for (var i = 0; i < this.ioMap.length; i++) {
+			if (this.ioMap[i][0][0] === inFace[0] && this.ioMap[i][0][1] === inFace[1]
+				&& this.ioMap[i][0][2] === inFace[2] && this.ioMap[i][0][3] === inFace[3])
+				return this.ioMap[i][3];
+		}
+		return null;
+	}
+
+	this.getAbsoluteInNode = function(absInface) {
+		var relInface = absInface.slice(0);
+		relInface[0] -= this.position[0];
+		relInface[1] -= this.position[1];
+		relInface[2] -= this.position[2];
+		var relInNode = this.getInNode(relInface);
+		var absInNode = relInNode.slice(0);
+		absInNode[0] -= this.position[0];
+		absInNode[1] -= this.position[1];
+		absInNode[2] -= this.position[2];
+		return absInNode;	
+	}
+
+	this.getAbsoluteOutNode = function(absInface) {
+		var relInface = absInface.slice(0);
+		relInface[0] -= this.position[0];
+		relInface[1] -= this.position[1];
+		relInface[2] -= this.position[2];
+		var relOutNode = this.getOutNode(relInface);
+		var absOutNode = relOutNode.slice(0);
+		absOutNode[0] -= this.position[0];
+		absOutNode[1] -= this.position[1];
+		absOutNode[2] -= this.position[2];
+		return absOutNode;	
+	}
+
+	this.getOutNode = function(inFace) {
+		for (var i = 0; i < this.ioMap.length; i++) {
+			if (this.ioMap[i][0][0] === inFace[0] && this.ioMap[i][0][1] === inFace[1]
+				&& this.ioMap[i][0][2] === inFace[2] && this.ioMap[i][0][3] === inFace[3])
+				return this.ioMap[i][4];
+		}
+		return null;
+	}
 	
 	// Rotates RubeJect
 	this.rotate = function(){
