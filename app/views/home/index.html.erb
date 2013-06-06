@@ -99,9 +99,6 @@ $(function(){
 	var direction = 0, speed = 0;
 	$(".scroll-div")[0].startMoving(direction, speed);
 
-	if ( ! Detector.webgl ) 
-		Detector.addGetWebGLMessage();
-
 	$(".button").hide();
 	$('.buildmode').show();
 	$('.runmode').hide();
