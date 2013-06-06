@@ -613,7 +613,15 @@ function RubeJectController(){
 					+ ", " + stateList[index].fromBlock[1] + ", " + stateList[index].fromBlock[2]);
 				console.log("new destination: " + toBlock[0] 
 					+ ", " + toBlock[1] + ", " + toBlock[2]);
-
+				if (stateList[index].fromBlock[0] == toBlock[0]
+					&& stateList[index].fromBlock[1] == toBlock[1]
+					&& stateList[index].fromBlock[2] == toBlock[2]){
+					console.log("sameBlock; skipping");
+					if (startingObjectList[index][stateList[index].currChainPosition + 1]) 
+						InitiateNextLink(index);
+					else 
+						stateList[index] = null;
+				} else {
 				//calculate distance between in face and next outface's in block
 				var xDiff = toBlock[0] - stateList[index].fromBlock[0];
 				var yDiff = toBlock[1] - stateList[index].fromBlock[1];
@@ -650,6 +658,7 @@ function RubeJectController(){
 				console.log("new zInc : " + stateList[index].zInc);
 				console.log("steps left : " + stateList[index].stepsLeft);
 				stateList[index].fromBlock = toBlock;
+			}
 	}
 
 	//initiate states for all starting points. Chains have to be created already.
