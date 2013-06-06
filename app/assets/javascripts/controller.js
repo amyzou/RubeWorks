@@ -702,6 +702,10 @@ function RubeJectController(){
  				totInc * stateList[index].zInc / oldInc);
  			stateList[index].stepsLeft 
  			= stateList[index].stepsLeft * oldInc / (oldInc + totInc);
+ 			//adjust momentum
+			stateList[index].momentum = (oldInc + totInc) * 
+				objectSceneIDList[ stateList[index].currentRoamer ].mass *
+					currentHardcodedNumberForRendering;
  		} else {
  			stateList[index].xInc -= totInc * stateList[index].xInc / oldInc;
 			stateList[index].yInc -= totInc * stateList[index].yInc / oldInc;
@@ -709,11 +713,15 @@ function RubeJectController(){
  				totInc * stateList[index].zInc / oldInc);
  			stateList[index].stepsLeft 
  			= stateList[index].stepsLeft * oldInc / (oldInc - totInc);
+ 			//adjust momentum
+			stateList[index].momentum = (oldInc - totInc) * 
+				objectSceneIDList[ stateList[index].currentRoamer ].mass *
+					currentHardcodedNumberForRendering;
  		}
 		console.log("NewIncs: " + stateList[index].xInc + ", "
 			+ stateList[index].yInc + ", "
 			+ stateList[index].zInc);
- 		
+		
 	}
 
 
