@@ -44,7 +44,7 @@ dominos = ObjectProperty.create(
 dominos.display = Display.create(
     image_file:             'dominoes.png', 
     obj_file:               'dominos.js', 
-    texture_file:           'dominos.jpg', 
+    texture_file:           'dominosTex.jpg', 
 )
 dominos.updateDisplay
 
@@ -249,3 +249,44 @@ warperBlock.display = Display.create(
     texture_file:           'warperBlockTex.jpg',
 )
 warperBlock.updateDisplay
+
+# Bent Dominos Gadget
+bdominos = ObjectProperty.create(
+    name:                   'Bent dominos',
+    category:               'gadget', 
+    block_num:              1, 
+    blocks:                 [[0,0,0]],
+    #Animation data... what is it?
+    mass:                   1.0,
+    elasticity:             1.0,
+    change_in_height:       0,
+    io_map:                 [[[0,0,0,3],[0,0,0,2]]],
+    compatible_roamers:     'null',
+)
+bdominos.display = Display.create(
+    image_file:             'dominoes.png', 
+    obj_file:               'BendDominos.js', 
+    texture_file:           'dominosTex.jpg', 
+)
+bdominos.updateDisplay
+
+
+# Bent Dominos Gadget
+railColumn = ObjectProperty.create(
+    name:                   'Rail Column',
+    category:               'inert', 
+    block_num:              1, 
+    blocks:                 [[0,0,0]],
+    #Animation data... what is it?
+    mass:                   1.0,
+    elasticity:             1.0,
+    change_in_height:       0,
+    io_map:                 [],
+    compatible_roamers:     'null',
+)
+railColumn.display = Display.create(
+    image_file:             'shortColumn.png', 
+    obj_file:               'RailColumn.js', 
+    texture_file:           'none', 
+)
+railColumn.updateDisplay
