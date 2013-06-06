@@ -107,6 +107,7 @@ $(function(){
 	$('.runmode').hide();
 	$(".button.mode").click( switchMode );
 	$(".button.clear").click( clearScene );
+	$(".button.rerun").click( rerun );
 
 	//DISPLAY
 	initGraphics("grid_container");
@@ -163,6 +164,8 @@ $(function(){
 	<div class='button mode buildmode'>Run</div>
 	<div class='button clear buildmode'>Clear</div>
 	<div class='button mode runmode'>Stop</div>
+	<div class='button rerun runmode'>Rerun</div>
+
 </div>
 <div class='loading'>Loading...</div>
 <div id='delete_obj' class='instructions'>Keep holding D and click on an object to remove.</div>

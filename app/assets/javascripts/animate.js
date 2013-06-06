@@ -13,7 +13,6 @@ function animate() {
 }
 
 function render() {
-	if (pause) return;
 	if ( cameraRotateMode ) {
 		theta += mouse2D.x * 1.5;
 	}
@@ -21,11 +20,13 @@ function render() {
 	camera.position.x = 1400 * Math.sin( THREE.Math.degToRad( theta ) );
 	camera.position.z = 1400 * Math.cos( THREE.Math.degToRad( theta ) );
 	camera.lookAt( scene.position );
-	if (buildMode) {
-		updateBuildScene();
-	} else {
-		//console.log("animating...");
-		pause = !controller.UpdateAnimation();
+
+	if (!pause) {
+		if (buildMode) {
+			updateBuildScene();
+		} else { 
+			pause = !controller.UpdateAnimation();
+		}
 	}
 	renderer.render( scene, camera );	
 }
@@ -120,4 +121,15 @@ function resetGadgets(){
 		g.lastKeyframe = 0;
 		g.currentKeyframe = 0;
 	}
+}
+
+function rerun(){
+	pause = true; 
+	for (var i in saveState) {
+		sceneObjects[i].position.copy( saveState[i] ); //reset default position			
+	}
+	resetGadgets();
+
+	pause = false;
+	controller.InitiateAnimation();
 }
