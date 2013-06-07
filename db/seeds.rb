@@ -341,14 +341,14 @@ platform = ObjectProperty.create(
     compatible_roamers:     'array',
 )
 platform.display = Display.create(
-    image_file:             'block.png', 
+    image_file:             'platform.png', 
     obj_file:               'Platform.js', 
     texture_file:           'null', 
-    description:            'Text here.',
+    description:            'Platform. 3 blocks wide. Use it to bridge between other inerts. Note that objects cannot roll under the gap.',
 )
 platform.updateDisplay
 
-# Platform
+# Triple block.
 tBlock = ObjectProperty.create(
     name:                   'triple block',
     category:               'inert',
@@ -361,16 +361,16 @@ tBlock = ObjectProperty.create(
     compatible_roamers:     'array',
 )
 tBlock.display = Display.create(
-    image_file:             'block.png', 
+    image_file:             '3blocks.png', 
     obj_file:               'ThreeBlock.js', 
     texture_file:           'null', 
-    description:            'Text here.',
+    description:            'Blocks. 3x1.',
 )
 tBlock.updateDisplay
 
-# Triple Column
+# Triple Post
 tColumn = ObjectProperty.create(
-    name:                   'triple rail column',
+    name:                   'triple rail post',
     category:               'inert',
     block_num:              3, 
     blocks:                 [[0,0,0],[1,0,0],[2,0,0]],
@@ -381,10 +381,34 @@ tColumn = ObjectProperty.create(
     compatible_roamers:     'array',
 )
 tColumn.display = Display.create(
-    image_file:             'block.png', 
+    image_file:             'threepost.png', 
     obj_file:               'TripleColumn.js', 
     texture_file:           'null', 
-    description:            'Text here.',
+    description:            'A set of 3 posts.',
 )
 tColumn.updateDisplay
 
+# Train Gadget
+train = ObjectProperty.create(
+    name:                   'train',
+    category:               'gadget', 
+    block_num:              11, 
+    blocks:                 [[0,0,0],[1,0,0],[2,0,0],
+                             [3,0,0],[4,0,0],[5,0,0],
+                             [6,0,0],[7,0,0],[8,0,0],
+                             [9,0,0],[10,0,0]
+                             ],
+    #Animation data... what is it?
+    mass:                   1.0,
+    elasticity:             1.0,
+    change_in_height:       0,
+    io_map:                 [[[0,0,0,3],[10,0,0,1]]],
+    compatible_roamers:     'null',
+)
+train.display = Display.create(
+    image_file:             'dominoes.png', 
+    obj_file:               'train.js', 
+    texture_file:           'null', 
+    description:            'Train Gadget started by button'
+)
+train.updateDisplay
