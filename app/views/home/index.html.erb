@@ -52,7 +52,7 @@ var currRotation = 0;
 var currBlockList = [0,0,0];
 var currOffset;
 
-var currColor = "#dedada";
+var currColor = "#fcd87f";
 
 //scene handles
 var container, renderer;
@@ -101,8 +101,9 @@ $(function(){
 	    },
 	    changeDelay: 0,
 	    control: 'hue',
-	    defaultValue: '#dedada',
+	    defaultValue: '#fcd87f',
 	    inline: false,
+	    position: "top",
 	    swatchPosition: 'left',
 	    textfield: false,
 	    theme: 'default'
@@ -185,6 +186,7 @@ $(function(){
 
 </div>
 <div class='loading'>Loading...</div>
+<div id='add_starting' class='instructions'>Don't forget to add a starting object!</div>
 <div id='delete_obj' class='instructions'>Keep holding D and click on an object to remove.</div>
 <div id='rotate_cam' class='instructions'>Move mouse to change direction/speed of rotation.</div>
 <div id='grid_container'>
@@ -193,9 +195,9 @@ $(function(){
 <div id="tools" class='buildmode'>
 	<table>
 		<tr>
-			<td class='col_color'>
-				Choose color for object:
-				<input class="minicolors"></input>
+			<td class='col_color' style='width: 200px'>
+				<h3 style="margin-bottom:10px;">Add an <a href='javascript:;' onclick="$('.nav-five a').click();" style="text-decoration:underline">initial force</a> where you want to start the machine!</h3>
+				<h3>Choose Object Color<span style="margin-left:5px;"><input class="minicolors"></input></span></h3>
 			<td>
 			<td class='col_objects'>
 				<div id="toolbox">

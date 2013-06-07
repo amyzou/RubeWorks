@@ -108,10 +108,11 @@ function UpdateGadget(id, nFrames ){
 
 	var delta = nFrames * FRAMES_PER_SEC;
 	if (delta > gadget.duration - gadget.time ) {
-		sceneObjects[id].updateAnimation(gadget.duration - gadget.time);
+		gadget.updateAnimation(gadget.duration - gadget.time);
 		return true;		
 	}
-	sceneObjects[id].updateAnimation( delta );
+	gadget.updateAnimation( delta );
+	THREE.GeometryUtils.center(gadget.geometry);
 	return false;
 }
 
