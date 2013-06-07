@@ -225,6 +225,35 @@ function ControllerTest(){
 	else console.log("Chaining test 14: failed.");
 	controller.ReInitializeAll();	
 
+	// Chaining test 15. Arrow to dominos + turn dominos.
+	controller.AddObject(arrowID,0,[0,0,0],0);
+	controller.AddObject(dominoID,1,[1,0,0],0);
+	controller.AddObject(12,2,[3,0,0],0);
+	controller.CreateChains();
+	chains = controller.GetChains()[0];
+	if (JSON.stringify(chains[0]) === JSON.stringify([-1,0,[0,0,0,1]])
+		&& JSON.stringify(chains[1]) === JSON.stringify([-1,1,[2,0,0,1]])
+		&& JSON.stringify(chains[2]) === JSON.stringify([-1,2,[3,0,0,2]])
+		&& chains[3] == null)
+			console.log("Chaining test 15: passed.");
+	else console.log("Chaining test 15: failed.");
+	controller.ReInitializeAll();	
+
+	// Chaining test 16. Arrow to dominos + turn dominos.
+	controller.AddObject(arrowID,0,[0,5,0],1);
+	controller.AddObject(dominoID,1,[0,3,0],1);
+	controller.PrintGrid();
+	controller.CreateChains();
+	chains = controller.GetChains()[0];
+	console.log(chains);
+	if (JSON.stringify(chains[0]) === JSON.stringify([-1,0,[0,0,0,1]])
+		&& JSON.stringify(chains[1]) === JSON.stringify([-1,1,[2,0,0,1]])
+		&& JSON.stringify(chains[2]) === JSON.stringify([-1,2,[3,0,0,2]])
+		&& chains[3] == null)
+			console.log("Chaining test 16: passed.");
+	else console.log("Chaining test 16: failed.");
+	controller.ReInitializeAll();	
+
 	console.log("");
 	// Grid placement tests --------------------------------------------------
 	controller.AddObject(rampID,0,[5,0,3],0);
