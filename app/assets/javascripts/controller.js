@@ -643,43 +643,51 @@ function RubeJectController(){
 			else 
 				stateList[index] = null;
 		} else {
-			//calculate distance between in face and next outface's in block
-			var xDiff = toBlock[0] - stateList[index].fromBlock[0];
-			var yDiff = toBlock[1] - stateList[index].fromBlock[1];
-			var zDiff = toBlock[2] - stateList[index].fromBlock[2];
+			//if gadget, just update momentum to set num
+			if (objectSceneIDList[stateList[index].currentRoamer].category 
+					== 'gadget') {
+				stateList[index].momentum = 12;
+				stateList[index].stepsLeft = 2;
+			} else {
 
-			var absDiff = Math.sqrt( xDiff*xDiff + yDiff*yDiff + zDiff*zDiff);
+				//calculate distance between in face and next outface's in block
+				var xDiff = toBlock[0] - stateList[index].fromBlock[0];
+				var yDiff = toBlock[1] - stateList[index].fromBlock[1];
+				var zDiff = toBlock[2] - stateList[index].fromBlock[2];
 
-			// in momentum = mv = mass * v; thus v = momentum/mass
-			// d = new.outface's block - prev.outface's block 
-			// increment = d/total time
-			// v * tt = inc * refreshes made
-			// assume refreshes mad/tt = framerate 
-			//				= currentHardcodedNumberForRendering = v/inc
-			// we can get get inc = v/currentHardcodedNumberForRendering 
-			//		= (momentum/mass)/currentHardcodedNumberForRendering
-			// numIncs = d/inc 
+				var absDiff = Math.sqrt( xDiff*xDiff + yDiff*yDiff + zDiff*zDiff);
 
-			//translate prev outface to in face, and retrieve block
-			//xyz should be calculated seperately but fffffff I'll do it later 
+				// in momentum = mv = mass * v; thus v = momentum/mass
+				// d = new.outface's block - prev.outface's block 
+				// increment = d/total time
+				// v * tt = inc * refreshes made
+				// assume refreshes mad/tt = framerate 
+				//				= currentHardcodedNumberForRendering = v/inc
+				// we can get get inc = v/currentHardcodedNumberForRendering 
+				//		= (momentum/mass)/currentHardcodedNumberForRendering
+				// numIncs = d/inc 
 
-			var inc = stateList[index].momentum/ 
-					objectSceneIDList[ stateList[index].currentRoamer ].mass/
-					currentHardcodedNumberForRendering;
-			console.log("inc =  " + inc);
-			stateList[index].xInc = inc * xDiff / absDiff;
-			stateList[index].yInc = inc * yDiff / absDiff;
-			stateList[index].zInc = inc * zDiff / absDiff;			
-				
-			stateList[index].stepsLeft = absDiff / inc;
+				//translate prev outface to in face, and retrieve block
+				//xyz should be calculated seperately but fffffff I'll do it later 
 
-			console.log("new xInc : " + stateList[index].xInc);
-			console.log("new yInc : " + stateList[index].yInc);
-			console.log("new zInc : " + stateList[index].zInc);
-			console.log("steps left : " + stateList[index].stepsLeft);
-			stateList[index].fromBlock[0] = toBlock[0];
-			stateList[index].fromBlock[1] = toBlock[1];
-			stateList[index].fromBlock[2] = toBlock[2];
+				var inc = stateList[index].momentum/ 
+						objectSceneIDList[ stateList[index].currentRoamer ].mass/
+						currentHardcodedNumberForRendering;
+				console.log("inc =  " + inc);
+				stateList[index].xInc = inc * xDiff / absDiff;
+				stateList[index].yInc = inc * yDiff / absDiff;
+				stateList[index].zInc = inc * zDiff / absDiff;			
+					
+				stateList[index].stepsLeft = absDiff / inc;
+
+				console.log("new xInc : " + stateList[index].xInc);
+				console.log("new yInc : " + stateList[index].yInc);
+				console.log("new zInc : " + stateList[index].zInc);
+				console.log("steps left : " + stateList[index].stepsLeft);
+				stateList[index].fromBlock[0] = toBlock[0];
+				stateList[index].fromBlock[1] = toBlock[1];
+				stateList[index].fromBlock[2] = toBlock[2];
+			}
 		}
 	}
 
