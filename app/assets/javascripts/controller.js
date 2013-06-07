@@ -701,7 +701,7 @@ function RubeJectController(){
 
 			//objectSceneIDList[startingObjectList[i][0][0]].momentum
 			//for now, have a random val
-			stateList[i].momentum = 30;
+			stateList[i].momentum = 20;
 			stateList[i].currChainPosition = 0;
 			stateList[i].fromBlock = InblockForOutface( startingObjectList[i]
 										[0][2] );
@@ -781,9 +781,12 @@ function RubeJectController(){
 						stateList[i].xInc, stateList[i].yInc, stateList[i].zInc);
 					stateList[i].stepsLeft -- ;
 					if (stateList[i].zInc != 0 ) addGravity(i);
-				} else 
+				} else {
+					console.log("updating gadget");
 					if (UpdateGadget(stateList[i].currentRoamer, 1)) 
 						stateList[i].stepsLeft = 0;
+					else console.log("more to update");
+				}
 
 			} else if (startingObjectList[i][stateList[i].currChainPosition + 1]
 																		) {
@@ -802,11 +805,11 @@ function RubeJectController(){
 		}
 
 		if (numChainsRunning != 0) {
-			console.log("returning true");
+			console.log("chain be running");
 			return true;
 		}
 		else {
-			console.log("returning false");
+			console.log("chain be gone");
 			return false;
 
 		}
