@@ -314,3 +314,64 @@ mallet.display = Display.create(
     texture_file:           'null', 
 )
 mallet.updateDisplay
+
+# Platform
+platform = ObjectProperty.create(
+    name:                   'platform',
+    category:               'inert',
+    block_num:              3, 
+    blocks:                 [[0,0,0],[1,0,0],[2,0,0]],
+    mass:                   1.0,
+    elasticity:             1.0,
+    change_in_height:       0,
+    io_map:                 [],
+    compatible_roamers:     'array',
+)
+platform.display = Display.create(
+    image_file:             'block.png', 
+    obj_file:               'Platform.js', 
+    texture_file:           'null', 
+    description:            'Text here.',
+)
+platform.updateDisplay
+
+# Platform
+tBlock = ObjectProperty.create(
+    name:                   'triple block',
+    category:               'inert',
+    block_num:              3, 
+    blocks:                 [[0,0,0],[1,0,0],[2,0,0]],
+    mass:                   1.0,
+    elasticity:             1.0,
+    change_in_height:       0,
+    io_map:                 [],
+    compatible_roamers:     'array',
+)
+tBlock.display = Display.create(
+    image_file:             'block.png', 
+    obj_file:               'ThreeBlock.js', 
+    texture_file:           'null', 
+    description:            'Text here.',
+)
+tBlock.updateDisplay
+
+# Triple Column
+tColumn = ObjectProperty.create(
+    name:                   'triple rail column',
+    category:               'inert',
+    block_num:              3, 
+    blocks:                 [[0,0,0],[1,0,0],[2,0,0]],
+    mass:                   1.0,
+    elasticity:             1.0,
+    change_in_height:       0,
+    io_map:                 [],
+    compatible_roamers:     'array',
+)
+tColumn.display = Display.create(
+    image_file:             'block.png', 
+    obj_file:               'TripleColumn.js', 
+    texture_file:           'null', 
+    description:            'Text here.',
+)
+tColumn.updateDisplay
+
