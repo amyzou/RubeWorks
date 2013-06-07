@@ -324,5 +324,6 @@ mallet.display = Display.create(
     image_file:             'dominoes.png', 
     obj_file:               'Mallet.js', 
     texture_file:           'null', 
+    description:            'Swinging hammer. '
 )
 mallet.updateDisplay
