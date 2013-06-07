@@ -1,4 +1,6 @@
 <%= stylesheet_link_tag "hoverscroll" %>
+<%= stylesheet_link_tag "jquery.minicolors" %>
+<%= stylesheet_link_tag "jquery.qtip.min.css" %>
 
 <script>
 //SHARED GLOBALS
@@ -52,8 +54,6 @@ var currOffset;
 
 var currColor = "#dedada";
 
-var colors = ["#dedada","#fcd87f", "#b93131", "#384463", "#202b46"];
-
 //scene handles
 var container, renderer;
 var canvas_width, canvas_height;
@@ -83,12 +83,30 @@ $(function(){
 		return;	
 	}
 
-	$(".title").click( function(){ $(this).next().s(); } , function(){ $(this).next().fadeOut(); } );
-
-	for (var c in colors){
-		$("#colorpicker").append($("<div class='color' data='" + colors[c] + "'/>").css("background-color", colors[c]));
+	$( ".object" ).qtip({
+		position: {
+		my: 'bottom center',  
+		at: 'top center', // at the bottom right of...
+		target: $(".object")
 	}
-	$(".color").click( function(){ currColor = $(this).attr('data'); });
+	});
+
+	$('input.minicolors').minicolors({
+		animationSpeed: 100,
+	    animationEasing: 'swing',
+	    change: function( hex, opacity ){
+	    	currColor = hex;
+	    },
+	    changeDelay: 0,
+	    control: 'hue',
+	    defaultValue: '#dedada',
+	    inline: false,
+	    swatchPosition: 'left',
+	    textfield: false,
+	    theme: 'default'
+	});
+
+	$(".title").click( function(){ $(this).next().s(); } , function(){ $(this).next().fadeOut(); } );
 
 	//TOOLBOX: tabs, hover-scroll
 	$("#toolbox").organicTabs({ });
@@ -175,7 +193,7 @@ $(function(){
 		<tr>
 			<td class='col_color'>
 				Choose color for object:
-				<div id="colorpicker"></div>
+				<input class="minicolors"></input>
 			<td>
 			<td class='col_objects'>
 				<div id="toolbox">
