@@ -381,7 +381,7 @@ train = ObjectProperty.create(
     compatible_roamers:     'null',
 )
 train.display = Display.create(
-    image_file:             'dominoes.png', 
+    image_file:             'train.png', 
     obj_file:               'train.js', 
     texture_file:           'null', 
     description:            'Train Gadget started by button'

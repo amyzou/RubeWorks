@@ -104,15 +104,11 @@ function UpdateObjectInScene(id, rel_gx, rel_gy, rel_gz ) {
 
 function UpdateGadget(id, nFrames ){
 	var gadget = sceneObjects[id];
-	//if (gadget == null) return true;
-
+	if (gadget == null) return true;
+	var tleft = gadget.duration - gadget.time;
 	var delta = nFrames * FRAMES_PER_SEC;
-
-	if (delta >= gadget.duration - gadget.time ) {
-		return true;		
-	}
 	gadget.updateAnimation( delta );
-	return false;
+	return (tleft <= delta);
 }
 
 function clearScene(){

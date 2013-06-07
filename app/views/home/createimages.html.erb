@@ -114,9 +114,7 @@ function addMesh( obj, geo ) {
 	} 
 
     var mesh = new THREE.Mesh(geo, material.clone());
-    if (obj.category == 'gadget')   
-    	mesh.scale.set(2, 2, 2);
-    else {
+    if (obj.category != 'gadget')   {
     	mesh.scale.set(
 			obj.dimensions[0]/(geo.boundingBox.max.x - geo.boundingBox.min.x),
 			obj.dimensions[2]/(geo.boundingBox.max.y - geo.boundingBox.min.y),
