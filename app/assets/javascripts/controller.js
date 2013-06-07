@@ -790,10 +790,12 @@ function RubeJectController(){
 
 			} else if (startingObjectList[i][stateList[i].currChainPosition + 1]
 																		) {
-				UpdateObjectInScene(stateList[i].currentRoamer, 
-				stateList[i].xInc * stateList[i].stepsLeft,
-				stateList[i].yInc * stateList[i].stepsLeft, 
-				stateList[i].zInc * stateList[i].stepsLeft);
+				if (objectSceneIDList[stateList[i].currentRoamer].category 
+					== 'roamer')
+					UpdateObjectInScene(stateList[i].currentRoamer, 
+					stateList[i].xInc * stateList[i].stepsLeft,
+					stateList[i].yInc * stateList[i].stepsLeft, 
+					stateList[i].zInc * stateList[i].stepsLeft);
 				InitiateNextLink(i);
 			} else {
 				stateList[i] = null;
