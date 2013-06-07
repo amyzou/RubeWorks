@@ -24,7 +24,7 @@ block.display = Display.create(
     image_file:             'block.png', 
     obj_file:               '', 
     texture_file:           'null', 
-    description:            'Text here.',
+    description:            'Simple building block. 1x1',
 )
 block.updateDisplay
 
@@ -45,6 +45,7 @@ dominos.display = Display.create(
     image_file:             'dominoes.png', 
     obj_file:               'dominos.js', 
     texture_file:           'dominosTex.jpg', 
+    description:            'Set of 3 dominos. Can be knocked over or chained together. Their fall is one directional.',
 )
 dominos.updateDisplay
 
@@ -77,6 +78,7 @@ ramp.display = Display.create(
     image_file:             'ramp.png', 
     obj_file:               'ramp.js', 
     texture_file:           'ramp.jpg',
+    description:            'Ramp. 3x2. Objects cannot be placed directly on these.',
 )
 ramp.updateDisplay
 
@@ -96,6 +98,7 @@ sphere.display = Display.create(
     image_file:             'ball.png', 
     obj_file:               'ball.js', 
     texture_file:           'null', 
+    description:            'Sphere. Can travel across various other objects. Cannot be placed directly on a carrier.',
 )
 sphere.updateDisplay
 
@@ -116,6 +119,7 @@ arrow.display = Display.create(
     image_file:             'starterarrow.png',
     obj_file:               'StarterArrow.js',
     texture_file:           'null',
+    description:            'Initial force! Can be applied to roamers or gadgets to initiate interactions. Recommended to only use one.',
 )
 arrow.updateDisplay
 
@@ -137,6 +141,7 @@ straightRail.display = Display.create(
     image_file:             'straightRail.PNG',
     obj_file:               'StraightRail.js',
     texture_file:           'null',
+    description:            'Simple rail. 1 block wide.',
 )
 straightRail.updateDisplay
 
@@ -160,6 +165,7 @@ lstraightRail.display = Display.create(
     image_file:             'longstraightrail.png',
     obj_file:               'LongStraightRail.js',
     texture_file:           'null',
+    description:            'Simple rail. 3 block wide. Make sure to add inert support pieces under all three blocks if building higher up.',
 )
 lstraightRail.updateDisplay
 
@@ -179,6 +185,7 @@ shortColumn.display = Display.create(
     image_file:             'shortColumn.png', 
     obj_file:               'ShortColumn.js', 
     texture_file:           'null', 
+    description:            'Simple column. 1x2.',
 )
 shortColumn.updateDisplay
 
@@ -200,6 +207,7 @@ railRamp.display = Display.create(
     image_file:             'railramp.png',
     obj_file:               'RailRamp.js',
     texture_file:           'null',
+    description:            'Simple rail ramp. 1 block wide.',
 )
 railRamp.updateDisplay
 
@@ -221,6 +229,7 @@ turnRail.display = Display.create(
     image_file:             'turnrail.png',
     obj_file:               'TurnRail.js',
     texture_file:           'null',
+    description:            'Simple rail 90 degree turn. 1 block wide.',
 )
 turnRail.updateDisplay
 
@@ -247,6 +256,7 @@ warperBlock.display = Display.create(
     image_file:             'TransporterBlock.png',
     obj_file:               'TransporterBlock.js',
     texture_file:           'warperBlockTex.jpg',
+    description:            'Direction changer. Roamers passing over will go the direction of the arrow.',
 )
 warperBlock.updateDisplay
 
@@ -267,6 +277,7 @@ bdominos.display = Display.create(
     image_file:             'BendDominos.png', 
     obj_file:               'BendDominos.js', 
     texture_file:           'dominosTex.jpg', 
+    description:            'Set of two dominos, making a 90 degree turn. Can be knocked over or chained together. Their fall is one directional.',
 )
 bdominos.updateDisplay
 
@@ -288,5 +299,6 @@ railColumn.display = Display.create(
     image_file:             'railcolumn.png', 
     obj_file:               'RailColumn.js', 
     texture_file:           'none', 
+    description:            'Rail post. Can be used to build rails taller.',
 )
 railColumn.updateDisplay
