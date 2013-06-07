@@ -321,7 +321,7 @@ mallet = ObjectProperty.create(
     compatible_roamers:     'null',
 )
 mallet.display = Display.create(
-    image_file:             'dominoes.png', 
+    image_file:             'mallet.png', 
     obj_file:               'Mallet.js', 
     texture_file:           'null', 
     description:            'Swinging hammer. '
