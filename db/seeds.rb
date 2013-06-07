@@ -138,7 +138,7 @@ straightRail = ObjectProperty.create(
     compatible_roamers:     [5],
 )
 straightRail.display = Display.create(
-    image_file:             'straightRail.PNG',
+    image_file:             'straight_rail.png',
     obj_file:               'StraightRail.js',
     texture_file:           'null',
     description:            'Simple rail. 1 block wide.',
@@ -321,7 +321,7 @@ mallet = ObjectProperty.create(
     compatible_roamers:     'null',
 )
 mallet.display = Display.create(
-    image_file:             'dominoes.png', 
+    image_file:             'mallet.png', 
     obj_file:               'Mallet.js', 
     texture_file:           'null', 
     description:            'Swinging hammer. '
@@ -341,14 +341,14 @@ platform = ObjectProperty.create(
     compatible_roamers:     'array',
 )
 platform.display = Display.create(
-    image_file:             'block.png', 
+    image_file:             'platform.png', 
     obj_file:               'Platform.js', 
     texture_file:           'null', 
-    description:            'Text here.',
+    description:            'Platform. 3 blocks wide. Use it to bridge between other inerts. Note that objects cannot roll under the gap.',
 )
 platform.updateDisplay
 
-# Platform
+# Triple block.
 tBlock = ObjectProperty.create(
     name:                   'triple block',
     category:               'inert',
@@ -361,16 +361,16 @@ tBlock = ObjectProperty.create(
     compatible_roamers:     'array',
 )
 tBlock.display = Display.create(
-    image_file:             'block.png', 
+    image_file:             '3blocks.png', 
     obj_file:               'ThreeBlock.js', 
     texture_file:           'null', 
-    description:            'Text here.',
+    description:            'Blocks. 3x1.',
 )
 tBlock.updateDisplay
 
-# Triple Column
+# Triple Post
 tColumn = ObjectProperty.create(
-    name:                   'triple rail column',
+    name:                   'triple rail post',
     category:               'inert',
     block_num:              3, 
     blocks:                 [[0,0,0],[1,0,0],[2,0,0]],
@@ -381,10 +381,10 @@ tColumn = ObjectProperty.create(
     compatible_roamers:     'array',
 )
 tColumn.display = Display.create(
-    image_file:             'block.png', 
+    image_file:             'threepost.png', 
     obj_file:               'TripleColumn.js', 
     texture_file:           'null', 
-    description:            'Text here.',
+    description:            'A set of 3 posts.',
 )
 tColumn.updateDisplay
 
