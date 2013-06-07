@@ -388,3 +388,27 @@ tColumn.display = Display.create(
 )
 tColumn.updateDisplay
 
+# Train Gadget
+train = ObjectProperty.create(
+    name:                   'train',
+    category:               'gadget', 
+    block_num:              11, 
+    blocks:                 [[0,0,0],[1,0,0],[2,0,0],
+                             [3,0,0],[4,0,0],[5,0,0],
+                             [6,0,0],[7,0,0],[8,0,0],
+                             [9,0,0],[10,0,0]
+                             ],
+    #Animation data... what is it?
+    mass:                   1.0,
+    elasticity:             1.0,
+    change_in_height:       0,
+    io_map:                 [[[0,0,0,3],[10,0,0,1]]],
+    compatible_roamers:     'null',
+)
+train.display = Display.create(
+    image_file:             'dominoes.png', 
+    obj_file:               'train.js', 
+    texture_file:           'null', 
+    description:            'Train Gadget started by button'
+)
+train.updateDisplay
