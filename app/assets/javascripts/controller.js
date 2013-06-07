@@ -528,7 +528,7 @@ function RubeJectController(){
 	/*-----------------Animation code-----------------*/
 
 	var currentHardcodedNumberForRendering = 100;
-	var gravityDamper = 0.1;
+	var gravityDamper = 0.5;
 	var gravity = 9.8 / currentHardcodedNumberForRendering * gravityDamper;
 	var stateList = new Array();
 
@@ -698,7 +698,7 @@ function RubeJectController(){
 
 			//objectSceneIDList[startingObjectList[i][0][0]].momentum
 			//for now, have a random val
-			stateList[i].momentum = 60;
+			stateList[i].momentum = 30;
 			stateList[i].currChainPosition = 0;
 			stateList[i].fromBlock = InblockForOutface( startingObjectList[i]
 										[0][2] );
@@ -723,12 +723,14 @@ function RubeJectController(){
 				+ stateList[index].yInc + ", "
 				+ stateList[index].zInc);
 
+		stateList[index].zInc -= Math.abs(
+ 				totInc * stateList[index].zInc / oldInc);
+
 		//when z < 0, + for x n y; if z > 0, - x and y
 		if (stateList[index].zInc < 0) {
 			stateList[index].xInc += totInc * stateList[index].xInc / oldInc;
 			stateList[index].yInc += totInc * stateList[index].yInc / oldInc;
- 			stateList[index].zInc -= Math.abs(
- 				totInc * stateList[index].zInc / oldInc);
+ 			
  			stateList[index].stepsLeft 
  			= stateList[index].stepsLeft * oldInc / (oldInc + totInc);
  			//adjust momentum
@@ -738,8 +740,7 @@ function RubeJectController(){
  		} else {
  			stateList[index].xInc -= totInc * stateList[index].xInc / oldInc;
 			stateList[index].yInc -= totInc * stateList[index].yInc / oldInc;
- 			stateList[index].zInc -= Math.abs(
- 				totInc * stateList[index].zInc / oldInc);
+ 			
  			stateList[index].stepsLeft 
  			= stateList[index].stepsLeft * oldInc / (oldInc - totInc);
  			//adjust momentum
