@@ -299,7 +299,7 @@ railColumn.display = Display.create(
     image_file:             'railcolumn.png', 
     obj_file:               'RailColumn.js', 
     texture_file:           'none', 
-    description:            'Rail post. Can be used to build rails taller.',
+    description:            'Post. Can be stacked to build things taller.',
 )
 railColumn.updateDisplay
 

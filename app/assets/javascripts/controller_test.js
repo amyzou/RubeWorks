@@ -168,7 +168,7 @@ function ControllerTest(){
 	else console.log("Chaining test 10: failed.");
 	controller.ReInitializeAll();	
 
-	// Chaining test 11. Sphere rolls across blocks, then over rails.
+	// Chaining test 11. Sphere rolls across rails.
 	// Add arrow.
 	controller.AddObject(arrowID,2,[0,0,0],0); 
 	// Add sphere.
@@ -182,7 +182,8 @@ function ControllerTest(){
 		&& JSON.stringify(chains[1]) === JSON.stringify([-1,3,[1,0,0,1]])
 		&& JSON.stringify(chains[2]) === JSON.stringify([4,3,[2,0,0,1]])
 		&& JSON.stringify(chains[3]) === JSON.stringify([5,3,[5,0,0,1]])
-		&& chains[4] == null)
+		&& JSON.stringify(chains[4]) === JSON.stringify([-1,3,[29,0,0,1]])
+		&& chains[5] == null)
 			console.log("Chaining test 11: passed.");
 	else console.log("Chaining test 11: failed.");
 	controller.ReInitializeAll();
@@ -222,26 +223,7 @@ function ControllerTest(){
 		&& chains[3] == null)
 			console.log("Chaining test 14: passed.");
 	else console.log("Chaining test 14: failed.");
-	controller.ReInitializeAll();
-
-	// Chaining test 15. Sphere rolls across blocks, then over rails.
-	// Add blocks.
-	controller.AddObject(blockID, 0, [0,7,0], 0);
-	controller.AddObject(blockID, 1, [0,6,0], 0);
-	controller.AddObject(arrowID,2,[0,7,1],1); 
-	controller.AddObject(sphereID,3,[0,6,1],0); 
-	controller.AddObject(sRailID,4,[0,5,0],1);
-	controller.CreateChains();
-	var chains = controller.GetChains()[0];
-	if (JSON.stringify(chains[0]) === JSON.stringify([-1,2,[0,7,1,2]])
-		&& JSON.stringify(chains[1]) === JSON.stringify([-1,3,[0,6,1,2]])
-		&& JSON.stringify(chains[2]) === JSON.stringify([4,3,[0,5,1,2]])
-		&& JSON.stringify(chains[3]) === JSON.stringify([-2,3,[0,4,0,4]])
-		&& chains[4] == null)
-			console.log("Chaining test 15: passed.");
-	else console.log("Chaining test 15: failed.");
-	controller.ReInitializeAll();
-	
+	controller.ReInitializeAll();	
 
 	console.log("");
 	// Grid placement tests --------------------------------------------------
