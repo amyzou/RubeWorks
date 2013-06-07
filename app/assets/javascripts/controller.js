@@ -636,7 +636,10 @@ function RubeJectController(){
 			+ ", " + toBlock[1] + ", " + toBlock[2]);
 		if (stateList[index].fromBlock[0] == toBlock[0]
 				&& stateList[index].fromBlock[1] == toBlock[1]
-				&& stateList[index].fromBlock[2] == toBlock[2]){
+				&& stateList[index].fromBlock[2] == toBlock[2]
+				&& objectSceneIDList[stateList[index].currentRoamer].category 
+					!= 'gadget'){
+			
 			console.log("sameBlock; skipping");
 			if (startingObjectList[index][stateList[index].currChainPosition + 1]) 
 				InitiateNextLink(index);
