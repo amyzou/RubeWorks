@@ -377,7 +377,7 @@ train = ObjectProperty.create(
     mass:                   1.0,
     elasticity:             1.0,
     change_in_height:       0,
-    io_map:                 [[[3,0,0,3],[10,0,0,1]]],
+    io_map:                 [[[0,0,0,3],[10,0,0,1]]],
     compatible_roamers:     'null',
 )
 train.display = Display.create(
@@ -454,6 +454,6 @@ archway.display = Display.create(
     image_file:             'archway.png',
     obj_file:               'archway.js',
     texture_file:           'null',
-    description:            'Archway to build on with a tunnel',
+    description:            'Archway to build on with a tunnel. 3x3.',
 )
 archway.updateDisplay
