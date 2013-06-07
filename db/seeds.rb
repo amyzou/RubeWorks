@@ -412,3 +412,49 @@ train.display = Display.create(
     description:            'Train Gadget started by button'
 )
 train.updateDisplay
+
+
+#Tunnel
+tunnel = ObjectProperty.create(
+    name:                   'tunnel',
+    category:               'carrier',
+    block_num:              1,
+    blocks:                 [[0,0,0]],
+    mass:                   6.0,
+    elasticity:             1.0, 
+    change_in_height:       0,
+    #Relative Animation Information
+    io_map:                 [[[0,0,0,3],[0,0,0,1], "linear", [0,0,0],[1,0,0]],
+                             [[0,0,0,1],[0,0,0,3], "linear", [1,0,0],[0,0,0]]],
+    compatible_roamers:     [5],
+)
+tunnel.display = Display.create(
+    image_file:             'tunnel.png',
+    obj_file:               'tunnel.js',
+    texture_file:           'null',
+    description:            'Tunnel for ball to roll through.',
+)
+tunnel.updateDisplay
+
+
+#Archway
+archway = ObjectProperty.create(
+    name:                   'archway',
+    category:               'carrier',
+    block_num:              6,
+    blocks:                 [[0,0,0],[0,1,0],[0,2,0],[0,0,1],[0,1,1],[0,2,1]],
+    mass:                   6.0,
+    elasticity:             1.0, 
+    change_in_height:       0,
+    #Relative Animation Information
+    io_map:                 [[[0,1,0,3],[0,1,0,1], "linear", [0,1,0],[1,1,0]],
+                             [[0,1,0,1],[0,1,0,3], "linear", [1,1,0],[0,1,0]]],
+    compatible_roamers:     [5],
+)
+archway.display = Display.create(
+    image_file:             'archway.png',
+    obj_file:               'archway.js',
+    texture_file:           'null',
+    description:            'Archway to build on with a tunnel',
+)
+archway.updateDisplay
