@@ -28,6 +28,69 @@ block.display = Display.create(
 )
 block.updateDisplay
 
+# Triple block.
+tBlock = ObjectProperty.create(
+    name:                   'triple block',
+    category:               'inert',
+    block_num:              3, 
+    blocks:                 [[0,0,0],[1,0,0],[2,0,0]],
+    mass:                   1.0,
+    elasticity:             1.0,
+    change_in_height:       0,
+    io_map:                 [],
+    compatible_roamers:     'array',
+)
+tBlock.display = Display.create(
+    image_file:             '3blocks.png', 
+    obj_file:               'ThreeBlock.js', 
+    texture_file:           'null', 
+    description:            'Blocks. 3x1.',
+)
+tBlock.updateDisplay
+
+
+#Archway
+archway = ObjectProperty.create(
+    name:                   'archway',
+    category:               'inert',
+    block_num:              5,
+    blocks:                 [[0,0,0],[0,2,0],[0,0,1],[0,1,1],[0,2,1]],
+    mass:                   6.0,
+    elasticity:             1.0, 
+    change_in_height:       0,
+    #Relative Animation Information
+    io_map:                 [],
+    compatible_roamers:     [5],
+)
+archway.display = Display.create(
+    image_file:             'archway.png',
+    obj_file:               'archway.js',
+    texture_file:           'null',
+    description:            'Archway. Can be used as a tunnel.',
+)
+archway.updateDisplay
+
+
+# Platform
+platform = ObjectProperty.create(
+    name:                   'platform',
+    category:               'inert',
+    block_num:              3, 
+    blocks:                 [[0,0,0],[1,0,0],[2,0,0]],
+    mass:                   1.0,
+    elasticity:             1.0,
+    change_in_height:       0,
+    io_map:                 [],
+    compatible_roamers:     'array',
+)
+platform.display = Display.create(
+    image_file:             'platform.png', 
+    obj_file:               'Platform.js', 
+    texture_file:           'null', 
+    description:            'Platform. 3 blocks wide. Use it to bridge between other inerts. Note that objects cannot roll under the gap.',
+)
+platform.updateDisplay
+
 # Dominos Gadget
 dominos = ObjectProperty.create(
     name:                   'dominos',
@@ -141,7 +204,7 @@ straightRail.display = Display.create(
     image_file:             'straight_rail.png',
     obj_file:               'StraightRail.js',
     texture_file:           'null',
-    description:            'Simple rail. 1 block wide.',
+    description:            'Simple rail. 1 block long.',
 )
 straightRail.updateDisplay
 
@@ -165,7 +228,7 @@ lstraightRail.display = Display.create(
     image_file:             'longstraightrail.png',
     obj_file:               'LongStraightRail.js',
     texture_file:           'null',
-    description:            'Simple rail. 3 block wide. Make sure to add inert support pieces under all three blocks if building higher up.',
+    description:            'Simple rail. 3 blocks long. Make sure to add inert support pieces under all three blocks if building higher up.',
 )
 lstraightRail.updateDisplay
 
@@ -185,7 +248,7 @@ shortColumn.display = Display.create(
     image_file:             'shortColumn.png', 
     obj_file:               'ShortColumn.js', 
     texture_file:           'null', 
-    description:            'Simple column. 1x2.',
+    description:            'Simple column. 2 blocks tall.',
 )
 shortColumn.updateDisplay
 
@@ -207,7 +270,7 @@ railRamp.display = Display.create(
     image_file:             'railramp.png',
     obj_file:               'RailRamp.js',
     texture_file:           'null',
-    description:            'Simple rail ramp. 1 block wide.',
+    description:            'Simple rail ramp. 1 block long.',
 )
 railRamp.updateDisplay
 
@@ -229,7 +292,7 @@ turnRail.display = Display.create(
     image_file:             'turnrail.png',
     obj_file:               'TurnRail.js',
     texture_file:           'null',
-    description:            'Simple rail 90 degree turn. 1 block wide.',
+    description:            'Simple rail 90 degree turn. 1 block long.',
 )
 turnRail.updateDisplay
 
@@ -303,46 +366,6 @@ railColumn.display = Display.create(
 )
 railColumn.updateDisplay
 
-# Platform
-platform = ObjectProperty.create(
-    name:                   'platform',
-    category:               'inert',
-    block_num:              3, 
-    blocks:                 [[0,0,0],[1,0,0],[2,0,0]],
-    mass:                   1.0,
-    elasticity:             1.0,
-    change_in_height:       0,
-    io_map:                 [],
-    compatible_roamers:     'array',
-)
-platform.display = Display.create(
-    image_file:             'platform.png', 
-    obj_file:               'Platform.js', 
-    texture_file:           'null', 
-    description:            'Platform. 3 blocks wide. Use it to bridge between other inerts. Note that objects cannot roll under the gap.',
-)
-platform.updateDisplay
-
-# Triple block.
-tBlock = ObjectProperty.create(
-    name:                   'triple block',
-    category:               'inert',
-    block_num:              3, 
-    blocks:                 [[0,0,0],[1,0,0],[2,0,0]],
-    mass:                   1.0,
-    elasticity:             1.0,
-    change_in_height:       0,
-    io_map:                 [],
-    compatible_roamers:     'array',
-)
-tBlock.display = Display.create(
-    image_file:             '3blocks.png', 
-    obj_file:               'ThreeBlock.js', 
-    texture_file:           'null', 
-    description:            'Blocks. 3x1.',
-)
-tBlock.updateDisplay
-
 # Triple Post
 tColumn = ObjectProperty.create(
     name:                   'triple rail post',
@@ -384,7 +407,7 @@ train.display = Display.create(
     image_file:             'train.png', 
     obj_file:               'train.js', 
     texture_file:           'null', 
-    description:            'Train Gadget started by button'
+    description:            'Train. Start the train going by hitting the button.'
 )
 train.updateDisplay
 
@@ -409,28 +432,8 @@ mallet.display = Display.create(
     image_file:             'mallet.png', 
     obj_file:               'Mallet.js', 
     texture_file:           'null', 
-    description:            'Swinging hammer. '
+    description:            'Swinging hammer. Hit the right side of the hammer and it will swing down.'
 )
 mallet.updateDisplay
 
-#Archway
-archway = ObjectProperty.create(
-    name:                   'archway',
-    category:               'inert',
-    block_num:              5,
-    blocks:                 [[0,0,0],[0,2,0],[0,0,1],[0,1,1],[0,2,1]],
-    mass:                   6.0,
-    elasticity:             1.0, 
-    change_in_height:       0,
-    #Relative Animation Information
-    io_map:                 [],
-    compatible_roamers:     [5],
-)
-archway.display = Display.create(
-    image_file:             'archway.png',
-    obj_file:               'archway.js',
-    texture_file:           'null',
-    description:            'Archway to build on with a tunnel. 3x3.',
-)
-archway.updateDisplay
 
