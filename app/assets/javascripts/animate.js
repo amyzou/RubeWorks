@@ -111,14 +111,9 @@ function switchToBuildMode(){
 }
 
 function resetGadgets(){
-	var delta;
 	for (var i in gadgets){
-		var g = gadgets[i];
-		g.morphTargetInfluences[ g.lastKeyframe ] = 0;
-		g.morphTargetInfluences[ g.currentKeyframe ] = 0;
-		g.morphTargetInfluences[ 0 ] = 1;
-		g.lastKeyframe = 0;
-		g.currentKeyframe = 0;
+		gadgets[i].playAnimation("full", FRAMES_PER_SEC);
+		gadgets[i].updateMorphTargets();
 	}
 }
 

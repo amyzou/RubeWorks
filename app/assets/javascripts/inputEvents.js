@@ -48,8 +48,9 @@ function onMouseDown ( event ) {
 	var intersects = raycaster.intersectObjects( scene.children );
 	if ( intersects.length > 0 ) {
 		intersector = getRealIntersector( intersects );
-		if ( deleteMode && intersector.object != plane ) {
-			removeObjectFromScene( intersector.object  );
+		if ( deleteMode ){
+			if ( intersector.object != plane )
+				removeObjectFromScene( intersector.object  );
 		} else {
 			addObjectToScene ( intersector, intersects );
 		}
