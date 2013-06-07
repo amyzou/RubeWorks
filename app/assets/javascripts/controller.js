@@ -135,7 +135,7 @@ function RubeJectController(){
 			} 
 		}
 		// Roamers and gadgets must be on an inert or ground
-		if (category == "roamer" || category == "gadget" || category == "carrier") {
+		if (category == "roamer" || category == "gadget") {
 			var groundBlocks = GetGroundBlocks(blockList, pos); 
 			for (var i = 0; i < groundBlocks.length; i++) {
 				if (!OnGroundOrInert(groundBlocks[i])) {
