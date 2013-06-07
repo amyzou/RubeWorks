@@ -377,7 +377,7 @@ train = ObjectProperty.create(
     mass:                   1.0,
     elasticity:             1.0,
     change_in_height:       0,
-    io_map:                 [[[0,0,0,3],[10,0,0,1]]],
+    io_map:                 [[[3,0,0,3],[10,0,0,1]]],
     compatible_roamers:     'null',
 )
 train.display = Display.create(
@@ -387,3 +387,28 @@ train.display = Display.create(
     description:            'Train Gadget started by button'
 )
 train.updateDisplay
+
+# Mallet Gadget
+mallet = ObjectProperty.create(
+    name:                   'mallet',
+    category:               'gadget', 
+    block_num:              8, 
+    blocks:                 [[0,0,0],[1,0,0],
+                             [0,0,1],[1,0,1],
+                             [0,0,2],[1,0,2],
+                             [0,0,3],[1,0,3]
+                             ],
+    #Animation data... what is it?
+    mass:                   1.0,
+    elasticity:             1.0,
+    change_in_height:       0,
+    io_map:                 [[[0,0,3,3],[0,0,0,3]]],
+    compatible_roamers:     'null',
+)
+mallet.display = Display.create(
+    image_file:             'mallet.png', 
+    obj_file:               'Mallet.js', 
+    texture_file:           'null', 
+    description:            'Swinging hammer. '
+)
+mallet.updateDisplay

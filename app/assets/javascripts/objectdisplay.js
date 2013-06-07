@@ -104,15 +104,14 @@ function UpdateObjectInScene(id, rel_gx, rel_gy, rel_gz ) {
 
 function UpdateGadget(id, nFrames ){
 	var gadget = sceneObjects[id];
-	if (gadget == null) return true;
+	//if (gadget == null) return true;
 
 	var delta = nFrames * FRAMES_PER_SEC;
-	if (delta > gadget.duration - gadget.time ) {
-		gadget.updateAnimation(gadget.duration - gadget.time);
+
+	if (delta >= gadget.duration - gadget.time ) {
 		return true;		
 	}
 	gadget.updateAnimation( delta );
-	THREE.GeometryUtils.center(gadget.geometry);
 	return false;
 }
 
