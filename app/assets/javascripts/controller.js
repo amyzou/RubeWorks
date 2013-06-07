@@ -582,15 +582,32 @@ function RubeJectController(){
 					+ [stateList[index].currChainPosition]);
 		stateList[index].currChainPosition ++ ;
 		console.log("new chain position = " + stateList[index].currChainPosition);
+
+
+		//first, verify from block - if new block, minus one
+		if (stateList[index].currentRoamer != startingObjectList[index]
+										[stateList[index].currChainPosition]
+										[1]) {
+
+			stateList[index].currentRoamer = startingObjectList[index]
+										[stateList[index].currChainPosition]
+										[1];
+			stateList[index].fromBlock[0] = objectSceneIDList[stateList[index].currentRoamer]
+												.position[0];
+			stateList[index].fromBlock[1] = objectSceneIDList[stateList[index].currentRoamer]
+												.position[1];
+			stateList[index].fromBlock[2] = objectSceneIDList[stateList[index].currentRoamer]
+												.position[2];
+		}
+
 		stateList[index].currentCarrier = startingObjectList[index]
 										[stateList[index].currChainPosition]
 										[0]; 
-		stateList[index].currentRoamer = startingObjectList[index]
-										[stateList[index].currChainPosition]
-										[1];			
+			
 				
 		console.log("roamer = " + stateList[index].currentRoamer);
 		console.log("carrier = " + stateList[index].currentCarrier);
+
 		var toBlock;
 		//check where toblock goes
 		if (startingObjectList[index]
@@ -599,9 +616,11 @@ function RubeJectController(){
 			|| startingObjectList[index]
 				[stateList[index].currChainPosition + 1][1] 
 										!= stateList[index].currentRoamer
-			|| (stateList[index].fromBlock[2]
-					< startingObjectList[index]
-							[stateList[index].currChainPosition + 1][2][2])) {
+			//|| (stateList[index].fromBlock[2]
+			//		< startingObjectList[index]
+			//				[stateList[index].currChainPosition + 1][2][2])
+
+			) {
 				//don't go!
 			console.log("preoutface block")
 			toBlock = startingObjectList[index][stateList[index].currChainPosition][2];
@@ -658,7 +677,9 @@ function RubeJectController(){
 			console.log("new yInc : " + stateList[index].yInc);
 			console.log("new zInc : " + stateList[index].zInc);
 			console.log("steps left : " + stateList[index].stepsLeft);
-			stateList[index].fromBlock = toBlock;
+			stateList[index].fromBlock[0] = toBlock[0];
+			stateList[index].fromBlock[1] = toBlock[1];
+			stateList[index].fromBlock[2] = toBlock[2];
 		}
 	}
 
@@ -669,7 +690,7 @@ function RubeJectController(){
 
 			//objectSceneIDList[startingObjectList[i][0][0]].momentum
 			//for now, have a random val
-			stateList[i].momentum = 30;
+			stateList[i].momentum = 60;
 			stateList[i].currChainPosition = 0;
 			stateList[i].fromBlock = InblockForOutface( startingObjectList[i]
 										[0][2] );
