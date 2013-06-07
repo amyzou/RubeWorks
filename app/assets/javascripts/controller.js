@@ -639,7 +639,7 @@ function RubeJectController(){
 				&& stateList[index].fromBlock[2] == toBlock[2]
 				&& objectSceneIDList[stateList[index].currentRoamer].category 
 					!= 'gadget'){
-			
+
 			console.log("sameBlock; skipping");
 			if (startingObjectList[index][stateList[index].currChainPosition + 1]) 
 				InitiateNextLink(index);
@@ -726,14 +726,14 @@ function RubeJectController(){
 				+ stateList[index].yInc + ", "
 				+ stateList[index].zInc);
 
-		stateList[index].zInc -= Math.abs(
- 				totInc * stateList[index].zInc / oldInc);
+		
 
 		//when z < 0, + for x n y; if z > 0, - x and y
 		if (stateList[index].zInc < 0) {
 			stateList[index].xInc += totInc * stateList[index].xInc / oldInc;
 			stateList[index].yInc += totInc * stateList[index].yInc / oldInc;
- 			
+ 			stateList[index].zInc -= Math.abs(
+ 				totInc * stateList[index].zInc / oldInc);
  			stateList[index].stepsLeft 
  			= stateList[index].stepsLeft * oldInc / (oldInc + totInc);
  			//adjust momentum
@@ -743,7 +743,8 @@ function RubeJectController(){
  		} else {
  			stateList[index].xInc -= totInc * stateList[index].xInc / oldInc;
 			stateList[index].yInc -= totInc * stateList[index].yInc / oldInc;
- 			
+ 			stateList[index].zInc -= Math.abs(
+ 				totInc * stateList[index].zInc / oldInc);
  			stateList[index].stepsLeft 
  			= stateList[index].stepsLeft * oldInc / (oldInc - totInc);
  			//adjust momentum
@@ -754,6 +755,10 @@ function RubeJectController(){
 		console.log("NewIncs: " + stateList[index].xInc + ", "
 			+ stateList[index].yInc + ", "
 			+ stateList[index].zInc);
+		if (stateList[index].stepsLeft <= 0) {
+			console.log("gravity say haha you die");
+			stateList[index] = null;
+		}
 		
 	}
 
@@ -783,9 +788,9 @@ function RubeJectController(){
 			} else if (startingObjectList[i][stateList[i].currChainPosition + 1]
 																		) {
 				UpdateObjectInScene(stateList[i].currentRoamer, 
-				stateList[i].xInc,
-				stateList[i].yInc, 
-				stateList[i].zInc);
+				stateList[i].xInc * stateList[i].stepsLeft,
+				stateList[i].yInc * stateList[i].stepsLeft, 
+				stateList[i].zInc * stateList[i].stepsLeft);
 				InitiateNextLink(i);
 			} else {
 				stateList[i] = null;
