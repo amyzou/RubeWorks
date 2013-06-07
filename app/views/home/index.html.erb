@@ -85,10 +85,12 @@ $(function(){
 
 	$( ".object" ).qtip({
 		position: {
-		my: 'bottom center',  
-		at: 'top center', // at the bottom right of...
-		target: $(".object")
-	}
+			my: 'bottom center',  
+			at: 'top center'
+		},
+		style: {
+			classes: 'qtip-rounded',
+		}
 	});
 
 	$('input.minicolors').minicolors({
