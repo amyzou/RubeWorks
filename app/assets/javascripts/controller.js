@@ -588,7 +588,7 @@ function RubeJectController(){
 		if (stateList[index].currentRoamer != startingObjectList[index]
 										[stateList[index].currChainPosition]
 										[1]) {
-
+			console.log("Different roamer; using new roamer's position");
 			stateList[index].currentRoamer = startingObjectList[index]
 										[stateList[index].currChainPosition]
 										[1];
@@ -616,13 +616,13 @@ function RubeJectController(){
 			|| startingObjectList[index]
 				[stateList[index].currChainPosition + 1][1] 
 										!= stateList[index].currentRoamer
-			//|| (stateList[index].fromBlock[2]
-			//		< startingObjectList[index]
-			//				[stateList[index].currChainPosition + 1][2][2])
+			|| (stateList[index].fromBlock[2]
+					< startingObjectList[index]
+							[stateList[index].currChainPosition + 1][2][2])
 
 			) {
 				//don't go!
-			console.log("preoutface block")
+			console.log("using preoutface block for to block")
 			toBlock = startingObjectList[index][stateList[index].currChainPosition][2];
 		} else {
 				toBlock = InblockForOutface( startingObjectList[index]
